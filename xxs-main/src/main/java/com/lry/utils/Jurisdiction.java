@@ -8,8 +8,6 @@ import org.apache.shiro.session.Session;
 /**
  * 权限处理
  *
- * @author:fh qq 313596790[青苔]
- * 修改日期：2015/11/19
  */
 public class Jurisdiction {
     /**
@@ -27,7 +25,7 @@ public class Jurisdiction {
     }
 
     /**
-     * 获取当前登录的用户名
+     * 获取当前登录的用户id
      *
      * @return
      */
@@ -36,12 +34,19 @@ public class Jurisdiction {
     }
 
     /**
+     * 获取当前登录的用户身份
+     * 0:超级管理员 1:管理员 2:教师 3:学生 4:家长
+     */
+    public static String getUserType(String sessionid, SessionProvider provider) {
+        return provider.getAttribute(sessionid, Const.SESSION_USERTYPE).toString();
+    }
+
+    /**
      * shiro管理的session
      *
      * @return
      */
     public static Session getSession() {
-        //Subject currentUser = SecurityUtils.getSubject();
         return SecurityUtils.getSubject().getSession();
     }
 }

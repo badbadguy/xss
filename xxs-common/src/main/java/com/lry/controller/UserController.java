@@ -45,7 +45,6 @@ public class UserController extends BaseController {
 	public ModelAndView save(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String sessionId = RequestUtils.getCSESSIONID(request, response);
 		logBefore(logger, Jurisdiction.getUsername(sessionId,sessionProvider)+"新增User");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add",sessionId,sessionProvider)){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = this.getPageData();
 		pd.put("USER_ID", this.get32UUID());	//主键
@@ -63,7 +62,6 @@ public class UserController extends BaseController {
 	public void delete(PrintWriter out,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String sessionId = RequestUtils.getCSESSIONID(request, response);
 		logBefore(logger, Jurisdiction.getUsername(sessionId,sessionProvider)+"删除User");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del",sessionId,sessionProvider)){return;} //校验权限
 		PageData pd = this.getPageData();
 		userService.delete(pd);
 		out.write("success");
@@ -78,7 +76,6 @@ public class UserController extends BaseController {
 	public ModelAndView edit(HttpServletRequest request,HttpServletResponse response) throws Exception{
 	     String sessionId = RequestUtils.getCSESSIONID(request, response);
 		logBefore(logger, Jurisdiction.getUsername(sessionId,sessionProvider)+"修改User");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit",sessionId,sessionProvider)){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = this.getPageData();
 		userService.edit(pd);
@@ -108,7 +105,6 @@ public class UserController extends BaseController {
 		mv.setViewName("controller/user/user_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
-		mv.addObject("QX",Jurisdiction.getHC(sessionId,sessionProvider));	//按钮权限
 		return mv;
 	}
 	

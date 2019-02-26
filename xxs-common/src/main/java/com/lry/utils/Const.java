@@ -2,11 +2,6 @@ package com.lry.utils;
 
 import java.util.ResourceBundle;
 
-/**
- * 项目名称：
- * @author:fh qq313596790[青苔]
- * 修改日期：2015/11/2
-*/
 public class Const {
 
 	//private static final String IP = "http://www.gd12316.com.cn/"; //正式环境IP
@@ -25,39 +20,21 @@ public class Const {
 	public static final String SESSION_ROLE_RIGHTS = "sessionRoleRights";
 	public static final String SESSION_menuList = "menuList";			//当前菜单
 	public static final String SESSION_allmenuList = "allmenuList";		//全部菜单
-	public static final String SESSION_QX = "QX";
-	public static final String SESSION_userpds = "userpds";
-	public static final String SESSION_USERROL = "USERROL";				//用户对象
 	public static final String SESSION_USERNAME = "USERNAME";			//用户名
-	public static final String SESSION_USERID = "USER_ID";			//用户ID
-	public static final String TRUE = "T";
-	public static final String FALSE = "F";
+	public static final String SESSION_USERID = "USER_ID";				//用户ID
+	public static final String SESSION_USERTYPE = "USER_TYPE";			//用户类型
 	public static final String LOGIN = "/login_toLogin";				//登录地址
-	public static final String SYSNAME = "admin/config/SYSNAME.txt";	//系统名称路径
-	public static final String PAGE	= "admin/config/PAGE.txt";			//分页条数配置路径
-	public static final String EMAIL = "admin/config/EMAIL.txt";		//邮箱服务器配置路径
-	public static final String SMS1 = "admin/config/SMS1.txt";			//短信账户配置路径1
-	public static final String SMS2 = "admin/config/SMS2.txt";			//短信账户配置路径2
-	public static final String FWATERM = "admin/config/FWATERM.txt";	//文字水印配置路径
-	public static final String IWATERM = "admin/config/IWATERM.txt";	//图片水印配置路径
-	public static final String WEIXIN	= "admin/config/WEIXIN.txt";	//微信配置路径
-	public static final String WEBSOCKET = "admin/config/WEBSOCKET.txt";//WEBSOCKET配置路径
 	public static final String FILEPATHIMG = "uploadFiles/uploadImgs/";	//图片上传路径
 	public static final String FILEPATHFILE = "uploadFiles/file/";		//文件上传路径
 	public static final String FILEPATHTWODIMENSIONCODE = "uploadFiles/twoDimensionCode/"; //二维码存放路径
 
-	
-	public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(ynshistory_list)|(golist)|(yys_history_lists)|(yyskhlist)|(listMore)|(go_homepage)|(goMapDetail)|(login_toLogin)|(flushYnsCount)|(getBigData)|(flushManagerMap)|(refreshPortalMap)|(toSafe_detail)|(getGoodsDetail)"+
-			"|(gosave)|(getYnsList)|(edit)|(imgUpload)|(uploadFile)|(retleaflet_save)|(Enterprise_positioning)|(logout)|(ynsApp)|(logout)|(main)|(plugins)|(code)|(app)|(uploadFiles)|(weixin)"+
-			"|(static)|(invokMethod)|(main)|(websocket)|(getYnsDetail)|(jcx)|(nhup)|(z)|(getYnsListAjax)|(toPolicy_detail)|(toWork_detail)|(b)|(listGoods)|(jc)|(redwine01)|(userpromoter)|(retleaflet_edit)|(dynamic_work)).*";	//不对匹配该值的访问路径拦截（正则）
+	//不对匹配该值的访问路径拦截（正则）
+	public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(.*/(register))";
 
-	public static final String INTERFACE_PATH = "/((jcxApp)|(head)|(scqyApp)|(pushMsg)|(jcxUpApp)|(tradeResult)|(nhUpApp)|(common)|(tool)|(xzqy)|(portal)|(portal2)|(authentic))/*.*";
-	public static final String XZQY = "admin/config/XZQY.txt";//行政树
 	public static final String KHDBM = "ca9bb5a2b6e948599b460e2013c21533";//客户端ID
 	public static final String UserSig = "admin/config/UserSig.txt";//UserSig   聊天关键加密
 	public static final String JSFW = "admin/config/JSFW.txt";//UserSig   聊天关键加密
-	public static final int YX_TIME = 24;//检测箱检测数据有效时间 按小时为单位
-	
+
 	
 	//=====================================创建聊天室=================================================
 	public static final String USERSIG ="eJxlj01Pg0AURff8CsK2RofpjBQTF4poa1pbYzG2m8nIDPSl5cPHUKHG-65iE0m823Nyb*6HZdu2s5w*nco4LurcCNOW2rEvbIc4J3*wLEEJacQQ1T*omxJQC5kYjR10OeeUkL4DSucGEjgaUmWQQ2VQmgJ7WqW2otv67WHfJT4fMdZXIO3gLIyCyeON1FG2Qn0-joBt1vxhJ5O7ev7sxYvrYBPObg848PP2rX0l6SQNXhqoF1MSookGzZatDuzsKp4DYrnDhHjr0ZJRFeH7OL7sTRrI9PEY9Tj3OT-v0b3GCoq8EyhxuUuH5CeO9Wl9AZ*PYXs_";

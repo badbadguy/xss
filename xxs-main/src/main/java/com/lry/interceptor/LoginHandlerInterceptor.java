@@ -31,15 +31,15 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter{
 		if(handler instanceof DefaultServletHttpRequestHandler) {
 			return true;
 		}
-		if(path.matches(Const.NO_INTERCEPTOR_PATH) || path.matches(Const.INTERFACE_PATH)){
+		if(path.matches(Const.NO_INTERCEPTOR_PATH)){
 			return true;
 		}else{
 			String sessionId = RequestUtils.getCSESSIONID(request, response);
 			String userStr = sessionProvider.getAttribute(sessionId, Const.SESSION_USER);
 			if(StringUtils.isNotBlank(userStr)){
 				path = path.substring(1, path.length());
-				//访问权限校验
-
+				//访问权限校验  0:超级管理员 1:管理员 2:教师 3:学生 4:家长
+                Jurisdiction.getUserType(sessionId, sessionProvider);
 				return true;
 			}else{
 				//登陆过滤
