@@ -15,13 +15,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="xxs-common" target="1.7" />
-      <module name="xxs-dao" target="1.7" />
-      <module name="xxs-interface" target="1.7" />
-      <module name="xxs-main" target="1.7" />
-      <module name="xxs-mq" target="1.7" />
-      <module name="xxs-parent" target="1.7" />
-      <module name="xxs-pojo" target="1.7" />
+      <module name="xxs-common" target="1.8" />
+      <module name="xxs-dao" target="1.8" />
+      <module name="xxs-interface" target="1.8" />
+      <module name="xxs-main" target="1.8" />
+      <module name="xxs-mq" target="1.8" />
+      <module name="xxs-parent" target="1.8" />
+      <module name="xxs-pojo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

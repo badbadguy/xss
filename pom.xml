@@ -8,7 +8,7 @@
     <artifactId>xxs-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <build />
+    <build/>
     <modules>
         <module>xxs-common</module>
         <module>xxs-dao</module>
@@ -21,9 +21,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javax-activation.version>1.1</javax-activation.version>
         <spring.version>4.3.6.RELEASE</spring.version>
-        <mysql-connector-java.version>5.1.34</mysql-connector-java.version>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <mysql-connector-java.version>5.1.30</mysql-connector-java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -372,6 +372,12 @@
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv</artifactId>
             <version>0.8</version>
+        </dependency>
+        <!--generator数据库逆向生成插件-->
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>1.3.5</version>
         </dependency>
     </dependencies>
 

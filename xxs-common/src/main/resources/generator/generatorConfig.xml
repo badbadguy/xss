@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="application.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!--<property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>-->
+
+        <jdbcConnection driverClass="${druid.driver-class}"
+                        connectionURL="${druid.url}"
+                        userId="${druid.username}"
+                        password="${druid.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="edu.zhku.pms.model" targetProject="src/main/java">
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <javaClientGenerator targetPackage="edu.zhku.pms.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+
+        <table schema="" tableName="news" domainObjectName="NewsEntity"></table>
+
+        <!--<table tableName="%">
+            &lt;!&ndash;mysql 配置&ndash;&gt;
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+            &lt;!&ndash;oracle 配置&ndash;&gt;
+            &lt;!&ndash;<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>&ndash;&gt;
+        </table>-->
+    </context>
+</generatorConfiguration>

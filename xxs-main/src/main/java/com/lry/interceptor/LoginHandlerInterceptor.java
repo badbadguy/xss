@@ -14,13 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
-* 类名称：登录过滤，权限验证
-* 类描述： 
-* @author FH qq313596790[青苔]
-* 作者单位： 
-* 联系方式：
-* 创建时间：2015年11月2日
-* @version 1.6
+ * 登录过滤，权限验证
  */
 public class LoginHandlerInterceptor extends HandlerInterceptorAdapter{
 	@Resource(name="sessionService")
@@ -44,7 +38,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter{
 			String userStr = sessionProvider.getAttribute(sessionId, Const.SESSION_USER);
 			if(StringUtils.isNotBlank(userStr)){
 				path = path.substring(1, path.length());
-				Jurisdiction.hasJurisdiction(path,sessionId,sessionProvider); //访问权限校验
+				//访问权限校验
 
 				return true;
 			}else{
