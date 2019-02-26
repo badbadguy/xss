@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xxs-pojo:war">
+    <output-path>$PROJECT_DIR$/xxs-pojo/target</output-path>
+    <root id="archive" name="xxs-pojo.war">
+      <element id="artifact" artifact-name="xxs-pojo:war exploded" />
+    </root>
+  </artifact>
+</component>

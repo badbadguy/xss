@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+
+    <resultMap type="User" id="userAndRoleResultMap">
+        <id column="USER_ID" property="USER_ID"/>
+        <result column="USERNAME" property="USERNAME"/>
+        <result column="PASSWORD" property="PASSWORD"/>
+        <result column="NAME" property="NAME"/>
+        <result column="RIGHTS" property="RIGHTS"/>
+        <result column="LAST_LOGIN" property="LAST_LOGIN"/>
+        <result column="IP" property="IP"/>
+        <result column="STATUS" property="STATUS"/>
+        <result column="SKIN" property="SKIN"/>
+        <result column="QYTYPE" property="QYTYPE"/>
+        <result column="BANKNAME" property="BANKNAME"/>
+        <result column="BANKNUM" property="BANKNUM"/>
+        <result column="QYID" property="qyid"/>
+        <result column="CREATETIME" property="CREATETIME"/>
+        <association property="role" column="ROLE_ID" javaType="Role">
+            <id column="ROLE_ID" property="ROLE_ID"/>
+            <result column="ROLE_NAME" property="ROLE_NAME"/>
+            <result column="ROLE_RIGHTS" property="RIGHTS"/>
+        </association>
+    </resultMap>
+    <resultMap type="User" id="userResultMap">
+        <id column="USER_ID" property="USER_ID"/>
+        <result column="USERNAME" property="USERNAME"/>
+        <result column="PASSWORD" property="PASSWORD"/>
+        <result column="NAME" property="NAME"/>
+        <result column="BANKNAME" property="BANKNAME"/>
+        <result column="BANKNUM" property="BANKNUM"/>
+        <result column="RIGHTS" property="RIGHTS"/>
+        <result column="LAST_LOGIN" property="LAST_LOGIN"/>
+        <result column="IP" property="IP"/>
+        <result column="STATUS" property="STATUS"/>
+        <result column="ROLE_ID" property="ROLE_ID"/>
+        <result column="SKIN" property="SKIN"/>
+        <result column="QYTYPE" property="QYTYPE"/>
+        <result column="QYID" property="QYID"/>
+        <result column="CREATETIME" property="CREATETIME"/>
+    </resultMap>
+
+    <!--表名 -->
+    <sql id="tableName">
+		SYS_USER
+	</sql>
+    <sql id="roleTableName">
+		SYS_ROLE
+	</sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+		USER_ID,
+		USERNAME,
+		PASSWORD,
+		NAME,
+		ID_CARD,
+		IDCART_PHOTO,
+		RIGHTS,
+		ROLE_ID,
+		AGE,
+		BANKNAME,
+		BANKNUM,
+		LAST_LOGIN,
+		IP,
+		STATUS,
+		BZ,
+		SKIN,
+		EMAIL,
+		NUMBER,
+		PHONE,
+		QYTYPE,
+		QYNAME,
+		QYID,
+		CREATETIME,
+		IMAGE,
+		LAST_EDIT_PASSWORD,
+		SEX,
+		HEAD_PORTRAIT_URL
+	</sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+		#{USER_ID},
+		#{USERNAME},
+		#{PASSWORD},
+		#{NAME},
+		#{ID_CARD},
+		#{IDCART_PHOTO},
+		#{RIGHTS},
+		#{ROLE_ID},
+		#{AGE},
+		#{BANKNAME},
+		#{BANKNUM},
+		#{LAST_LOGIN},
+		#{IP},
+		#{STATUS},
+		#{BZ},
+		#{SKIN},
+		#{EMAIL},
+		#{NUMBER},
+		#{PHONE},
+		#{QYTYPE},
+		#{QYNAME},
+		#{QYID},
+		#{CREATETIME},
+		#{IMAGE},
+		#{LAST_EDIT_PASSWORD},
+		#{SEX},
+		#{HEAD_PORTRAIT_URL}
+	</sql>
+
+    <select id="scqyLogin" parameterType="pd" resultType="pd">
+        select <include refid="Field"></include> from
+        <include refid="tableName"></include>
+        where STATUS=1
+        <if test="USERNAME!=null and PASSWORD!=null">
+            and USERNAME = #{USERNAME} and PASSWORD=#{PASSWORD}
+        </if>
+        <if test="USER_ID!=null and USER_ID>0">
+            and USER_ID = #{USER_ID}
+        </if>
+        <if test="QYTYPE !=null and QYTYPE!= ''">
+            and (QYTYPE = #{QYTYPE})
+        </if>
+    </select>
+
+    <!-- 判断用户名和密码 -->
+    <select id="getUserInfo" parameterType="pd" resultType="pd">
+        select <include refid="Field"></include> from
+        <include refid="tableName"></include>
+        where STATUS=1
+        <if test="USERNAME!=null and PASSWORD!=null">
+            and USERNAME = #{USERNAME} and PASSWORD=#{PASSWORD}
+        </if>
+        <if test="USER_ID!=null and USER_ID>0">
+            and USER_ID = #{USER_ID}
+        </if>
+        <if test="QYTYPE !=null and QYTYPE!= ''">
+            and (QYTYPE = #{QYTYPE} or QYTYPE=0)
+        </if>
+    </select>
+
+
+    <select id="ynsAppLogin" parameterType="pd" resultType="pd">
+		SELECT
+		a.USER_ID,
+		a.QYNAME,
+		a.QYID,
+		a.PHONE,
+		a.BZ,
+		a.IMAGE,
+		a.NAME,
+		b.LNS_TYPE,
+		b.PROVINCE,b.CITY,b.DISTRICT,b.XZQY_ID,b.SHZT
+		FROM
+		SYS_USER a,tb_ynsxxb b WHERE a.`QYID`=b.YNSXXB_ID
+		AND a.STATUS = 1
+		AND a.USERNAME = #{USERNAME} and a.PASSWORD=#{PASSWORD}
+	</select>
+
+    <!-- 更新登录时间 -->
+    <update id="updateLastLogin" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        set
+        LAST_LOGIN = #{LAST_LOGIN}
+        where USER_ID = #{USER_ID}
+    </update>
+
+    <!-- 通过用户ID获取用户信息和角色信息 -->
+    <select id="getUserAndRoleById" parameterType="String" resultMap="userAndRoleResultMap">
+        select u.USER_ID,
+        u.USERNAME,
+        u.NAME,
+        u.ID_CARD,
+        u.RIGHTS as USER_RIGHTS,
+        u.PASSWORD,
+        u.BANKNAME,
+        u.BANKNUM,
+        u.SKIN,
+        u.QYID,
+        r.ROLE_ID,
+        r.ROLE_NAME,
+        r.RIGHTS as ROLE_RIGHTS
+        from
+        <include refid="tableName"></include>
+        u
+        left join
+        <include refid="roleTableName"></include>
+        r
+        on u.ROLE_ID=r.ROLE_ID
+        where u.STATUS=1
+        and u.USER_ID=#{USER_ID}
+    </select>
+
+    <!-- 通过USERNAME获取数据 -->
+    <select id="findByUsername" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        USERNAME = #{USERNAME}
+    </select>
+
+    <!-- 存入IP -->
+    <update id="saveIP" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        set
+        IP = #{IP}
+        where
+        USERNAME = #{USERNAME}
+    </update>
+
+    <!-- 列出某角色下的所有用户 -->
+    <select id="listAllUserByRoldId" parameterType="pd" resultType="pd">
+        select USER_ID
+        from
+        <include refid="tableName"></include>
+        where
+        ROLE_ID = #{ROLE_ID}
+    </select>
+
+    <!-- 用户列表 -->
+    <select id="userlistPage" parameterType="page" resultType="pd">
+        select u.USER_ID,
+        u.USERNAME,
+        u.PASSWORD,
+        u.LAST_LOGIN,
+        u.NAME,
+        u.BANKNAME,
+        u.BANKNUM,
+        u.QYNAME,
+        u.ID_CARD,
+        u.IDCART_PHOTO,
+        u.EMAIL,
+        u.AGE,
+        u.PHONE,
+        r.ROLE_ID,
+        r.ROLE_NAME,
+        u.QYTYPE,
+        u.QYID,
+        u.STATUS,
+        u.CREATETIME
+        from <include refid="tableName"></include> u LEFT JOIN <include refid="roleTableName"></include> r
+        on u.ROLE_ID = r.ROLE_ID
+        where u.USERNAME != 'admin'
+        <if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+            and
+            (
+            u.USERNAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+            or
+            u.NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+            OR
+            u.QYNAME LIKE CONCAT(CONCAT('%',#{pd.keywords}),'%')
+            )
+        </if>
+        <if test="pd.ROLE_ID != null and pd.ROLE_ID != ''"><!-- 角色检索 -->
+            and u.ROLE_ID=#{pd.ROLE_ID}
+        </if>
+        <if test="pd.USER_ID != null and pd.USER_ID != ''">
+            and u.USER_ID=#{pd.USER_ID}
+        </if>
+        <if test="pd.QYTYPE != null and pd.QYTYPE != ''">
+            and u.QYTYPE=#{pd.QYTYPE}
+        </if>
+        <if test="pd.QYID != null and pd.QYID != ''">
+            and u.QYID=#{pd.QYID}
+        </if>
+        order by u.CREATETIME desc
+    </select>
+
+    <!-- 通过邮箱获取数据 -->
+    <select id="findByUE" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        EMAIL = #{EMAIL}
+        <if test="USERNAME != null and USERNAME != ''">
+            and USERNAME != #{USERNAME}
+        </if>
+    </select>
+
+    <!-- 通过编号获取数据 -->
+    <select id="findByUN" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        NUMBER = #{NUMBER}
+        <if test="USERNAME != null and USERNAME != ''">
+            and USERNAME != #{USERNAME}
+        </if>
+    </select>
+
+    <!-- 通过user_id获取数据 -->
+    <select id="findById" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        USER_ID = #{USER_ID}
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="saveU" parameterType="pd">
+        insert into <include refid="tableName"></include> (
+        <include refid="Field"></include>
+        ) values (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+
+    <!-- 修改 -->
+    <update id="editU" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        <set>
+            <if test="NAME != null and NAME != ''">
+                NAME = #{NAME},
+            </if>
+            <if test="BANKNAME != null and BANKNAME != ''">
+                BANKNAME = #{BANKNAME},
+            </if>
+            <if test="BANKNUM != null and BANKNUM != ''">
+                BANKNUM = #{BANKNUM},
+            </if>
+            <if test="ROLE_ID != null and ROLE_ID != ''">
+                ROLE_ID = #{ROLE_ID},
+            </if>
+            <if test="EMAIL != null and EMAIL != ''">
+                EMAIL = #{EMAIL},
+            </if>
+            <if test="NUMBER != null and NUMBER != ''">
+                NUMBER = #{NUMBER},
+            </if>
+            <if test="PHONE != null and PHONE != ''">
+                PHONE = #{PHONE},
+            </if>
+            <if test="BZ != null and BZ != ''">
+                BZ = #{BZ},
+            </if>
+            <if test="AGE != null and NAME != ''">
+                AGE = #{AGE},
+            </if>
+            <if test="STATUS != null and STATUS != ''">
+                STATUS = #{STATUS},
+            </if>
+            <if test="ID_CARD != null and ID_CARD != ''">
+                ID_CARD = #{ID_CARD},
+            </if>
+            <if test="PASSWORD != null and PASSWORD != ''">
+                PASSWORD = #{PASSWORD},
+            </if>
+            <if test="IMAGE != null and IMAGE != ''">
+                IMAGE = #{IMAGE},
+            </if>
+            <if test="LAST_EDIT_PASSWORD != null and LAST_EDIT_PASSWORD != ''">
+                LAST_EDIT_PASSWORD = #{LAST_EDIT_PASSWORD}
+            </if>
+        </set>
+        where
+        USER_ID = #{USER_ID}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="deleteU" parameterType="pd" flushCache="false">
+        delete from
+        <include refid="tableName"></include>
+        where
+        USER_ID = #{USER_ID}
+        and
+        USER_ID != '1'
+    </delete>
+
+    <!-- 批量删除用户 -->
+    <delete id="deleteAllU" parameterType="String">
+        delete from
+        <include refid="tableName"></include>
+        where
+        USER_ID in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and
+        USER_ID != '1'
+    </delete>
+
+    <!-- 用户列表(全部) -->
+    <select id="listAllUser" parameterType="pd" resultType="pd">
+        select u.USER_ID,
+        u.USERNAME,
+        u.BANKNAME,
+        u.BANKNUM,
+        u.PASSWORD,
+        u.LAST_LOGIN,
+        u.NAME,
+        u.ID_CARD,
+        u.IP,
+        u.EMAIL,
+        u.NUMBER,
+        u.PHONE,
+        r.ROLE_ID,
+        r.ROLE_NAME,
+        u.QYTYPE,
+        u.QYNAME,
+        u.QYID,
+        u.CREATETIME,
+        u.STATUS
+        from <include refid="tableName"></include> u, <include refid="roleTableName"></include> r
+        where u.ROLE_ID = r.ROLE_ID
+        and u.USERNAME != 'admin'
+        /*and r.PARENT_ID != '1'*/
+        <if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+            and
+            (
+            u.USERNAME LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+            or
+            u.QYNAME LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+            or
+            u.NAME LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+            )
+        </if>
+        <if test="QYTYPE != null and QYTYPE != ''"><!-- 角色检索 -->
+            and u.QYTYPE=#{QYTYPE}
+        </if>
+        <if test="status != null and status !=''">
+            and SHZT=#{status}
+        </if>
+        <if test="QYID != null and QYID != ''"><!-- 角色检索 -->
+            and u.QYID=#{QYID}
+        </if>
+        <!--<if test="ROLE_ID != null and ROLE_ID != ''">&lt;!&ndash; 角色检索 &ndash;&gt;-->
+            <!--and u.ROLE_ID=#{ROLE_ID}-->
+        <!--</if>-->
+        <!--		<if test="lastLoginStart!=null and lastLoginStart!=''">&lt;!&ndash; 登录时间检索 &ndash;&gt;
+                    and u.LAST_LOGIN &gt;= #{lastLoginStart}
+                </if>
+                <if test="lastLoginEnd!=null and lastLoginEnd!=''">&lt;!&ndash; 登录时间检索 &ndash;&gt;
+                    and u.LAST_LOGIN &lt;= #{lastLoginEnd}
+                </if>-->
+        order by u.LAST_LOGIN desc
+    </select>
+
+    <!-- 获取总数 -->
+    <select id="getUserCount" parameterType="pd" resultType="integer">
+        select
+        count(1) userCount
+        from
+        <include refid="tableName"></include>
+        <where>
+            <if test="QYTYPE !=null and QYTYPE!=''">
+                and QYTYPE = #{QYTYPE}
+            </if>
+        </where>
+    </select>
+
+    <!-- 批量删除用户 -->
+    <delete id="deleteAllByQyid" parameterType="String">
+        delete from
+        <include refid="tableName"></include>
+        where
+        QYID in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and
+        USER_ID != '1'
+    </delete>
+
+    <delete id="deleteByQyid" parameterType="string">
+        delete from
+        <include refid="tableName"/>
+        where QYID = #{qyid}
+    </delete>
+    <select id="getUserByQyid" parameterType="map" resultType="pd">
+		select USER_ID,NAME , USERNAME , PHONE,NAME,BANKNAME,BANKNUM from sys_user where  QYID=#{QYID}
+	</select>
+    <update id="changePwd" parameterType="pd">
+        UPDATE
+        <include refid="tableName"/>
+        SET PASSWORD=#{PASSWORD} WHERE USERNAME=#{USERNAME}
+    </update>
+    <select id="getChildUserListNotAllFieldlistPage" parameterType="page"
+            resultType="pd">
+		select 
+		a.user_id,
+		a.username,
+		a.name,
+		a.sex,
+		a.age,
+		a.id_card,
+		a.bankname,
+		a.banknum,
+		a.email,
+		a.phone,
+		a.qyname,
+		a.qyid
+		from
+		sys_user a left join tb_ynsxxb b on a.QYID=b.YNSXXB_ID
+		WHERE (a.QYTYPE=1 AND b.PID = #{pd.pid}) OR b.`YNSXXB_ID`=#{pd.pid}
+	</select>
+    <select id="getemailByUsername" parameterType="string" resultType="string">
+        select EMAIL from
+        <include refid="tableName"/>
+        where USERNAME = #{username}
+    </select>
+
+    <select id="GteUserName" parameterType="pd" resultType="pd">
+		SELECT USERNAME FROM `sys_user` WHERE USERNAME=#{USERNAME}  AND QYTYPE IN (0,1,2)
+	</select>
+
+    <select id="checkUserName" parameterType="string" resultType="pd">
+		SELECT USERNAME FROM `sys_user` WHERE USERNAME=#{username}
+	</select>
+
+    <select id="getPhone" resultType="String">
+		SELECT PHONE FROM SYS_USER WHERE QYID=#{ynsid}
+	</select>
+
+    <!-- 根据益农社id查询申请人姓名（2.0追溯） -->
+    <select id="getNameByidFromZs" parameterType="String" resultType="String">
+        SELECT `NAME` FROM sys_user WHERE QYID = #{qyid}
+    </select>
+
+    <!-- 修改 -->
+    <update id="updLoginTime" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        <set>
+            <if test="LAST_LOGIN != null and LAST_LOGIN != ''">
+                LAST_LOGIN = #{LAST_LOGIN}
+            </if>
+        </set>
+        where
+        USER_ID = #{USER_ID}
+    </update>
+
+    <!--根据userName修改密码-->
+    <update id="updatePassword" parameterType="pd">
+        update
+        <include refid="tableName"></include>
+        SET
+        PASSWORD = #{PASSWORD}
+        where
+        USERNAME = #{USERNAME}
+    </update>
+
+    <!--根据主键查询用户角色id-->
+    <select id="getRoleIdByUserId" parameterType="String" resultType="String">
+        SELECT ROLE_ID FROM sys_user WHERE USER_ID = #{user_id}
+    </select>
+
+    <!--  根据主键更新推广员信息  -->
+    <update id="updatePromoterInfo" parameterType="pd" >
+        UPDATE
+        <include refid="tableName"></include>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="NAME != null and NAME != ''">
+                NAME = #{NAME},
+            </if>
+            <if test="PHONE != null and PHONE != ''">
+                PHONE = #{PHONE},
+            </if>
+            <if test="AGE != null and NAME != ''">
+                AGE = #{AGE},
+            </if>
+            <if test="HEAD_PORTRAIT_URL != null and HEAD_PORTRAIT_URL != ''">
+                HEAD_PORTRAIT_URL = #{HEAD_PORTRAIT_URL},
+            </if>
+            <if test="SEX != null and SEX != ''">
+                SEX = #{SEX},
+            </if>
+        </trim>
+        WHERE
+        USER_ID = #{USER_ID}
+    </update>
+
+    <!-- 通过USERNAME获取数据 -->
+    <select id="findBasicByUsername" parameterType="pd" resultType="pd">
+        select
+        USERNAME,PASSWORD,PHONE
+        from
+        <include refid="tableName"></include>
+        where
+        USERNAME = #{USERNAME} and STATUS = #{STATUS}
+    </select>
+
+    <!--更新手机号码-->
+    <update id="updatePhone" parameterType="pd">
+        UPDATE <include refid="tableName"></include>
+        SET PHONE = #{PHONE}
+        where
+        USERNAME = #{USERNAME} AND PASSWORD = #{PASSWORD}
+    </update>
+
+    <!--查询用户是否存在-->
+    <select id="findUserByPhoneAndPassword" parameterType="pd" resultType="pd">
+        SELECT <include refid="Field"></include>
+        FROM <include refid="tableName"></include>
+        WHERE PHONE=#{PHONE} AND PASSWORD = #{PASSWORD} AND STATUS = #{STATUS}
+    </select>
+
+    <!--通过手机号查询用户名-->
+    <select id="findUsernameByPhone" parameterType="pd" resultType="string">
+        SELECT USERNAME
+        FROM <include refid="tableName"></include>
+        WHERE PHONE = #{PHONE}
+    </select>
+
+    <!--根据用户id查询用户id，用户名，用户角色-->
+    <select id="getUserInformation" parameterType="String" resultType="pd">
+      SELECT user_id,name,role_id
+      FROM sys_user
+      WHERE USER_ID = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+	">
+	<!-- AcitveMQ 配置 -->
+	<!-- 工厂 原厂商提供 -->
+	<bean id="activeMQConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<!-- 设置连接URL -->
+		<property name="brokerURL" value="${activemq.brokerURL}" />
+		<!-- 用户名、 -->
+		<property name="userName" value="${activemq.userName}" />
+		<!-- 密码、 -->
+		<property name="password" value="${activemq.password}" />
+	</bean>
+	<!-- 工厂连接池 -->
+	<bean id="pooledConnectionFactoryBean" class="org.apache.activemq.pool.PooledConnectionFactoryBean">
+		<property name="connectionFactory" ref="activeMQConnectionFactory" />
+		<!-- 最大 连接数 -->
+		<property name="maxConnections" value="${activemq.pool.maxConnections}" />
+	</bean>
+
+	<!-- Spring管理起上面的工厂 -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">
+		<!-- 注入上面的工厂连接池 -->
+		<property name="targetConnectionFactory" ref="pooledConnectionFactoryBean" />
+	</bean>
+
+	<!-- JmsTemplate由Spring提供 -->
+	<bean id="zsmsq" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.zsmsq}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub <property name="pubSubDomain" 
+			value="true"/> -->
+	</bean>
+	
+	<!-- JmsTemplate由Spring提供 -->
+	<bean id="biaoqiansq" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.biaoqianzsmsq}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub <property name="pubSubDomain" 
+			value="true"/> -->
+	</bean>
+
+	<bean id="scrk" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.scrk}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub <property name="pubSubDomain" 
+			value="true"/> -->
+	</bean>
+	<bean id="scck" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.scck}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub <property name="pubSubDomain" 
+			value="true"/> -->
+	</bean>
+	<!--经营企业入库操作 -->
+	<bean id="jyrk" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.jyrk}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub
+		<property name="pubSubDomain" value="true" /> -->
+	</bean>
+	<bean id="jyck" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.jyck}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub
+		<property name="pubSubDomain" value="true" /> -->
+	</bean>
+	<!--有赞推送消息 -->
+	<bean id="pushMsg" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.pushMsg}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub
+		<property name="pubSubDomain" value="true" /> -->
+	</bean>
+	<bean id="jyckOnLine" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 默认目标 -->
+		<property name="defaultDestinationName" value="${activemq.jyckOnLine}" />
+		<!-- 设置手动签收 -->
+		<property name="sessionAcknowledgeMode" value="4" />
+		<!-- 默认点对点模式 false / true订阅模式 publish sub
+		<property name="pubSubDomain" value="true" /> -->
+	</bean>
+
+</beans>

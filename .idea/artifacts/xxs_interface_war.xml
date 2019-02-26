@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xxs-interface:war">
+    <output-path>$PROJECT_DIR$/xxs-interface/target</output-path>
+    <root id="archive" name="xxs-interface.war">
+      <element id="artifact" artifact-name="xxs-interface:war exploded" />
+    </root>
+  </artifact>
+</component>

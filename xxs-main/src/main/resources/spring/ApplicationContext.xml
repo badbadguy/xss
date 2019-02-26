@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+	">
+	
+	<context:component-scan base-package="com.lry">
+		<context:exclude-filter type="annotation" 
+			expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" 
+			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	
+	<bean  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		<property name="locations">  
+			<list>  
+                 <value>classpath:dbconfig.properties</value>
+                 <value>classpath:redis.properties</value>
+				 <value>classpath:activemq.properties</value>
+				 <value>classpath:solr.properties</value>
+            </list>  
+        </property>  
+	</bean> 
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${driverClassName}"></property>
+		<property name="url" value="${url}"></property>
+		<property name="username" value="${username}"></property>
+		<property name="password" value="${password}"></property>
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testOnBorrow" value="true"/>
+		<!--最大连接数-->
+		<property name="maxActive" value="${maxActive}"/>
+	</bean>
+	
+	
+    <bean  id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 配置Mybatis核心配置文件所在位置 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<!-- 扫描XXXMapper.xml的包 -->
+		<property name="mapperLocations" value="classpath:mybatis/*/*.xml" />
+	</bean>
+	
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描mapper接口的包 -->
+		<property name="basePackage" value="com.lry"></property>
+	</bean>
+    
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">   
+    	<property name="dataSource" ref="dataSource"></property>
+ 	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 是否只读/事务隔离级别/事务传播行为/事务回滚异常/事务超时属性 -->
+		<tx:attributes>
+				<tx:method name="add*" propagation="REQUIRED" />
+			    <tx:method name="append*" propagation="REQUIRED" />
+			    <tx:method name="insert*" propagation="REQUIRED" />
+			    <tx:method name="save*" propagation="REQUIRED" />
+			    <tx:method name="update*" propagation="REQUIRED" />
+			    <tx:method name="modify*" propagation="REQUIRED" />
+			    <tx:method name="edit*" propagation="REQUIRED" />
+			    <tx:method name="delete*" propagation="REQUIRED" />
+			    <tx:method name="remove*" propagation="REQUIRED" />
+			    <tx:method name="repair" propagation="REQUIRED" />
+			    <tx:method name="delAndRepair" propagation="REQUIRED" />
+				<tx:method name="payByBalance" propagation="REQUIRED"/>
+
+			    <tx:method name="get*" propagation="SUPPORTS" />
+			    <tx:method name="find*" propagation="SUPPORTS" />
+			    <tx:method name="load*" propagation="SUPPORTS" />
+			    <tx:method name="search*" propagation="SUPPORTS" />
+			    <tx:method name="datagrid*" propagation="SUPPORTS" />
+           		<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	
+		<!-- 3. 配置事务切点, 并把切点和事务属性关联起来 ,一般在service层加事务-->
+	<aop:config>
+		<aop:pointcut expression="execution(* *..*Service.*(..))" 
+			id="txPointcut"/>	
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+	</aop:config>
+	
+	
+	<!-- ================ Redis Start ================ -->
+  <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxTotal}" />
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.maxWait}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+    </bean>   
+
+    <!-- redis的连接池pool，不是必选项：timeout/password -->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1" value="${redis.host}" />
+        <constructor-arg index="2" value="${redis.port}" type="int" />
+        <constructor-arg index="3" value="60000" type="int" />
+        <constructor-arg index="4" value="${redis.pass}"/>
+    </bean>
+    <bean id="jedisPool1" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1" value="${redis.host1}" />
+        <constructor-arg index="2" value="${redis.port1}" type="int" />
+        <constructor-arg index="3" value="60000" type="int" />
+		<constructor-arg index="4" value="${redis.pass}"/>
+    </bean>
+    <bean id="jedisPool2" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+        <constructor-arg index="1" value="${redis.host2}" />
+        <constructor-arg index="2" value="${redis.port2}" type="int" />
+        <constructor-arg index="3" value="60000" type="int" />
+		<constructor-arg index="4" value="${redis.pass}"/>
+    </bean>
+   <!-- ================ Redis End ================ -->
+   
+	<import resource="mq.xml" />
+	<import resource="solr.xml" />
+
+	<!-- 启用注解 -->
+	<context:annotation-config />
+	<!-- ================ Shiro start ================ -->
+		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+			<property name="realm" ref="ShiroRealm" />
+		</bean>
+		
+		<!-- 項目自定义的Realm -->
+	    <!--<bean id="ShiroRealm" class="com.newland.interceptor.shiro.ShiroRealm" ></bean>-->
+	    <bean id="ShiroRealm" class="com.lry.interceptor.shiro.ShiroRealm" ></bean>
+
+		<!-- Shiro Filter -->
+		<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+			<property name="securityManager" ref="securityManager" />
+
+			<property name="loginUrl" value="/" />
+
+			<property name="successUrl" value="/main/index" />
+
+			<property name="unauthorizedUrl" value="/login_toLogin" />
+
+			<property name="filterChainDefinitions">
+				<value>
+				/static/login/** 			=anon
+				/common/**					=anon
+				/static/js/myjs/** 			=authc
+				/static/** 					=anon
+				/uploadFiles/** 			=anon
+	           	/code.do 					=anon
+	           	/login_login	 			=anon
+	           	/flushYnsCount	 			=anon
+	           	/flushManagerMap	 			=anon
+	           	/refreshPortalMap	 			=anon
+	           	/getBigData	 			=anon
+	           	/login_toLogin	 			=anon
+	           	/Enterprise_positioning	 	=anon
+	           	/go_homepage		        =anon
+	           	/app**/** 					=anon
+	           	/scqyApp/**					=anon
+				/userpromoter/**			=anon
+	           	/portal/**					=anon
+	           	/portal2/**					=anon
+	           	/tool/**					=anon
+	           	/ynsApp/**					=anon
+	           	/zjApp/**					=anon
+	           	/pushMsg/**					=anon
+	           	/goMapDetail.do					=anon
+	           	/policy_news/toPolicy_detail.do =anon
+	           	/goodsinformation/listGoods.do =anon
+	           	/goodsinformation/getGoodsDetail.do =anon
+	           	/dynamic_work/toWork_detail.do =anon
+	           	/safety_knowledge/toSafe_detail.do =anon
+	           	/safety_knowledge/listMore.do =anon
+	           	/policy_news/listMore.do =anon
+	           	/dynamic_work/lists.do =anon
+	           	/ynsxxb/getYns*.do =anon
+				/socketServer/**			=anon
+				/socketTest/**				=anon
+	           	/leaflet/**					=anon
+	           	/ynsassess_ls/**			=anon
+	           	/ynsassess/**				=anon
+	           	/xianassess_ls/**			=anon
+	           	/xzqy/**					=anon
+	           	/weixin/** 					=anon
+	           	/jcxUpApp/**				=anon
+	           	/gosave.do			=anon
+	           	/retleaflet_save.do			=anon
+	           	/ynshistory_list.do			=anon
+	           	/golist.do			=anon
+	           	/yys_history_lists.do			=anon
+	           	/yyskhlist.do			=anon
+	           	/edit.do			=anon
+	           	/retleaflet_edit.do			=anon
+	           	/z.do						=anon
+	           	/b.do						=anon
+	           	/jc.do						=anon
+	           	/jcx.do                     =anon
+	           	/main.jsp                   =anon
+	           	/homepage.jsp               =anon
+	           	/plugins/**					=anon
+	           	/main.jsp                   =anon
+	           	/demo.jsp                   =anon
+	           	/app/**                   =anon
+	           	/nhup.do				    =anon
+	           	/nhUpApp/**					=anon
+	           	/image/**					=anon
+				/authentic/**				=anon
+				/MP_verify_lkP5ekNjYv6YIUh6.txt					=anon
+	           	/**							=authc
+				</value>
+			</property>
+		</bean>
+	<!-- ================ Shiro end ================ -->
+</beans>

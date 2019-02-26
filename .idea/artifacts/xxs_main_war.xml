@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xxs-main:war">
+    <output-path>$PROJECT_DIR$/xxs-main/target</output-path>
+    <root id="archive" name="xxs-main.war">
+      <element id="artifact" artifact-name="xxs-main:war exploded" />
+    </root>
+  </artifact>
+</component>

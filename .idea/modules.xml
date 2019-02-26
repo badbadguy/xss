@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/xxs-common/xxs-common.iml" filepath="$PROJECT_DIR$/xxs-common/xxs-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxs-dao/xxs-dao.iml" filepath="$PROJECT_DIR$/xxs-dao/xxs-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxs-interface/xxs-interface.iml" filepath="$PROJECT_DIR$/xxs-interface/xxs-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxs-main/xxs-main.iml" filepath="$PROJECT_DIR$/xxs-main/xxs-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxs-mq/xxs-mq.iml" filepath="$PROJECT_DIR$/xxs-mq/xxs-mq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxs-parent.iml" filepath="$PROJECT_DIR$/xxs-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xxs-pojo/xxs-pojo.iml" filepath="$PROJECT_DIR$/xxs-pojo/xxs-pojo.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="xxs-common" />
+        <module name="xxs-dao" />
+        <module name="xxs-interface" />
+        <module name="xxs-main" />
+        <module name="xxs-mq" />
+        <module name="xxs-pojo" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="xxs-common" target="1.7" />
+      <module name="xxs-dao" target="1.7" />
+      <module name="xxs-interface" target="1.7" />
+      <module name="xxs-main" target="1.7" />
+      <module name="xxs-mq" target="1.7" />
+      <module name="xxs-parent" target="1.7" />
+      <module name="xxs-pojo" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
