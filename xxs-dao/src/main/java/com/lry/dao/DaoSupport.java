@@ -1,4 +1,4 @@
-package com.dao;
+package com.lry.dao;
 
 import java.util.List;
 

@@ -114,4 +114,10 @@ public class UserController extends BaseController {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(format,true));
 	}
+
+	@ResponseBody
+	@RequestMapping("/xxx")
+	public String xxx(){
+		return "嘻嘻嘻";
+	}
 }

@@ -17,8 +17,8 @@
 	<context:component-scan base-package="com.lry">
 		<context:exclude-filter type="annotation" 
 			expression="org.springframework.stereotype.Controller"/>
-		<context:exclude-filter type="annotation" 
-			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		<!--<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>-->
 	</context:component-scan>
 	
 	<bean  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
@@ -135,7 +135,6 @@
 		</bean>
 		
 		<!-- 項目自定义的Realm -->
-	    <!--<bean id="ShiroRealm" class="com.newland.interceptor.shiro.ShiroRealm" ></bean>-->
 	    <bean id="ShiroRealm" class="com.lry.interceptor.shiro.ShiroRealm" ></bean>
 
 		<!-- Shiro Filter -->

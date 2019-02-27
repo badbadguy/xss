@@ -3,10 +3,10 @@ package com.lry.manager.service;
 import java.util.List;
 import javax.annotation.Resource;
 
-import com.dao.DaoSupport;
 import com.lry.service.UserManager;
 import com.lry.utils.Page;
 import com.lry.utils.PageData;
+import com.lry.dao.DaoSupport;
 import org.springframework.stereotype.Service;
 
 /** 

@@ -25,7 +25,6 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**/**" />
-			<!--<bean class="com.newland.interceptor.LoginHandlerInterceptor" />-->
 			<bean class="com.lry.interceptor.LoginHandlerInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

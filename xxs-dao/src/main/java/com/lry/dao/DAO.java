@@ -1,4 +1,4 @@
-package com.dao;
+package com.lry.dao;
 
 public interface DAO {
 	
