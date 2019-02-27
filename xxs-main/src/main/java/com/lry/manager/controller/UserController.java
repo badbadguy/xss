@@ -1,4 +1,4 @@
-package com.lry.controller;
+package com.lry.manager.controller;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
+import com.lry.controller.BaseController;
 import com.lry.service.UserManager;
 import com.lry.service.utils.SessionProvider;
 import com.lry.utils.*;

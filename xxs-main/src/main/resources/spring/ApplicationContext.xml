@@ -26,9 +26,7 @@
 			<list>  
                  <value>classpath:dbconfig.properties</value>
                  <value>classpath:redis.properties</value>
-				 <value>classpath:activemq.properties</value>
-				 <value>classpath:solr.properties</value>
-            </list>  
+            </list>
         </property>  
 	</bean> 
 	
@@ -129,9 +127,6 @@
     </bean>
    <!-- ================ Redis End ================ -->
    
-	<import resource="mq.xml" />
-	<import resource="solr.xml" />
-
 	<!-- 启用注解 -->
 	<context:annotation-config />
 	<!-- ================ Shiro start ================ -->
@@ -155,64 +150,7 @@
 
 			<property name="filterChainDefinitions">
 				<value>
-				/static/login/** 			=anon
-				/common/**					=anon
-				/static/js/myjs/** 			=authc
-				/static/** 					=anon
-				/uploadFiles/** 			=anon
-	           	/code.do 					=anon
-	           	/login_login	 			=anon
-	           	/flushManagerMap	 			=anon
-	           	/refreshPortalMap	 			=anon
-	           	/getBigData	 			=anon
-	           	/login_toLogin	 			=anon
-	           	/Enterprise_positioning	 	=anon
-	           	/go_homepage		        =anon
-	           	/app**/** 					=anon
-	           	/scqyApp/**					=anon
-				/userpromoter/**			=anon
-	           	/portal/**					=anon
-	           	/portal2/**					=anon
-	           	/tool/**					=anon
-	           	/zjApp/**					=anon
-	           	/pushMsg/**					=anon
-	           	/goMapDetail.do					=anon
-	           	/policy_news/toPolicy_detail.do =anon
-	           	/goodsinformation/listGoods.do =anon
-	           	/goodsinformation/getGoodsDetail.do =anon
-	           	/dynamic_work/toWork_detail.do =anon
-	           	/safety_knowledge/toSafe_detail.do =anon
-	           	/safety_knowledge/listMore.do =anon
-	           	/policy_news/listMore.do =anon
-	           	/dynamic_work/lists.do =anon
-				/socketServer/**			=anon
-				/socketTest/**				=anon
-	           	/leaflet/**					=anon
-	           	/xianassess_ls/**			=anon
-	           	/xzqy/**					=anon
-	           	/weixin/** 					=anon
-	           	/jcxUpApp/**				=anon
-	           	/gosave.do			=anon
-	           	/retleaflet_save.do			=anon
-	           	/golist.do			=anon
-	           	/edit.do			=anon
-	           	/retleaflet_edit.do			=anon
-	           	/z.do						=anon
-	           	/b.do						=anon
-	           	/jc.do						=anon
-	           	/jcx.do                     =anon
-	           	/main.jsp                   =anon
-	           	/homepage.jsp               =anon
-	           	/plugins/**					=anon
-	           	/main.jsp                   =anon
-	           	/demo.jsp                   =anon
-	           	/app/**                   =anon
-	           	/nhup.do				    =anon
-	           	/nhUpApp/**					=anon
-	           	/image/**					=anon
-				/authentic/**				=anon
-				/MP_verify_lkP5ekNjYv6YIUh6.txt					=anon
-	           	/**							=authc
+				/user/** 			=anon
 				</value>
 			</property>
 		</bean>

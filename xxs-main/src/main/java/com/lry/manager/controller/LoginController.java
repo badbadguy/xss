@@ -3,6 +3,7 @@ package com.lry.manager.controller;
 import com.google.gson.Gson;
 import com.lry.controller.BaseController;
 import com.lry.entity.system.User;
+import com.lry.manager.service.UserService;
 import com.lry.service.utils.SessionProvider;
 import com.lry.utils.*;
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +28,8 @@ public class LoginController extends BaseController{
 
     @Resource(name="sessionService")
     private SessionProvider sessionProvider;
+    @Resource(name="userService")
+    private UserService userService;
 
     /**
      * 请求登录，验证用户
@@ -42,7 +45,7 @@ public class LoginController extends BaseController{
         Map<String, String> map = new HashMap<String, String>();
         PageData pd = this.getPageData();
         String errInfo = "";
-        String KEYDATA[] = pd.getString("KEYDATA").split(",fh,");
+        String KEYDATA[] = pd.getString("KEYDATA").split(",lry,");
         if (null != KEYDATA && KEYDATA.length == 3) {
             String sessionCode = sessionProvider.getAttribute(sessionId,
                     Const.CODE);
@@ -63,15 +66,14 @@ public class LoginController extends BaseController{
                         pd.put("LAST_LOGIN", DateUtil.getTime().toString());
                         //userService.updateLastLogin(pd);
                         User user = new User();
-                        user.setUser_id(pd.getString("USER_ID"));
-                        user.setUser_name(pd.getString("USERNAME"));
-                        user.setUser_password(pd.getString("PASSWORD"));
-                        user.setUser_nickname(pd.getString("NAME"));
-                        user.setUser_type(pd.getString("ROLE_ID"));
-                        user.setCreattime(pd.getString("LAST_LOGIN"));
-                        user.setUpdatetime(pd.getString("QYNAME"));
-                        user.setUser_image(pd.getString("STATUS"));
-                        user.setRole(role);
+                        user.setUser_id(pd.getString("user_id"));
+                        user.setUser_name(pd.getString("user_name"));
+                        user.setUser_password(pd.getString("user_password"));
+                        user.setUser_nickname(pd.getString("user_nickname"));
+                        user.setUser_type((Integer) pd.get("user_type"));
+                        user.setCreattime((Date) pd.get("creattime"));
+                        user.setUpdatetime((Date) pd.get("updatetime"));
+                        user.setLastLogintime((Date) pd.get("lastLogintime"));
                         sessionProvider.removeAttribute(sessionId, Const.CODE);
                         // 保存用户信息到Redis中
                         sessionProvider.setAttribute(sessionId,
@@ -100,7 +102,6 @@ public class LoginController extends BaseController{
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                     pdtemp.put("LAST_LOGIN",df.format(new Date()));
                     userService.updLoginTime(pdtemp);
-
                     errInfo = "success"; // 验证成功
                     logBefore(logger, USERNAME + "登录系统");
                 }

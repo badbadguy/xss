@@ -24,7 +24,7 @@ public class Page implements Serializable {
 	
 	public Page(){
 		try {
-			this.showCount = Integer.parseInt(Tools.readTxtFile(Const.PAGE));
+			this.showCount = Const.PAGE;
 		} catch (Exception e) {
 			this.showCount = 15;
 		}

@@ -10,17 +10,14 @@ import com.lry.utils.PageData;
 import org.springframework.stereotype.Service;
 
 /** 
- * 说明： 用户表
- * 创建人：FH Q313596790
- * 创建时间：2019-02-26
- * @version
+ * 用户表
  */
 @Service("userService")
 public class UserService implements UserManager {
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
-	
+
 	/**新增
 	 * @param pd
 	 * @throws Exception
@@ -28,7 +25,7 @@ public class UserService implements UserManager {
 	public void save(PageData pd)throws Exception{
 		dao.save("UserMapper.save", pd);
 	}
-	
+
 	/**删除
 	 * @param pd
 	 * @throws Exception
@@ -36,7 +33,7 @@ public class UserService implements UserManager {
 	public void delete(PageData pd)throws Exception{
 		dao.delete("UserMapper.delete", pd);
 	}
-	
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -44,7 +41,7 @@ public class UserService implements UserManager {
 	public void edit(PageData pd)throws Exception{
 		dao.update("UserMapper.edit", pd);
 	}
-	
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -55,7 +52,7 @@ public class UserService implements UserManager {
 		if(pd.size()>0) pd.get(0).put("page", page);
 		return pd;
 	}
-	
+
 	/**列表(全部)
 	 * @param pd
 	 * @throws Exception
@@ -64,7 +61,7 @@ public class UserService implements UserManager {
 	public List<PageData> listAll(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("UserMapper.listAll", pd);
 	}
-	
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception
@@ -72,7 +69,7 @@ public class UserService implements UserManager {
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("UserMapper.findById", pd);
 	}
-	
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception
@@ -80,6 +77,19 @@ public class UserService implements UserManager {
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
 		dao.delete("UserMapper.deleteAll", ArrayDATA_IDS);
 	}
-	
+
+	/**
+	 * 根据用户名  密码获取用户数据
+	 */
+	public PageData getUserByNameAndPwd(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("UserMapper.getUserByNameAndPwd",pd);
+	}
+
+	/**
+	 * 更新最后登录时间
+	 */
+	public void updLoginTime(PageData pd)throws Exception{
+		dao.update("UserMapper.updLoginTime",pd);
+	}
 }
 

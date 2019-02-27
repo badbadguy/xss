@@ -37,21 +37,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="xxs-main" />
-    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.3" level="project" />
-    <orderEntry type="module" module-name="xxs-dao" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:4.3.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:7.0.78" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.78" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: solr-solrj:solr-solrj:1.0">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../xxs-main/src/main/webapp/WEB-INF/lib/solr-solrj-4.10.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.zxing:core:3.2.1" level="project" />

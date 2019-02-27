@@ -16,16 +16,6 @@
           <element id="archive" name="xxs-common-1.0-SNAPSHOT.jar">
             <element id="module-output" name="xxs-common" />
           </element>
-          <element id="archive" name="xxs-main-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="xxs-main" />
-          </element>
-          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.11.3" />
-          <element id="archive" name="xxs-dao-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="xxs-dao" />
-          </element>
-          <element id="library" level="project" name="Maven: org.springframework:spring-websocket:4.3.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:7.0.78" />
-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:7.0.78" />
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
           <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.1" />
           <element id="library" level="project" name="Maven: com.google.zxing:core:3.2.1" />

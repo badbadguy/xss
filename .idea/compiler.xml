@@ -10,7 +10,6 @@
         <module name="xxs-dao" />
         <module name="xxs-interface" />
         <module name="xxs-main" />
-        <module name="xxs-mq" />
         <module name="xxs-pojo" />
       </profile>
     </annotationProcessing>

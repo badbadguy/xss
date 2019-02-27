@@ -12,6 +12,7 @@ public class User {
     Integer user_type;      //用户类型(0:超级管理员 1:管理员 2:教师 3:学生 4:家长)
     Date creattime;         //创建时间
     Date updatetime;        //修改时间
+    Date lastLogintime;     //最后登录时间
 
     public String getUser_id() {
         return user_id;
@@ -75,5 +76,13 @@ public class User {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public Date getLastLogintime() {
+        return lastLogintime;
+    }
+
+    public void setLastLogintime(Date lastLogintime) {
+        this.lastLogintime = lastLogintime;
     }
 }

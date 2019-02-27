@@ -27,6 +27,7 @@ public class Const {
 	public static final String FILEPATHIMG = "uploadFiles/uploadImgs/";	//图片上传路径
 	public static final String FILEPATHFILE = "uploadFiles/file/";		//文件上传路径
 	public static final String FILEPATHTWODIMENSIONCODE = "uploadFiles/twoDimensionCode/"; //二维码存放路径
+	public static final Integer PAGE = 10;								//分页数量
 
 	//不对匹配该值的访问路径拦截（正则）
 	public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(.*/(register))";
