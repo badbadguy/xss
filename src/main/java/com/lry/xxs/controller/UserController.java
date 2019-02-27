@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -15,7 +17,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("/test")
-    public PageData selectByUserId(PageData pd){
-        return userService.datalistPage(PageData pd);
+    public List<PageData> selectByUserId(PageData pd)throws Exception{
+        return userService.datalistPage(pd);
     }
 }
