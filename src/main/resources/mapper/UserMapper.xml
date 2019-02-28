@@ -33,6 +33,7 @@
         #{lastLogintime}
     </sql>
 
+    <!-- 新增 -->
     <insert id="add" parameterType="User">
         INSERT INTO
         <include refid="tableName"></include>
@@ -42,7 +43,8 @@
         <include refid="FieldValue"></include>
         )
     </insert>
-    
+
+    <!-- 根据id删除 -->
     <delete id="deleteById" parameterType="String">
         DELETE FROM
         <include refid="tableName"></include>
@@ -50,6 +52,7 @@
         user_id = #{1}
     </delete>
 
+    <!-- 根据id更新 -->
     <update id="updateById" parameterType="User">
         UPDATE
         <include refid="tableName"></include>
@@ -74,6 +77,7 @@
         user_id = #{user_id}
     </update>
 
+    <!-- 根据id查询 -->
     <select id="selectById" parameterType="String" resultType="User">
         SELECT
         <include refid="Field"></include>
@@ -82,4 +86,15 @@
         WHERE
         user_id = #{1}
     </select>
+
+    <!-- 根据username查询密码 -->
+    <select id="checkPw" parameterType="String" resultType="String">
+        SELECT
+        user_password
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        user_name = #{1}
+    </select>
+
 </mapper>

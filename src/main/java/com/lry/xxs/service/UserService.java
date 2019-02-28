@@ -39,4 +39,13 @@ public class UserService {
     public User selectById(String id){
         return userMapper.selectById(id);
     }
+
+    public Boolean checkPw(String name, String password)throws Exception{
+        String temppw = userMapper.checkPw(name);
+        MD5 md5 = new MD5();
+        if(md5.checkpassword(password,temppw))
+            return true;
+        else
+            return false;
+    }
 }

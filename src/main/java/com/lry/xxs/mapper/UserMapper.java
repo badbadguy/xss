@@ -13,4 +13,6 @@ public interface UserMapper {
     void updateById(User user);
 
     User selectById(String id);
+
+    String checkPw(String name);
 }
