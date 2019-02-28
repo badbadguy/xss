@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.UserMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        user
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        user_name,
+        user_nickname,
+        user_image,
+        user_password,
+        user_type,
+        creattime,
+        updatetime,
+        lastLogintime,
+        user_id
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{user_id},
+        #{user_name},
+        #{user_nickname},
+        #{user_image},
+        #{user_password},
+        #{user_type},
+        #{creattime},
+        #{updatetime},
+        #{lastLogintime}
+    </sql>
+
+    <select id="selectById" parameterType="int" resultType="User">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        user_id = #{1}
+    </select>
+
+</mapper>

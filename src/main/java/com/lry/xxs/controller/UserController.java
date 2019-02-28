@@ -19,9 +19,15 @@ public class UserController {
     @Autowired
     private RedisService redisService;
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping("/add")
     public void add(User user)throws Exception{
+        userService.selectById(id);
+    }*/
+
+    @ResponseBody
+    @RequestMapping("/id")
+    public void selectr(Integer id)throws Exception{
         userService.selectById(id);
     }
 }
