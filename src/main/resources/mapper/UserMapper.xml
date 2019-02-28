@@ -54,29 +54,20 @@
         UPDATE
         <include refid="tableName"></include>
         SET
-        <if test="user_name!=null and user_name != ''">
-            user_name = #{user_name},
-        </if>
-        <if test="user_nickname!=null and user_nickname != ''">
+        <if test="user_nickname != null and user_nickname != ''">
             user_nickname = #{user_nickname},
         </if>
-        <if test="user_image!=null and user_image != ''">
+        <if test="user_image != null and user_image != ''">
             user_image = #{user_image},
         </if>
-        <if test="user_password!=null and user_password != ''">
+        <if test="user_password != null and user_password != ''">
             user_password = #{user_password},
         </if>
-        <if test="user_type!=null and user_type != ''">
+        <if test="user_type != null and user_type != ''">
             user_type = #{user_type},
         </if>
-        <if test="creattime!=null and creattime != ''">
-            creattime = #{creattime},
-        </if>
-        <if test="updatetime!=null and updatetime != ''">
+        <if test="updatetime != null">
             updatetime = #{updatetime},
-        </if>
-        <if test="lastLogintime!=null and lastLogintime != ''">
-            lastLogintime = #{lastLogintime},
         </if>
         user_id = user_id
         WHERE
