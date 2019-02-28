@@ -66,16 +66,32 @@
 		</dependency>
 
 		<!--redis依赖-->
+		<!--<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>-->
+		<!-- SpringBoot整合Redis-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<!-- 2.x版本默认连接池是lettuce, 若我们要使用jedis客户端，需要先排除lettuce的jar -->
+			<exclusions>
+				<exclusion>
+					<groupId>redis.clients</groupId>
+					<artifactId>jedis</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>io.lettuce</groupId>
+					<artifactId>lettuce-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.39</version>
+			<version>1.2.47</version>
 		</dependency>
 
 
@@ -115,6 +131,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>5.1.5.RELEASE</version>
+		</dependency>
+		<!-- 池化连接 springboot2.x集成redis使用jedis操作需要加上该依赖-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.5.0</version>
 		</dependency>
 	</dependencies>
 	<build>
