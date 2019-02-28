@@ -14,7 +14,19 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public User selectById(Integer id){
+    public void add(User user){
+        userMapper.add(user);
+    }
+
+    public void deleteById(String id){
+        userMapper.deleteById(id);
+    }
+
+    public void updateById(User user){
+        userMapper.updateById(user);
+    }
+
+    public User selectById(String id){
         return userMapper.selectById(id);
     }
 }

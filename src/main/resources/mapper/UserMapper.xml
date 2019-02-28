@@ -9,6 +9,7 @@
 
     <!-- 字段 -->
     <sql id="Field">
+        user_id,
         user_name,
         user_nickname,
         user_image,
@@ -16,8 +17,7 @@
         user_type,
         creattime,
         updatetime,
-        lastLogintime,
-        user_id
+        lastLogintime
     </sql>
 
     <!-- 字段值 -->
@@ -33,7 +33,57 @@
         #{lastLogintime}
     </sql>
 
-    <select id="selectById" parameterType="int" resultType="User">
+    <insert id="add" parameterType="User">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+    
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        user_id = #{1}
+    </delete>
+
+    <update id="updateById" parameterType="User">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="user_name!=null and user_name != ''">
+            user_name = #{user_name},
+        </if>
+        <if test="user_nickname!=null and user_nickname != ''">
+            user_nickname = #{user_nickname},
+        </if>
+        <if test="user_image!=null and user_image != ''">
+            user_image = #{user_image},
+        </if>
+        <if test="user_password!=null and user_password != ''">
+            user_password = #{user_password},
+        </if>
+        <if test="user_type!=null and user_type != ''">
+            user_type = #{user_type},
+        </if>
+        <if test="creattime!=null and creattime != ''">
+            creattime = #{creattime},
+        </if>
+        <if test="updatetime!=null and updatetime != ''">
+            updatetime = #{updatetime},
+        </if>
+        <if test="lastLogintime!=null and lastLogintime != ''">
+            lastLogintime = #{lastLogintime},
+        </if>
+        user_id = user_id
+        WHERE
+        user_id = #{user_id}
+    </update>
+
+    <select id="selectById" parameterType="String" resultType="User">
         SELECT
         <include refid="Field"></include>
         FROM
@@ -41,5 +91,4 @@
         WHERE
         user_id = #{1}
     </select>
-
 </mapper>
