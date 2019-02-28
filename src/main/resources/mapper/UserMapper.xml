@@ -63,9 +63,6 @@
         <if test="user_image != null and user_image != ''">
             user_image = #{user_image},
         </if>
-        <if test="user_password != null and user_password != ''">
-            user_password = #{user_password},
-        </if>
         <if test="user_type != null and user_type != ''">
             user_type = #{user_type},
         </if>
@@ -96,5 +93,15 @@
         WHERE
         user_name = #{1}
     </select>
+
+    <!-- 根据username修改密码 -->
+    <update id="changePw">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        user_password = #{password}
+        WHERE
+        user_name = #{name}
+    </update>
 
 </mapper>

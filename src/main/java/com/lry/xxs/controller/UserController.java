@@ -4,6 +4,7 @@ import com.lry.xxs.model.User;
 import com.lry.xxs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -28,5 +29,16 @@ public class UserController {
     @RequestMapping("/update")
     public void updateById(User user)throws Exception{
         userService.updateById(user);
+    }
+
+    @ResponseBody
+    @RequestMapping("/changePw")
+    public boolean changePw(String name, String oldPassword, String newPassword)throws Exception{
+        if(userService.checkPw(name, oldPassword)) {
+            userService.changePw(name, newPassword);
+            return true;
+        }else {
+            return false;
+        }
     }
 }

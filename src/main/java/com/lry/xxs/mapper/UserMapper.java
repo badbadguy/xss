@@ -15,4 +15,6 @@ public interface UserMapper {
     User selectById(String id);
 
     String checkPw(String name);
+
+    void changePw(String name, String password);
 }

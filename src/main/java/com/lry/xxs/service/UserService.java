@@ -18,12 +18,13 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
+    MD5 md5 = new MD5();
+
     public void add(User user)throws Exception{
         user.setUser_id(UuidUtil.get32UUID());
         user.setCreattime(new Date());
         user.setUpdatetime(new Date());
-        MD5 md5 = new MD5();
-        String temppw = md5.EncoderByMd5(user.getUser_password().toString().trim());
+        user.setUser_password(md5.EncoderByMd5(user.getUser_password().toString().trim()));
         userMapper.add(user);
     }
 
@@ -42,10 +43,14 @@ public class UserService {
 
     public Boolean checkPw(String name, String password)throws Exception{
         String temppw = userMapper.checkPw(name);
-        MD5 md5 = new MD5();
         if(md5.checkpassword(password,temppw))
             return true;
         else
             return false;
+    }
+
+    public void changePw(String name, String password)throws Exception{
+        password = md5.EncoderByMd5(password);
+        userMapper.changePw(name, password);
     }
 }
