@@ -1,7 +1,6 @@
 package com.lry.xxs.mapper;
 
 import com.lry.xxs.model.User;
-import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
