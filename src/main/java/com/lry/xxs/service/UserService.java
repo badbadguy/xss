@@ -57,13 +57,16 @@ public class UserService {
         userMapper.changePw(name, md5.EncoderByMd5(password));
     }
 
-    public Boolean checkType(String name, String type)throws Exception{
-        return type.trim().equals(userMapper.checkType(name));
-    }
-
-    public PageData login(String name){
+    public PageData login(String name, Integer type){
         PageData pd = new PageData();
-        pd.put("name",name);
-        userMapper.select(pd);
+        pd.put("user_name",name);
+        pd.putAll(userMapper.select(pd));
+        if((Integer)pd.get("user_type") == type){
+            return pd;
+        }else {
+            pd.clear();
+            pd.put("error","用户类型错误");
+            return pd;
+        }
     }
 }

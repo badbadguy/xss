@@ -21,7 +21,5 @@ public interface UserMapper {
 
     String selectIdByName(String name);
 
-    String checkType(String name);
-
     PageData select(PageData pd);
 }

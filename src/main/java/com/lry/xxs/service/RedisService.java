@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisService {
@@ -16,6 +17,7 @@ public class RedisService {
     //字符串
     public void addString(String key, String value){
         redisTemplate.opsForValue().set(key,value);
+        redisTemplate.expire(key,1, TimeUnit.HOURS);
     }
 
     public String getString(String key){
@@ -25,9 +27,7 @@ public class RedisService {
     //集合
     public void addSet(String key,Set<Object> set) {
         redisTemplate.opsForSet().add(key, set);
-        // 获取
-        Set<String> resultSet = redisTemplate.opsForSet().members(key);
-        System.out.println("resultSet:" + resultSet);
+        redisTemplate.expire(key,1, TimeUnit.HOURS);
     }
     public Set<Object> getSet(String key) {
         return (Set<Object>) redisTemplate.opsForSet().members(key);
@@ -36,6 +36,7 @@ public class RedisService {
     //map
     public void addMap(String key, Map map){
         redisTemplate.opsForHash().putAll(key, map);
+        redisTemplate.expire(key,1, TimeUnit.HOURS);
     }
 
     public Map getMap(String key){
