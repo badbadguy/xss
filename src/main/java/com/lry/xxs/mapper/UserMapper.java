@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
 
-    void add(User user);
+    void add(PageData pd);
 
     void deleteById(String Id);
 

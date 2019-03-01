@@ -8,13 +8,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- *  @description
- *
- * @author Gaogzh
- *
- * @date 2018-4-14
- */
 public class PageData extends HashMap implements Map {
     private static final long serialVersionUID = 1L;
     Map map = null;

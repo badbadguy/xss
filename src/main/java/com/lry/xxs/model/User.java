@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class User {
 
-    String user_id;         //用户id
-    String user_name;       //用户名
-    String user_nickname;   //用户昵称
-    String user_image;      //用户头像
-    String user_password;   //用户密码
-    Integer user_type;      //用户类型(0:超级管理员 1:管理员 2:教师 3:学生 4:家长)
-    Date creattime;         //创建时间
-    Date updatetime;        //修改时间
-    Date lastLogintime;     //最后登录时间
+    private String user_id;         //用户id
+    private String user_name;       //用户名
+    private String user_nickname;   //用户昵称
+    private String user_image;      //用户头像
+    private String user_password;   //用户密码
+    private Integer user_type;      //用户类型(0:超级管理员 1:管理员 2:教师 3:学生 4:家长)
+    private Date creattime;         //创建时间
+    private Date updatetime;        //修改时间
+    private Date lastLogintime;     //最后登录时间
 
     public String getUser_id() {
         return user_id;

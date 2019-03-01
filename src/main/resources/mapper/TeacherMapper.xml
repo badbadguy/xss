@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.TeacherMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        user_teacher
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        user_id,
+        teacher_phone,
+        teacher_address,
+        teacher_class,
+        teacher_subject,
+        teacher_remark,
+        teacher_ishead
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{user_id},
+        #{teacher_phone},
+        #{teacher_address},
+        #{teacher_class},
+        #{teacher_subject},
+        #{teacher_remark},
+        #{teacher_ishead}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="PageData">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        user_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="PageData">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="teacher_phone != null and teacher_phone != ''">
+            teacher_phone = #{teacher_phone},
+        </if>
+        <if test="teacher_address != null and teacher_address != ''">
+            teacher_address = #{teacher_address},
+        </if>
+        <if test="teacher_class != null and teacher_class != ''">
+            teacher_class = #{teacher_class},
+        </if>
+        <if test="teacher_subject != null and teacher_subject != ''">
+            teacher_subject = #{teacher_subject},
+        </if>
+        <if test="teacher_remark != null and teacher_remark != ''">
+            teacher_remark = #{teacher_remark},
+        </if>
+        <if test="teacher_ishead != null and teacher_ishead != ''">
+            teacher_ishead = #{teacher_ishead},
+        </if>
+        user_id = user_id
+        WHERE
+        user_id = #{user_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="teacher_phone != null and teacher_phone != ''">
+            teacher_phone = #{teacher_phone},
+        </if>
+        <if test="teacher_address != null and teacher_address != ''">
+            teacher_address = #{teacher_address},
+        </if>
+        <if test="teacher_class != null and teacher_class != ''">
+            teacher_class = #{teacher_class},
+        </if>
+        <if test="teacher_subject != null and teacher_subject != ''">
+            teacher_subject = #{teacher_subject},
+        </if>
+        <if test="teacher_remark != null and teacher_remark != ''">
+            teacher_remark = #{teacher_remark},
+        </if>
+        <if test="teacher_ishead != null and teacher_ishead != ''">
+            teacher_ishead = #{teacher_ishead},
+        </if>
+    </select>
+
+</mapper>

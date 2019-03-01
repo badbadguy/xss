@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.ParentMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        user_parent
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        user_id,
+        children_id,
+        parent_phone,
+        parent_sex,
+        parent_remark
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{user_id},
+        #{children_id},
+        #{parent_phone},
+        #{parent_sex},
+        #{parent_remark}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="User">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        user_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="User">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="children_id != null and children_id != ''">
+            children_id = #{children_id},
+        </if>
+        <if test="parent_phone != null and parent_phone != ''">
+            parent_phone = #{parent_phone},
+        </if>
+        <if test="parent_sex != null and parent_sex != ''">
+            parent_sex = #{parent_sex},
+        </if>
+        <if test="parent_remark != null">
+            parent_remark = #{parent_remark},
+        </if>
+        user_id = user_id
+        WHERE
+        user_id = #{user_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="com.lry.xxs.utils.PageData" resultType="com.lry.xxs.utils.PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="user_id != null and user_id != ''">
+            AND user_id = #{user_id}
+        </if>
+        <if test="children_id != null and children_id != ''">
+            AND children_id = #{children_id}
+        </if>
+        <if test="parent_phone != null and parent_phone != ''">
+            AND parent_phone = #{parent_phone}
+        </if>
+        <if test="parent_sex != null and parent_sex != ''">
+            AND parent_sex = #{parent_sex}
+        </if>
+        <if test="parent_remark != null and parent_remark != ''">
+            AND parent_remark = #{parent_remark}
+        </if>
+    </select>
+
+</mapper>

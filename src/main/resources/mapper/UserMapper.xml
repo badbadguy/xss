@@ -34,7 +34,7 @@
     </sql>
 
     <!-- 新增 -->
-    <insert id="add" parameterType="User">
+    <insert id="add" parameterType="PageData">
         INSERT INTO
         <include refid="tableName"></include>
         (
