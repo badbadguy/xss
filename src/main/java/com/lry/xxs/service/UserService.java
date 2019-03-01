@@ -3,11 +3,11 @@ package com.lry.xxs.service;
 import com.lry.xxs.mapper.UserMapper;
 import com.lry.xxs.model.User;
 import com.lry.xxs.utils.MD5;
+import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
 
@@ -41,16 +41,29 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
-    public Boolean checkPw(String name, String password)throws Exception{
+    public Integer checkPw(String name, String password)throws Exception{
         String temppw = userMapper.checkPw(name);
-        if(md5.checkpassword(password,temppw))
-            return true;
-        else
-            return false;
+        if(StringUtils.isNotBlank(temppw)) {
+            if (md5.checkpassword(password, temppw))
+                return 666;
+            else
+                return 1;
+        }else {
+            return 2;
+        }
     }
 
     public void changePw(String name, String password)throws Exception{
-        password = md5.EncoderByMd5(password);
-        userMapper.changePw(name, password);
+        userMapper.changePw(name, md5.EncoderByMd5(password));
+    }
+
+    public Boolean checkType(String name, String type)throws Exception{
+        return type.trim().equals(userMapper.checkType(name));
+    }
+
+    public PageData login(String name){
+        PageData pd = new PageData();
+        pd.put("name",name);
+        userMapper.select(pd);
     }
 }

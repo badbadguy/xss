@@ -138,7 +138,12 @@
 			<artifactId>commons-pool2</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.5</version>
+        </dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>

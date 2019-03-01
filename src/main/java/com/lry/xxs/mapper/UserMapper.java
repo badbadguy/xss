@@ -1,6 +1,7 @@
 package com.lry.xxs.mapper;
 
 import com.lry.xxs.model.User;
+import com.lry.xxs.utils.PageData;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,4 +18,10 @@ public interface UserMapper {
     String checkPw(String name);
 
     void changePw(String name, String password);
+
+    String selectIdByName(String name);
+
+    String checkType(String name);
+
+    PageData select(PageData pd);
 }
