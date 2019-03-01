@@ -198,7 +198,7 @@ public class UserController extends BaseController {
 
     //查询教师用户信息
     @ResponseBody
-    @RequestMapping("/selects")
+    @RequestMapping("/selectt")
     public MappingJacksonValue selectt(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
