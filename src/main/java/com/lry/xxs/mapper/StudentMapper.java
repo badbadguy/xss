@@ -4,6 +4,8 @@ import com.lry.xxs.model.Student;
 import com.lry.xxs.utils.PageData;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface StudentMapper {
 
@@ -13,5 +15,5 @@ public interface StudentMapper {
 
     void updateById(PageData pd);
 
-    PageData select(PageData pd);
+    List<PageData> select(PageData pd);
 }

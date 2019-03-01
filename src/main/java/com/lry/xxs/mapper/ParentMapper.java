@@ -4,6 +4,8 @@ import com.lry.xxs.model.Parent;
 import com.lry.xxs.utils.PageData;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ParentMapper {
 
@@ -13,5 +15,5 @@ public interface ParentMapper {
 
     void updateById(PageData pd);
 
-    PageData select(PageData pd);
+    List<PageData> select(PageData pd);
 }

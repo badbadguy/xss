@@ -5,6 +5,8 @@ import com.lry.xxs.utils.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ParentService {
 
@@ -19,11 +21,11 @@ public class ParentService {
         parentMapper.deleteById(id);
     }
 
-    public void updateById(PageData pd){
+    public void updateById(PageData pd) {
         parentMapper.updateById(pd);
     }
 
-    public PageData select(PageData pd){
+    public List<PageData> select(PageData pd) {
         return parentMapper.select(pd);
     }
 }
