@@ -26,7 +26,7 @@
     </sql>
 
     <!-- 新增 -->
-    <insert id="add" parameterType="User">
+    <insert id="add" parameterType="PageData">
         INSERT INTO
         <include refid="tableName"></include>
         (
@@ -45,7 +45,7 @@
     </delete>
 
     <!-- 根据id更新 -->
-    <update id="updateById" parameterType="User">
+    <update id="updateById" parameterType="PageData">
         UPDATE
         <include refid="tableName"></include>
         SET
@@ -67,7 +67,7 @@
     </update>
 
     <!-- 查询 -->
-    <select id="select" parameterType="com.lry.xxs.utils.PageData" resultType="com.lry.xxs.utils.PageData">
+    <select id="select" parameterType="PageData" resultType="PageData">
         SELECT
         <include refid="Field"></include>
         FROM

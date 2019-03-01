@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -51,14 +52,18 @@ public class UserService {
         userMapper.add(pd);
     }
 
-    public void deleteById(String id) {
+    public boolean deleteById(String id) {
         PageData pd = new PageData();
         pd.put("user_id", id);
-        pd.putAll(userMapper.select(pd));
+        List<PageData> templist = userMapper.select(pd);
+        if (!templist.isEmpty() && templist.size() >= 1)
+            pd.putAll(templist.get(0));
+        else
+            return false;
         if (StringUtils.isBlank(pd.get("user_type").toString()))
-            return;
+            return false;
         else {
-            switch ((Integer) userMapper.select(pd).get("user_type")) {
+            switch ((Integer) pd.get("user_type")) {
                 case 0:
                     System.out.println("删除超级管理员");
                     break;
@@ -76,6 +81,7 @@ public class UserService {
                     break;
             }
             userMapper.deleteById(id);
+            return true;
         }
     }
 
@@ -86,6 +92,10 @@ public class UserService {
 
     public User selectById(String id) {
         return userMapper.selectById(id);
+    }
+
+    public List<PageData> select(PageData pd) {
+        return userMapper.select(pd);
     }
 
     public Integer checkPw(String name, String password) throws Exception {
@@ -107,7 +117,9 @@ public class UserService {
     public PageData login(String name, Integer type) {
         PageData pd = new PageData();
         pd.put("user_name", name);
-        pd.putAll(userMapper.select(pd));
+        List<PageData> templist = userMapper.select(pd);
+        if (!templist.isEmpty() && templist.size() >= 1)
+            pd.putAll(templist.get(0));
         if ((Integer) pd.get("user_type") == type) {
             return pd;
         } else {

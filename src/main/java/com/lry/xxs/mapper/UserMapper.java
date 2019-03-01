@@ -4,6 +4,8 @@ import com.lry.xxs.model.User;
 import com.lry.xxs.utils.PageData;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserMapper {
 
@@ -21,5 +23,5 @@ public interface UserMapper {
 
     String selectIdByName(String name);
 
-    PageData select(PageData pd);
+    List<PageData> select(PageData pd);
 }

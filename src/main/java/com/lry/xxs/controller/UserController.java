@@ -1,8 +1,7 @@
 package com.lry.xxs.controller;
 
 import com.lry.xxs.model.User;
-import com.lry.xxs.service.RedisService;
-import com.lry.xxs.service.UserService;
+import com.lry.xxs.service.*;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
@@ -24,6 +23,12 @@ public class UserController extends BaseController{
     @Autowired
     private UserService userService;
     @Autowired
+    private ParentService parentService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private TeacherService teacherService;
+    @Autowired
     private RedisService redisService;
 
     private ResultJson resultJson = null;
@@ -37,24 +42,28 @@ public class UserController extends BaseController{
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
     }
 
+    //新增
     @RequestMapping("/add")
     public void add(HttpServletResponse response)throws Exception{
         init(response);
         userService.add(this.getPageData());
     }
 
+    //删除
     @RequestMapping("/delete")
     public void delete(String id, HttpServletResponse response)throws Exception{
         init(response);
         userService.deleteById(id);
     }
 
+    //修改基本信息
     @RequestMapping("/update")
     public void updateById(User user, HttpServletResponse response)throws Exception{
         init(response);
         userService.updateById(user);
     }
 
+    //修改密码
     @ResponseBody
     @RequestMapping("/changePw")
     public MappingJacksonValue changePw(String name, String oldPassword, String newPassword, HttpServletResponse response)throws Exception{
@@ -73,6 +82,16 @@ public class UserController extends BaseController{
         return mjv;
     }
 
+    //查询所有用户基本信息
+    @ResponseBody
+    @RequestMapping("/select")
+    public MappingJacksonValue select(HttpServletResponse response)throws Exception{
+        init(response);
+        MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
+        return mjv;
+    }
+
+    //登录
     @ResponseBody
     @RequestMapping("/login")
     public MappingJacksonValue login(HttpSession session, String name, String password, Integer type, HttpServletResponse response)throws Exception{
@@ -97,5 +116,25 @@ public class UserController extends BaseController{
         }
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
+    }
+
+    //修改父母用户信息
+    @ResponseBody
+    @RequestMapping("/updatep")
+    public void updatep(HttpServletResponse response){
+        init(response);
+        parentService.updateById(this.getPageData());
+    }
+
+    //查询父母用户信息
+    /*@ResponseBody
+    @RequestMapping("/select")
+    public */
+
+    //修改学生用户信息
+    @ResponseBody
+    @RequestMapping("/updates")
+    public void updates(HttpServletResponse response){
+        init(response);
     }
 }
