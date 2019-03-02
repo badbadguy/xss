@@ -98,9 +98,9 @@ public class UserController extends BaseController {
         init(response);
         PageData pd = this.getPageData();
         if (StringUtils.isBlank(pd.getString("pageNum")))
-            pd.put("pageNum", 1);
+            pd.put("pageNum", "1");
         if (StringUtils.isBlank(pd.getString("pageSize")))
-            pd.put("pageSize", 10);
+            pd.put("pageSize", "10");
         PageHelper.startPage(Integer.valueOf(pd.getString("pageNum")), Integer.valueOf(pd.getString("pageSize")));
         List<PageData> list = userService.select(pd);
         PageInfo<PageData> listInfo = new PageInfo<>(list);
@@ -151,9 +151,9 @@ public class UserController extends BaseController {
         init(response);
         PageData pd = this.getPageData();
         if (StringUtils.isBlank(pd.getString("pageNum")))
-            pd.put("pageNum", 1);
+            pd.put("pageNum", "1");
         if (StringUtils.isBlank(pd.getString("pageSize")))
-            pd.put("pageSize", 10);
+            pd.put("pageSize", "10");
         PageHelper.startPage(Integer.valueOf(pd.getString("pageNum")), Integer.valueOf(pd.getString("pageSize")));
         List<PageData> list = parentService.select(pd);
         PageInfo<PageData> listInfo = new PageInfo<>(list);
@@ -177,9 +177,9 @@ public class UserController extends BaseController {
         init(response);
         PageData pd = this.getPageData();
         if (StringUtils.isBlank(pd.getString("pageNum")))
-            pd.put("pageNum", 1);
+            pd.put("pageNum", "1");
         if (StringUtils.isBlank(pd.getString("pageSize")))
-            pd.put("pageSize", 10);
+            pd.put("pageSize", "10");
         PageHelper.startPage(Integer.valueOf(pd.getString("pageNum")), Integer.valueOf(pd.getString("pageSize")));
         List<PageData> list = studentService.select(pd);
         PageInfo<PageData> listInfo = new PageInfo<>(list);
@@ -203,9 +203,9 @@ public class UserController extends BaseController {
         init(response);
         PageData pd = this.getPageData();
         if (StringUtils.isBlank(pd.getString("pageNum")))
-            pd.put("pageNum", 1);
+            pd.put("pageNum", "1");
         if (StringUtils.isBlank(pd.getString("pageSize")))
-            pd.put("pageSize", 10);
+            pd.put("pageSize", "10");
         PageHelper.startPage(Integer.valueOf(pd.getString("pageNum")), Integer.valueOf(pd.getString("pageSize")));
         List<PageData> list = teacherService.select(pd);
         PageInfo<PageData> listInfo = new PageInfo<>(list);
