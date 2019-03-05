@@ -73,10 +73,10 @@ public class UserController extends BaseController {
         init(response);
         switch (userService.checkPw(name, oldPassword)) {
             case 1:
-                resultJson = new ResultJson(Boolean.TRUE, "密码错误");
+                resultJson = new ResultJson(Boolean.FALSE, "密码错误");
                 break;
             case 2:
-                resultJson = new ResultJson(Boolean.TRUE, "用户不存在");
+                resultJson = new ResultJson(Boolean.FALSE, "用户不存在");
                 break;
             case 666: {
                 userService.changePw(name, newPassword);
@@ -84,7 +84,7 @@ public class UserController extends BaseController {
                 break;
             }
             default:
-                resultJson = new ResultJson(Boolean.TRUE, "未知错误");
+                resultJson = new ResultJson(Boolean.FALSE, "未知错误");
                 break;
         }
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
@@ -116,15 +116,15 @@ public class UserController extends BaseController {
         init(response);
         switch (userService.checkPw(name, password)) {
             case 1:
-                resultJson = new ResultJson(Boolean.TRUE, "密码错误");
+                resultJson = new ResultJson(Boolean.FALSE, "密码错误");
                 break;
             case 2:
-                resultJson = new ResultJson(Boolean.TRUE, "用户不存在");
+                resultJson = new ResultJson(Boolean.FALSE, "用户不存在");
                 break;
             case 666: {
                 PageData pd = userService.login(name, type);
                 if (StringUtils.isNotBlank(pd.getString("error"))) {
-                    resultJson = new ResultJson(Boolean.TRUE, pd.getString("error"));
+                    resultJson = new ResultJson(Boolean.FALSE, pd.getString("error"));
                     break;
                 } else {
                     redisService.addMap(session.getId(), pd);

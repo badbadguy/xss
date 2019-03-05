@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.ClassMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        class
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        class_id,
+        class_grade,
+        class_class
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{class_id},
+        #{class_grade},
+        #{class_class}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="PageData">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        class_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="PageData">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="class_grade != null and class_grade != ''">
+            class_grade = #{class_grade},
+        </if>
+        <if test="class_class != null and class_class != ''">
+            class_class = #{class_class},
+        </if>
+        class_id = class_id
+        WHERE
+        class_id = #{class_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="class_id != null and class_id != ''">
+            AND class_id = #{class_id}
+        </if>
+        <if test="class_grade != null and class_grade != ''">
+            AND class_grade = #{class_grade}
+        </if>
+        <if test="class_class != null and class_class != ''">
+            AND class_class = #{class_class}
+        </if>
+    </select>
+    
+    <!--根据年级查询  班级排序-->
+    <select id="selectByGrade" parameterType="int" resultType="String">
+        SELECT
+        class_class
+        FROM
+        class
+        WHERE
+        class_grade = #{1}
+        ORDER BY class_class
+    </select>
+
+</mapper>
