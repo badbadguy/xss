@@ -21,7 +21,7 @@ public class ClassController {
 
     @ResponseBody
     @RequestMapping("/checkclass2")
-    public List<ClassReult> checkclass2(){
-        classService.selectByGrade()
+    public List<ClassReult> checkclass2()throws Exception{
+        return classService.selectByGrade();
     }
 }
