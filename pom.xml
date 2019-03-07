@@ -135,6 +135,23 @@
             <version>1.5.13.RELEASE</version>
         </dependency>-->
 
+		<!-- 连接fastdfs文件系统 -->
+		<dependency>
+			<groupId>com.luhuiguo</groupId>
+			<artifactId>fastdfs-spring-boot-starter</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.csource</groupId>
+			<artifactId>fastdfs-client-java</artifactId>
+			<version>1.27-SNAPSHOT</version>
+		</dependency>-->
+		<!-- 文件服务器-->
+		<!--<dependency>
+			<groupId>com.github.tobato</groupId>
+			<artifactId>fastdfs-client</artifactId>
+			<version>1.26.1-RELEASE</version>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.crazycake</groupId>

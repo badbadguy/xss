@@ -28,7 +28,11 @@ public class UserService {
     MD5 md5 = new MD5();
 
     public void add(PageData pd) throws Exception {
-        pd.put("user_id", UuidUtil.get32UUID());
+        //获取注册用户的头像昵称
+        if(StringUtils.isNotBlank(pd.getString("openid"))){
+        }
+        if(StringUtils.isBlank(pd.getString("user_id")))
+            pd.put("user_id", UuidUtil.get32UUID());
         pd.put("creattime", new Date());
         pd.put("updatetime", new Date());
         pd.put("user_password", md5.EncoderByMd5(pd.getString("user_password").toString().trim()));
