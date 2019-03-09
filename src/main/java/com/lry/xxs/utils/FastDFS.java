@@ -1,39 +1,17 @@
-package com.lry.xxs.controller;
+package com.lry.xxs.utils;
+
 import com.lry.xxs.fastdfs.FastDFSClient;
 import com.lry.xxs.fastdfs.FastDFSFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-@RestController
-public class test {
+public class FastDFS {
+    private static Logger logger = LoggerFactory.getLogger(FastDFS.class);
 
-    private static Logger logger = LoggerFactory.getLogger(test.class);
-
-    @PostMapping("/upload") //new annotation since 4.3
-    public String singleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
-        if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return "redirect:uploadStatus";
-        }
-        try {
-            // Get the file and save it somewhere
-            String path=saveFile(file);
-            redirectAttributes.addFlashAttribute("message",
-                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-            redirectAttributes.addFlashAttribute("path",
-                    "file path url '" + path + "'");
-        } catch (Exception e) {
-            logger.error("upload file failed",e);
-        }
-        return "redirect:/uploadStatus";
-    }
     public String saveFile(MultipartFile multipartFile) throws IOException {
         String[] fileAbsolutePath={};
         String fileName=multipartFile.getOriginalFilename();

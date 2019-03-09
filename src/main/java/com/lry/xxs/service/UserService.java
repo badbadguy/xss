@@ -2,6 +2,7 @@ package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.UserMapper;
 import com.lry.xxs.model.User;
+import com.lry.xxs.utils.CommonInfo;
 import com.lry.xxs.utils.MD5;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.UuidUtil;
@@ -30,6 +31,7 @@ public class UserService {
     public void add(PageData pd) throws Exception {
         //获取注册用户的头像昵称
         if(StringUtils.isNotBlank(pd.getString("openid"))){
+            String url = CommonInfo.WECHAT_GET_USERINFO + "access_token=" + accessToken + "&openid=" + openId;
         }
         if(StringUtils.isBlank(pd.getString("user_id")))
             pd.put("user_id", UuidUtil.get32UUID());
