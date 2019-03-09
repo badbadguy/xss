@@ -30,8 +30,9 @@ public class UserService {
 
     public void add(PageData pd) throws Exception {
         //获取注册用户的头像昵称
-        if(StringUtils.isNotBlank(pd.getString("openid"))){
-            String url = CommonInfo.WECHAT_GET_USERINFO + "access_token=" + accessToken + "&openid=" + openId;
+        if(StringUtils.isNotBlank(pd.getString("user_image"))){
+            String user_image = pd.getString("user_image");
+            user_image = user_image.substring(0,user_image.length()-3) + "0";
         }
         if(StringUtils.isBlank(pd.getString("user_id")))
             pd.put("user_id", UuidUtil.get32UUID());
