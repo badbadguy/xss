@@ -116,8 +116,13 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
-    public List<PageData> select(PageData pd) {
-        return userMapper.select(pd);
+    public List<PageData> select(PageData pd)throws Exception {
+        List<PageData> tempList = userMapper.select(pd);
+        for(PageData temppd : tempList){
+            temppd.put("user_name",new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
+            temppd.put("user_nickname",new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
+        }
+        return tempList;
     }
 
     public Integer checkPw(String name, String password) throws Exception {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/user")
@@ -104,10 +105,6 @@ public class UserController extends BaseController {
             pd.put("pageSize", "10");
         PageHelper.startPage(Integer.valueOf(pd.getString("pageNum")), Integer.valueOf(pd.getString("pageSize")));
         List<PageData> list = userService.select(pd);
-        for(PageData temppd : list){
-            temppd.put("user_name",new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
-            temppd.put("user_nickname",new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
-        }
         PageInfo<PageData> listInfo = new PageInfo<>(list);
         resultJson = new ResultJson(Boolean.TRUE, "查询成功", listInfo);
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
@@ -215,6 +212,28 @@ public class UserController extends BaseController {
         List<PageData> list = teacherService.select(pd);
         PageInfo<PageData> listInfo = new PageInfo<>(list);
         resultJson = new ResultJson(Boolean.TRUE, "查询成功", listInfo);
+        MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
+        return mjv;
+    }
+
+    //根据用户id查询基本+角色信息
+    @ResponseBody
+    @RequestMapping("/selectAll")
+    public MappingJacksonValue selectAll(HttpServletResponse response) throws Exception{
+        init(response);
+        PageData pd = this.getPageData();
+        if(StringUtils.isBlank(pd.getString("user_id")))
+            resultJson = new ResultJson(Boolean.FALSE, "user_id不能为空");
+        List<PageData> list = userService.select(pd);
+        List<PageData> list1 = new ArrayList<>();
+        switch ((Integer)list.get(0).get("user_type")){
+            case 2: list1 = teacherService.select(pd);break;
+            case 3: list1 = studentService.select(pd);break;
+            case 4: list1 = parentService.select(pd);break;
+        }
+        pd.putAll(list.get(0));
+        pd.putAll(list1.get(0));
+        resultJson = new ResultJson(Boolean.TRUE,"查询成功",pd);
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
     }
