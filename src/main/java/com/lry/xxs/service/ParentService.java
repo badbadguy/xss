@@ -17,13 +17,8 @@ public class ParentService {
     private StudentService studentService;
 
     public void add(PageData pd) {
-        if (StringUtils.isNotBlank(pd.getString("student_class")) && StringUtils.isNotBlank(pd.getString("student_grade"))){
-            pd.put("student_status",1);
-            PageData temppd = new PageData();
-            temppd.put("class_grade",pd.getString("student_grade"));
-            temppd.put("class_class",pd.getString("student_class"));
-            studentService.select(temppd);
-        }
+        if (StringUtils.isNotBlank(pd.getString("address")))
+            pd.put("parent_address",pd.getString("address"));
         parentMapper.add(pd);
     }
 

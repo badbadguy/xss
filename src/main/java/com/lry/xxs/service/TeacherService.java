@@ -2,6 +2,7 @@ package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.TeacherMapper;
 import com.lry.xxs.utils.PageData;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public class TeacherService {
     private TeacherMapper teacherMapper;
 
     public void add(PageData pd) {
+        if (StringUtils.isNotBlank(pd.getString("address")))
+            pd.put("teacher_address",pd.getString("address"));
         teacherMapper.add(pd);
     }
 

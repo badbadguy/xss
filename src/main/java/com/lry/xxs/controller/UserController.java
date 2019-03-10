@@ -8,6 +8,7 @@ import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,6 +104,10 @@ public class UserController extends BaseController {
             pd.put("pageSize", "10");
         PageHelper.startPage(Integer.valueOf(pd.getString("pageNum")), Integer.valueOf(pd.getString("pageSize")));
         List<PageData> list = userService.select(pd);
+        for(PageData temppd : list){
+            temppd.put("user_name",new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
+            temppd.put("user_nickname",new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
+        }
         PageInfo<PageData> listInfo = new PageInfo<>(list);
         resultJson = new ResultJson(Boolean.TRUE, "查询成功", listInfo);
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);

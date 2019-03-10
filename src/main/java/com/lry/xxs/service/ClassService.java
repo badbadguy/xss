@@ -2,6 +2,7 @@ package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.ClassMapper;
 import com.lry.xxs.model.ClassReult;
+import com.lry.xxs.utils.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,10 @@ public class ClassService {
             list.add(classReult);
         }
         return list;
+    }
+
+    //根据年级班级  查询id
+    String selectClassID(PageData pd){
+        return classMapper.selectClassID(pd);
     }
 }

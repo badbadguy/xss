@@ -2,14 +2,19 @@ package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.UserMapper;
 import com.lry.xxs.model.User;
-import com.lry.xxs.utils.CommonInfo;
+import com.lry.xxs.utils.FastDFS;
 import com.lry.xxs.utils.MD5;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.UuidUtil;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -31,14 +36,24 @@ public class UserService {
     public void add(PageData pd) throws Exception {
         //获取注册用户的头像昵称
         if(StringUtils.isNotBlank(pd.getString("user_image"))){
-            String user_image = pd.getString("user_image");
-            user_image = user_image.substring(0,user_image.length()-3) + "0";
+            //微信头像图片获取
+            URL tempurl = new URL(pd.getString("user_image").substring(0,pd.getString("user_image").length()-3) + "0");
+            InputStream is = tempurl.openStream();
+            MultipartFile multipartFile = new MockMultipartFile("temp.jpg", "temp.jpg", "", is);
+            pd.put("user_image",new FastDFS().saveFile(multipartFile));
+            if (StringUtils.isNotBlank(pd.getString("user_nickname")))
+                //将微信名进行编码转换  防止用户账号中昵称特殊符号的报错
+                pd.put("user_nickname", Base64.encodeBase64String(pd.getString("user_nickname").getBytes("UTF-8")));
+                //取出方法
+                //new String(Base64.decodeBase64(user_nickname), "UTF-8");
         }
+        pd.put("user_name", Base64.encodeBase64String(pd.getString("user_name").getBytes("UTF-8")));
         if(StringUtils.isBlank(pd.getString("user_id")))
             pd.put("user_id", UuidUtil.get32UUID());
         pd.put("creattime", new Date());
         pd.put("updatetime", new Date());
-        pd.put("user_password", md5.EncoderByMd5(pd.getString("user_password").toString().trim()));
+        if (StringUtils.isNotBlank(pd.getString("user_password")))
+            pd.put("user_password", md5.EncoderByMd5(pd.getString("user_password").toString().trim()));
         switch (Integer.valueOf(pd.getString("user_type"))) {
             case 0:
                 System.out.println("新增超级管理员");

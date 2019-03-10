@@ -74,7 +74,7 @@
             AND class_class = #{class_class}
         </if>
     </select>
-    
+
     <!--根据年级查询  班级排序-->
     <select id="selectByGrade" parameterType="int" resultType="String">
         SELECT
@@ -84,6 +84,19 @@
         WHERE
         class_grade = #{1}
         ORDER BY class_class
+    </select>
+
+    <!--根据年级班级  查询id-->
+    <select id="selectClassID" parameterType="PageData" resultType="String">
+        SELECT
+        class_id
+        FROM
+        class
+        WHERE
+        class_grade = #{class_grade}
+        AND
+        class_class = #{class_class}
+        LIMIT 1
     </select>
 
 </mapper>
