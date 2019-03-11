@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/user")
@@ -65,6 +67,10 @@ public class UserController extends BaseController {
     @RequestMapping("/update")
     public void updateById(User user, HttpServletResponse response) throws Exception {
         init(response);
+        if(StringUtils.isNotBlank(user.getUser_name()))
+            user.setUser_name(Base64.encodeBase64String(user.getUser_name().getBytes("UTF-8")));
+        if(StringUtils.isNotBlank(user.getUser_nickname()))
+            user.setUser_nickname(Base64.encodeBase64String(user.getUser_nickname().getBytes("UTF-8")));
         userService.updateById(user);
     }
 
@@ -225,6 +231,15 @@ public class UserController extends BaseController {
         if(StringUtils.isBlank(pd.getString("user_id")))
             resultJson = new ResultJson(Boolean.FALSE, "user_id不能为空");
         List<PageData> list = userService.select(pd);
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒 E");
+        for(PageData temppd : list){
+            if (temppd.containsKey("creattime"))
+                temppd.put("creattime",sf.format(temppd.get("creattime")));
+            if (temppd.containsKey("updatetime"))
+                temppd.put("updatetime",sf.format(temppd.get("updatetime")));
+            if (temppd.containsKey("lastLogintime"))
+                temppd.put("lastLogintime",sf.format(temppd.get("lastLogintime")));
+        }
         List<PageData> list1 = new ArrayList<>();
         switch ((Integer)list.get(0).get("user_type")){
             case 2: list1 = teacherService.select(pd);break;

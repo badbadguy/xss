@@ -57,6 +57,9 @@
         UPDATE
         <include refid="tableName"></include>
         SET
+        <if test="user_name != null and user_name != ''">
+            user_name = #{user_name},
+        </if>
         <if test="user_nickname != null and user_nickname != ''">
             user_nickname = #{user_nickname},
         </if>
