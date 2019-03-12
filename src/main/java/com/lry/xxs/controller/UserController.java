@@ -77,9 +77,9 @@ public class UserController extends BaseController {
     //修改密码
     @ResponseBody
     @RequestMapping("/changePw")
-    public MappingJacksonValue changePw(String name, String oldPassword, String newPassword, HttpServletResponse response) throws Exception {
+    public MappingJacksonValue changePw(String user_id, String oldPassword, String newPassword, HttpServletResponse response) throws Exception {
         init(response);
-        switch (userService.checkPw(name, oldPassword)) {
+        switch (userService.checkPw(user_id, oldPassword)) {
             case 1:
                 resultJson = new ResultJson(Boolean.FALSE, "密码错误");
                 break;
@@ -87,14 +87,26 @@ public class UserController extends BaseController {
                 resultJson = new ResultJson(Boolean.FALSE, "用户不存在");
                 break;
             case 666: {
-                userService.changePw(name, newPassword);
-                resultJson = new ResultJson(Boolean.TRUE, "登录成功");
+                userService.changePw(user_id, newPassword);
+                resultJson = new ResultJson(Boolean.TRUE, "修改成功");
                 break;
             }
             default:
                 resultJson = new ResultJson(Boolean.FALSE, "未知错误");
                 break;
         }
+        MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
+        return mjv;
+    }
+
+    //小程序内修改密码
+    @RequestMapping("changePws")
+    public MappingJacksonValue changePws(HttpServletResponse response){
+        init(response);
+        PageData pd = this.getPageData();
+        User user = new User();
+        user.setUser_id(pd.getString("user_id"));
+        user.setUser_password(pd.getString(""));
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
     }
@@ -251,5 +263,16 @@ public class UserController extends BaseController {
         resultJson = new ResultJson(Boolean.TRUE,"查询成功",pd);
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
+    }
+
+    //更新登录最后登录时间
+    @RequestMapping("/updateLastLoginTime")
+    public void updateLastLoginTime(HttpServletResponse response)throws Exception{
+        init(response);
+        PageData pd = this.getPageData();
+        User user = new User();
+        user.setUser_id(pd.getString("user_id"));
+        user.setLastLogintime(new Date());
+        userService.updateLastLoginTime(user);
     }
 }

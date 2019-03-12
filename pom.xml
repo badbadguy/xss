@@ -178,6 +178,19 @@
             <artifactId>spring-test</artifactId>
             <version>5.1.5.RELEASE</version>
         </dependency>
+
+		<!--百度语音识别-->
+		<dependency>
+			<groupId>com.baidu.aip</groupId>
+			<artifactId>java-sdk</artifactId>
+			<version>4.10.0</version>
+		</dependency>
+		<!--mp3转pcm-->
+		<dependency>
+			<groupId>com.googlecode.soundlibs</groupId>
+			<artifactId>mp3spi</artifactId>
+			<version>1.9.5.4</version>
+		</dependency>
     </dependencies>
 	<build>
 		<plugins>

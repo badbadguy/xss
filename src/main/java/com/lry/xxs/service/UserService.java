@@ -52,6 +52,7 @@ public class UserService {
             pd.put("user_id", UuidUtil.get32UUID());
         pd.put("creattime", new Date());
         pd.put("updatetime", new Date());
+        pd.put("lastLogintime", new Date());
         if (StringUtils.isNotBlank(pd.getString("user_password")))
             pd.put("user_password", md5.EncoderByMd5(pd.getString("user_password").toString().trim()));
         switch (Integer.valueOf(pd.getString("user_type"))) {
@@ -125,8 +126,8 @@ public class UserService {
         return tempList;
     }
 
-    public Integer checkPw(String name, String password) throws Exception {
-        String temppw = userMapper.checkPw(name);
+    public Integer checkPw(String user_id, String password) throws Exception {
+        String temppw = userMapper.checkPw(user_id);
         if (StringUtils.isNotBlank(temppw)) {
             if (md5.checkpassword(password, temppw))
                 return 666;
@@ -137,8 +138,8 @@ public class UserService {
         }
     }
 
-    public void changePw(String name, String password) throws Exception {
-        userMapper.changePw(name, md5.EncoderByMd5(password));
+    public void changePw(String user_id, String password) throws Exception {
+        userMapper.changePw(user_id, md5.EncoderByMd5(password));
     }
 
     public PageData login(String name, Integer type) {
@@ -154,5 +155,9 @@ public class UserService {
             pd.put("error", "用户类型错误");
             return pd;
         }
+    }
+
+    public void updateLastLoginTime(User user) {
+        userMapper.updateById(user);
     }
 }

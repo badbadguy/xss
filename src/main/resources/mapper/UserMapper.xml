@@ -72,6 +72,9 @@
         <if test="updatetime != null">
             updatetime = #{updatetime},
         </if>
+        <if test="lastLogintime != null">
+            lastLogintime = #{lastLogintime},
+        </if>
         user_id = user_id
         WHERE
         user_id = #{user_id}
@@ -87,24 +90,24 @@
         user_id = #{1}
     </select>
 
-    <!-- 根据username查询密码 -->
+    <!-- 根据user_id查询密码 -->
     <select id="checkPw" parameterType="String" resultType="String">
         SELECT
         user_password
         FROM
         <include refid="tableName"></include>
         WHERE
-        user_name = #{1}
+        user_id = #{1}
     </select>
 
-    <!-- 根据username修改密码 -->
+    <!-- 根据user_id修改密码 -->
     <update id="changePw">
         UPDATE
         <include refid="tableName"></include>
         SET
         user_password = #{password}
         WHERE
-        user_name = #{name}
+        user_id = #{user_id}
     </update>
 
     <!-- 根据username查询id -->

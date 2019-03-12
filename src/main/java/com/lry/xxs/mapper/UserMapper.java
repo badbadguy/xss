@@ -17,9 +17,9 @@ public interface UserMapper {
 
     User selectById(String id);
 
-    String checkPw(String name);
+    String checkPw(String user_id);
 
-    void changePw(String name, String password);
+    void changePw(String user_id, String password);
 
     String selectIdByName(String name);
 
