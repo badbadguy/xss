@@ -4,11 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lry.xxs.model.User;
 import com.lry.xxs.service.*;
-import com.lry.xxs.utils.BaseController;
-import com.lry.xxs.utils.PageData;
-import com.lry.xxs.utils.ResultJson;
+import com.lry.xxs.utils.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,9 +66,9 @@ public class UserController extends BaseController {
     @RequestMapping("/update")
     public void updateById(User user, HttpServletResponse response) throws Exception {
         init(response);
-        if(StringUtils.isNotBlank(user.getUser_name()))
+        if (StringUtils.isNotBlank(user.getUser_name()))
             user.setUser_name(Base64.encodeBase64String(user.getUser_name().getBytes("UTF-8")));
-        if(StringUtils.isNotBlank(user.getUser_nickname()))
+        if (StringUtils.isNotBlank(user.getUser_nickname()))
             user.setUser_nickname(Base64.encodeBase64String(user.getUser_nickname().getBytes("UTF-8")));
         userService.updateById(user);
     }
@@ -101,7 +100,7 @@ public class UserController extends BaseController {
 
     //小程序内修改密码
     @RequestMapping("changePws")
-    public MappingJacksonValue changePws(HttpServletResponse response){
+    public MappingJacksonValue changePws(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         User user = new User();
@@ -237,42 +236,73 @@ public class UserController extends BaseController {
     //根据用户id查询基本+角色信息
     @ResponseBody
     @RequestMapping("/selectAll")
-    public MappingJacksonValue selectAll(HttpServletResponse response) throws Exception{
+    public MappingJacksonValue selectAll(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
-        if(StringUtils.isBlank(pd.getString("user_id")))
+        if (StringUtils.isBlank(pd.getString("user_id")))
             resultJson = new ResultJson(Boolean.FALSE, "user_id不能为空");
         List<PageData> list = userService.select(pd);
         SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒 E");
-        for(PageData temppd : list){
+        for (PageData temppd : list) {
             if (temppd.containsKey("creattime"))
-                temppd.put("creattime",sf.format(temppd.get("creattime")));
+                temppd.put("creattime", sf.format(temppd.get("creattime")));
             if (temppd.containsKey("updatetime"))
-                temppd.put("updatetime",sf.format(temppd.get("updatetime")));
+                temppd.put("updatetime", sf.format(temppd.get("updatetime")));
             if (temppd.containsKey("lastLogintime"))
-                temppd.put("lastLogintime",sf.format(temppd.get("lastLogintime")));
+                temppd.put("lastLogintime", sf.format(temppd.get("lastLogintime")));
         }
         List<PageData> list1 = new ArrayList<>();
-        switch ((Integer)list.get(0).get("user_type")){
-            case 2: list1 = teacherService.select(pd);break;
-            case 3: list1 = studentService.select(pd);break;
-            case 4: list1 = parentService.select(pd);break;
+        switch ((Integer) list.get(0).get("user_type")) {
+            case 2:
+                list1 = teacherService.select(pd);
+                break;
+            case 3:
+                list1 = studentService.select(pd);
+                break;
+            case 4:
+                list1 = parentService.select(pd);
+                break;
         }
         pd.putAll(list.get(0));
         pd.putAll(list1.get(0));
-        resultJson = new ResultJson(Boolean.TRUE,"查询成功",pd);
+        resultJson = new ResultJson(Boolean.TRUE, "查询成功", pd);
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
     }
 
     //更新登录最后登录时间
     @RequestMapping("/updateLastLoginTime")
-    public void updateLastLoginTime(HttpServletResponse response)throws Exception{
+    public void updateLastLoginTime(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
         User user = new User();
         user.setUser_id(pd.getString("user_id"));
         user.setLastLogintime(new Date());
         userService.updateLastLoginTime(user);
+    }
+
+    //微信登录获取openid
+    @ResponseBody
+    @RequestMapping("/getOpenid")
+    public String getOpenid(String code, HttpServletResponse response) throws Exception {
+        init(response);
+        String url = CommonInfo.WECHAT_GET_TOKEN_BY_CODE + "appid=" + CommonInfo.APPID + "&secret=" + CommonInfo.SECRET + "&code=" + code + "&grant_type=authorization_code";
+        url = "https://api.weixin.qq.com/sns/jscode2session?appid=wx53dac20eb7248329&secret=4f82e5b3b68c4a1d801d6cbf7430b895&js_code=" + code + "&grant_type=authorization_code";
+        String jsonStr = HttpUtil.sendGet(url);
+        String openId = null;
+        if (jsonStr.contains("\"errcode\":40029")) {
+            /*********************** 这里可以处理 ***********************/
+            openId = "error";
+
+        } else if (jsonStr.contains("\"errcode\":40163")) {
+            /*********************** 这里可以处理 ***********************/
+            openId = "error";
+        } else {
+            JSONObject jsonObject = JSONObject.fromObject(jsonStr);
+//            String accessToken = (String) jsonObject.get("access_token");
+//            String refreshToken = (String) jsonObject.get("refresh_token");
+            openId = (String) jsonObject.get("openid");
+        }
+        return openId;
     }
 }
