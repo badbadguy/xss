@@ -1,6 +1,6 @@
 package com.lry.xxs.controller;
 
-import com.lry.xxs.service.QuestionService;
+import com.lry.xxs.service.SubjectService;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
@@ -14,12 +14,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@RequestMapping("/question")
 @RestController
-public class QuestionController extends BaseController {
+@RequestMapping("/subject")
+public class SubjectController extends BaseController {
 
     @Autowired
-    private QuestionService questionService;
+    private SubjectService subjectService;
 
     private ResultJson resultJson = null;
 
@@ -32,43 +32,30 @@ public class QuestionController extends BaseController {
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
     }
 
-    //新增数学题
-    @ResponseBody
-    @RequestMapping("/addMath")
-    public String addMath(HttpServletResponse response) {
+    @RequestMapping("/add")
+    public void add(HttpServletResponse response) {
         init(response);
-        PageData pd = this.getPageData();
-        return questionService.addMath(pd);
+        subjectService.add(this.getPageData());
     }
 
-    //根据id删除题目
     @RequestMapping("/delete")
     public void delete(HttpServletResponse response) {
         init(response);
-        PageData pd = this.getPageData();
-        questionService.delete(pd.getString("question_id"));
+        subjectService.delete(this.getPageData().getString("subject_id"));
     }
 
-    //根据id修改题目信息
     @RequestMapping("/update")
     public void update(HttpServletResponse response) {
         init(response);
-        PageData pd = this.getPageData();
-        questionService.update(pd);
+        subjectService.update(this.getPageData());
     }
 
-    //查询题目信息
     @ResponseBody
-    @RequestMapping("select")
+    @RequestMapping("/select")
     public MappingJacksonValue select(HttpServletResponse response) {
         init(response);
-        PageData pd = this.getPageData();
-        try {
-            List<PageData> list = questionService.select(pd);
-            resultJson = new ResultJson(Boolean.TRUE, "查询成功", list);
-        } catch (Exception e) {
-            resultJson = new ResultJson(Boolean.FALSE, "查询出错", e);
-        }
+        List<PageData> list = subjectService.select(this.getPageData());
+        resultJson = new ResultJson(Boolean.TRUE, "查询成功", list);
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
     }

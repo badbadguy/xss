@@ -40,7 +40,6 @@ public class ClassController extends BaseController {
     }
 
     //管理员设置教师负责班级
-    @ResponseBody
     @RequestMapping("/chooses")
     public void chooses(HttpServletResponse response)throws Exception{
         init(response);

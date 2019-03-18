@@ -182,7 +182,6 @@ public class UserController extends BaseController {
     }
 
     //修改学生用户信息
-    @ResponseBody
     @RequestMapping("/updates")
     public void updates(HttpServletResponse response) {
         init(response);

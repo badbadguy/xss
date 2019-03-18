@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.SubjectMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        subject
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        subject_id,
+        subject_name
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{subject_id},
+        #{subject_name}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="PageData">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        subject_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="PageData">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="subject_name != null and subject_name != ''">
+            subject_name = #{subject_name},
+        </if>
+        subject_id = subject_id
+        WHERE
+        subject_id = #{subject_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="subject_id != null and subject_id != ''">
+            AND subject_id = #{subject_id}
+        </if>
+        <if test="subject_name != null and subject_name != ''">
+            AND subject_name = #{subject_name}
+        </if>
+    </select>
+
+</mapper>

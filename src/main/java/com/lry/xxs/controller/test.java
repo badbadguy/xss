@@ -1,4 +1,5 @@
 package com.lry.xxs.controller;
+
 import com.lry.xxs.fastdfs.FastDFSClient;
 import com.lry.xxs.fastdfs.FastDFSFile;
 import org.slf4j.Logger;
@@ -24,23 +25,24 @@ public class test {
         }
         try {
             // Get the file and save it somewhere
-            String path=saveFile(file);
+            String path = saveFile(file);
             redirectAttributes.addFlashAttribute("message",
                     "You successfully uploaded '" + file.getOriginalFilename() + "'");
             redirectAttributes.addFlashAttribute("path",
                     "file path url '" + path + "'");
         } catch (Exception e) {
-            logger.error("upload file failed",e);
+            logger.error("upload file failed", e);
         }
         return "redirect:/uploadStatus";
     }
+
     public String saveFile(MultipartFile multipartFile) throws IOException {
-        String[] fileAbsolutePath={};
-        String fileName=multipartFile.getOriginalFilename();
+        String[] fileAbsolutePath = {};
+        String fileName = multipartFile.getOriginalFilename();
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
         byte[] file_buff = null;
-        InputStream inputStream=multipartFile.getInputStream();
-        if(inputStream!=null){
+        InputStream inputStream = multipartFile.getInputStream();
+        if (inputStream != null) {
             int len1 = inputStream.available();
             file_buff = new byte[len1];
             inputStream.read(file_buff);
@@ -50,12 +52,12 @@ public class test {
         try {
             fileAbsolutePath = FastDFSClient.upload(file);  //upload to fastdfs
         } catch (Exception e) {
-            logger.error("upload file Exception!",e);
+            logger.error("upload file Exception!", e);
         }
-        if (fileAbsolutePath==null) {
+        if (fileAbsolutePath == null) {
             logger.error("upload file failed,please upload again!");
         }
-        String path= FastDFSClient.getTrackerUrl()+fileAbsolutePath[0]+ "/"+fileAbsolutePath[1];
+        String path = FastDFSClient.getTrackerUrl() + fileAbsolutePath[0] + "/" + fileAbsolutePath[1];
         return path;
     }
 }
