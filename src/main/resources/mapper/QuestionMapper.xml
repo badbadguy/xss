@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.QuestionMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        question
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        question_id,
+        question_type,
+        question_title,
+        question_answer1,
+        question_answer2,
+        question_answer3,
+        question_answer4,
+        question_answerr,
+        question_remark,
+        question_image,
+        question_link,
+        subject_id
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{question_id},
+        #{question_type},
+        #{question_title},
+        #{question_answer1},
+        #{question_answer2},
+        #{question_answer3},
+        #{question_answer4},
+        #{question_answerr},
+        #{question_remark},
+        #{question_image},
+        #{question_link},
+        #{subject_id}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="PageData">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        question_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="PageData">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="question_type != null and question_type != ''">
+            question_type = #{question_type},
+        </if>
+        <if test="question_title != null and question_title != ''">
+            question_title = #{question_title},
+        </if>
+        <if test="question_answer1 != null and question_answer1 != ''">
+            question_answer1 = #{question_answer1},
+        </if>
+        <if test="question_answer2 != null and question_answer2 !=''">
+            question_answer2 = #{question_answer2},
+        </if>
+        <if test="question_answer3 != null and question_answer3 !=''">
+            question_answer3 = #{question_answer3},
+        </if>
+        <if test="question_answer4 != null and question_answer4 !=''">
+            question_answer4 = #{question_answer4},
+        </if>
+        <if test="question_answerr != null and question_answerr !=''">
+            question_answerr = #{question_answerr},
+        </if>
+        <if test="question_remark != null and question_remark !=''">
+            question_remark = #{question_remark},
+        </if>
+        <if test="question_image != null and question_image !=''">
+            question_image = #{question_image},
+        </if>
+        <if test="question_link != null and question_link !=''">
+            question_link = #{question_link},
+        </if>
+        <if test="subject_id != null and subject_id !=''">
+            subject_id = #{subject_id},
+        </if>
+        question_id = question_id
+        WHERE
+        question_id = #{question_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="question_id != null and question_id != ''">
+            AND question_id = #{question_id} OR question_link = #{question_id}
+        </if>
+        <if test="question_type != null and question_type != ''">
+            AND question_type = #{question_type}
+        </if>
+        <if test="subject_id != null and subject_id != ''">
+            AND subject_id = #{subject_id}
+        </if>
+        <if test="question_link != null and question_link != ''">
+            AND question_link = #{question_link}
+        </if>
+    </select>
+
+</mapper>

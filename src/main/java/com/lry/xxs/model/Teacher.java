@@ -8,6 +8,15 @@ public class Teacher {
     private String teacher_subject;     //负责的学科
     private String teacher_remark;      //备注
     private Integer teacher_ishead;     //是否班主任(0:是 1:不是)
+    private String teacher_headClass;   //班主任班级
+
+    public String getTeacher_headClass() {
+        return teacher_headClass;
+    }
+
+    public void setTeacher_headClass(String teacher_headClass) {
+        this.teacher_headClass = teacher_headClass;
+    }
 
     public String getUser_id() {
         return user_id;

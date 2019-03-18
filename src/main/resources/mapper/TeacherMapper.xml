@@ -15,7 +15,8 @@
         teacher_class,
         teacher_subject,
         teacher_remark,
-        teacher_ishead
+        teacher_ishead,
+        teacher_headClass
     </sql>
 
     <!-- 字段值 -->
@@ -26,7 +27,8 @@
         #{teacher_class},
         #{teacher_subject},
         #{teacher_remark},
-        #{teacher_ishead}
+        #{teacher_ishead},
+        #{teacher_headClass}
     </sql>
 
     <!-- 新增 -->
@@ -70,6 +72,9 @@
         </if>
         <if test="teacher_ishead != null and teacher_ishead != ''">
             teacher_ishead = #{teacher_ishead},
+        </if>
+        <if test="teacher_headClass != null and teacher_headClass != ''">
+            teacher_headClass = #{teacher_headClass},
         </if>
         user_id = user_id
         WHERE
