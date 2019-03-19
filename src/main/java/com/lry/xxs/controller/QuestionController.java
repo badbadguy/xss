@@ -4,6 +4,7 @@ import com.lry.xxs.service.QuestionService;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +33,34 @@ public class QuestionController extends BaseController {
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
     }
 
-    //新增数学题
-    @ResponseBody
+    //新增数学应用题
     @RequestMapping("/addMath")
-    public String addMath(HttpServletResponse response) {
+    public void addMathApp(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
-        return questionService.addMath(pd);
+        JSONObject jsonObject = JSONObject.fromObject(pd.getString("tempjson"));
+        pd.putAll((PageData)JSONObject.toBean(jsonObject,PageData.class));
+        int i = 0;
+        String tempLink =null;
+        while (true){
+            if(!pd.containsKey("question_title"+i))
+                break;
+            PageData temppd = new PageData();
+            temppd.put("question_type",pd.getString("question_type"));
+            temppd.put("question_title",pd.getString("question_title"+i));
+            temppd.put("question_answer1",pd.getString("question_answer1"+i));
+            temppd.put("question_answer2",pd.getString("question_answer2"+i));
+            temppd.put("question_answer3",pd.getString("question_answer3"+i));
+            temppd.put("question_answer4",pd.getString("question_answer4"+i));
+            temppd.put("question_answerr",pd.getString("question_answerr"+i));
+            temppd.put("question_remark",pd.getString("question_remark"+i));
+            temppd.put("question_image",pd.getString("question_image"+i));
+            if(i>0)
+                temppd.put("question_link",tempLink);
+            temppd.put("subject_id",pd.getString("subject_id"));
+            tempLink = questionService.addMath(temppd);
+            i++;
+        }
     }
 
     //根据id删除题目
