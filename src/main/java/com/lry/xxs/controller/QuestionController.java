@@ -2,6 +2,7 @@ package com.lry.xxs.controller;
 
 import com.lry.xxs.service.QuestionService;
 import com.lry.xxs.utils.BaseController;
+import com.lry.xxs.utils.FastDFS;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
 import net.sf.json.JSONObject;
@@ -10,6 +11,7 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +33,19 @@ public class QuestionController extends BaseController {
         res.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
         res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+    }
+
+    //题目图片上传
+    @RequestMapping("picture")
+    public String[] picture(HttpServletResponse response, MultipartFile[] file)throws Exception{
+        init(response);
+        String[] tempReturn = null;
+        Integer i = 0;
+        for(MultipartFile tempFile : file){
+            tempReturn[i] = new FastDFS().saveFile(tempFile);
+            i++;
+        }
+        return tempReturn;
     }
 
     //新增数学应用题
