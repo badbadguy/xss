@@ -37,45 +37,40 @@ public class QuestionController extends BaseController {
 
     //题目图片上传
     @RequestMapping("picture")
-    public String[] picture(HttpServletResponse response, MultipartFile[] file)throws Exception{
+    public String picture(HttpServletResponse response, MultipartFile file)throws Exception{
         init(response);
-        String[] tempReturn = null;
-        Integer i = 0;
-        for(MultipartFile tempFile : file){
-            tempReturn[i] = new FastDFS().saveFile(tempFile);
-            i++;
-        }
-        return tempReturn;
+        FastDFS fastDFS = new FastDFS();
+        return fastDFS.saveFile(file);
     }
 
     //新增数学应用题
     @RequestMapping("/addMath")
-    public void addMathApp(HttpServletResponse response) {
+    public void addMathApp(HttpServletResponse response,String[] imagesurl) {
         init(response);
         PageData pd = this.getPageData();
         JSONObject jsonObject = JSONObject.fromObject(pd.getString("tempjson"));
-        pd.putAll((PageData)JSONObject.toBean(jsonObject,PageData.class));
-        int i = 0;
-        String tempLink =null;
-        while (true){
-            if(!pd.containsKey("question_title"+i))
-                break;
-            PageData temppd = new PageData();
-            temppd.put("question_type",pd.getString("question_type"));
-            temppd.put("question_title",pd.getString("question_title"+i));
-            temppd.put("question_answer1",pd.getString("question_answer1"+i));
-            temppd.put("question_answer2",pd.getString("question_answer2"+i));
-            temppd.put("question_answer3",pd.getString("question_answer3"+i));
-            temppd.put("question_answer4",pd.getString("question_answer4"+i));
-            temppd.put("question_answerr",pd.getString("question_answerr"+i));
-            temppd.put("question_remark",pd.getString("question_remark"+i));
-            temppd.put("question_image",pd.getString("question_image"+i));
-            if(i>0)
-                temppd.put("question_link",tempLink);
-            temppd.put("subject_id",pd.getString("subject_id"));
-            tempLink = questionService.addMath(temppd);
-            i++;
-        }
+//        pd.putAll((PageData)JSONObject.toBean(jsonObject,PageData.class));
+//        int i = 0;
+//        String tempLink =null;
+//        while (true){
+//            if(!pd.containsKey("question_title"+i))
+//                break;
+//            PageData temppd = new PageData();
+//            temppd.put("question_type",pd.getString("question_type"));
+//            temppd.put("question_title",pd.getString("question_title"+i));
+//            temppd.put("question_answer1",pd.getString("question_answer1"+i));
+//            temppd.put("question_answer2",pd.getString("question_answer2"+i));
+//            temppd.put("question_answer3",pd.getString("question_answer3"+i));
+//            temppd.put("question_answer4",pd.getString("question_answer4"+i));
+//            temppd.put("question_answerr",pd.getString("question_answerr"+i));
+//            temppd.put("question_remark",pd.getString("question_remark"+i));
+////            temppd.put("question_image",tempUrl[i]);
+//            if(i>0)
+//                temppd.put("question_link",tempLink);
+//            temppd.put("subject_id",pd.getString("subject_id"));
+//            tempLink = questionService.addMath(temppd);
+//            i++;
+//        }
     }
 
     //根据id删除题目

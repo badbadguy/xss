@@ -1,5 +1,7 @@
 package com.lry.xxs.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +14,7 @@ import java.util.Date;
  * 修改时间：2015年11月24日
  * @version
  */
+@Component
 public class DateUtil {
 	
 	private final static SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");

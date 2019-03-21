@@ -4,9 +4,11 @@ import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 
+@Component
 public class FastDFSClient {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(FastDFSClient.class);
 
