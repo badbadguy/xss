@@ -6,6 +6,8 @@ import com.lry.xxs.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -14,8 +16,8 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    //新增数学题
-    public String addMath(PageData pd) {
+    //新增题目
+    public String add(PageData pd) {
         pd.put("question_id", UuidUtil.get32UUID());
         questionMapper.add(pd);
         return pd.getString("question_id");
@@ -33,6 +35,23 @@ public class QuestionService {
 
     //查询题目信息
     public List<PageData> select(PageData pd){
-        return questionMapper.select(pd);
+        List<PageData> list = new ArrayList<>();
+        list = questionMapper.select(pd);
+        /*for (PageData temppd : list){
+            if(temppd.containsKey("question_link")){
+                PageData xixixi =  questionMapper.selectById(temppd.getString("question_id"));
+                if(!xixixi.isEmpty())
+                    list.add(xixixi);
+            }
+        }*/
+        for(int i=0; i<list.size(); i++){
+            if(list.get(i).containsKey("question_link")){
+                PageData xixixi = questionMapper.selectById(list.get(i).getString("question_id"));
+                if(xixixi != null){
+                    list.add(xixixi);
+                }
+            }
+        }
+        return list;
     }
 }

@@ -15,4 +15,6 @@ public interface QuestionMapper {
     void updateById(PageData pd);
 
     List<PageData> select(PageData pd);
+
+    PageData selectById(String id);
 }

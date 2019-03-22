@@ -16,6 +16,7 @@
         question_answer2,
         question_answer3,
         question_answer4,
+        question_answers,
         question_answerr,
         question_remark,
         question_image,
@@ -32,6 +33,7 @@
         #{question_answer2},
         #{question_answer3},
         #{question_answer4},
+        #{question_answers},
         #{question_answerr},
         #{question_remark},
         #{question_image},
@@ -81,6 +83,9 @@
         <if test="question_answer4 != null and question_answer4 !=''">
             question_answer4 = #{question_answer4},
         </if>
+        <if test="question_answers != null and question_answers !=''">
+            question_answers = #{question_answers},
+        </if>
         <if test="question_answerr != null and question_answerr !=''">
             question_answerr = #{question_answerr},
         </if>
@@ -121,6 +126,16 @@
         <if test="question_link != null and question_link != ''">
             AND question_link = #{question_link}
         </if>
+    </select>
+
+    <!--根据问题id查询-->
+    <select id="selectById" parameterType="String" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        question_link = #{1}
     </select>
 
 </mapper>
