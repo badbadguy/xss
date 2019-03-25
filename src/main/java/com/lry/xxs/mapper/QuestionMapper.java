@@ -17,4 +17,6 @@ public interface QuestionMapper {
     List<PageData> select(PageData pd);
 
     PageData selectById(String id);
+
+    List<PageData> select1(PageData pd);
 }

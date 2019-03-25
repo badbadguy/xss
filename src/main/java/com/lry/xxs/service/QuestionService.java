@@ -34,24 +34,22 @@ public class QuestionService {
     }
 
     //查询题目信息
-    public List<PageData> select(PageData pd){
+    public List<PageData> select(PageData pd) {
         List<PageData> list = new ArrayList<>();
         list = questionMapper.select(pd);
-        /*for (PageData temppd : list){
-            if(temppd.containsKey("question_link")){
-                PageData xixixi =  questionMapper.selectById(temppd.getString("question_id"));
-                if(!xixixi.isEmpty())
-                    list.add(xixixi);
-            }
-        }*/
-        for(int i=0; i<list.size(); i++){
-            if(list.get(i).containsKey("question_link")){
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).containsKey("question_link")) {
                 PageData xixixi = questionMapper.selectById(list.get(i).getString("question_id"));
-                if(xixixi != null){
+                if (xixixi != null) {
                     list.add(xixixi);
                 }
             }
         }
         return list;
+    }
+
+    //查询题目信息（指定类型返回）
+    public List<PageData> select1(PageData pd) {
+        return questionMapper.select1(pd);
     }
 }

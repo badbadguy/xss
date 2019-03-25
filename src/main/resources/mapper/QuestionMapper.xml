@@ -138,4 +138,17 @@
         question_link = #{1}
     </select>
 
+    <!--根据问题类型查询-->
+    <select id="select1" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        question_type = #{question_type}
+        AND
+        subject_id = #{subject_id}
+        AND
+        question_link IS NULL
+    </select>
 </mapper>
