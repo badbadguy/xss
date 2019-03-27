@@ -16,4 +16,10 @@ public class CommonInfo {
 
     //微信小程序的secret
     public static String SECRET = "4f82e5b3b68c4a1d801d6cbf7430b895";
+
+    //百度API获取Access Token
+    public static String BAIDUAT = "https://aip.baidubce.com/oauth/2.0/token";
+
+    //百度短语匹配url
+    public static String BAIDUBCE = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet";
 }
