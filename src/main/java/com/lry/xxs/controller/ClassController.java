@@ -2,6 +2,7 @@ package com.lry.xxs.controller;
 
 import com.lry.xxs.model.ClassReult;
 import com.lry.xxs.service.ClassService;
+import com.lry.xxs.service.TeacherService;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/class")
 @RestController
@@ -20,6 +22,8 @@ public class ClassController extends BaseController {
 
     @Autowired
     private ClassService classService;
+    @Autowired
+    private TeacherService teacherService;
 
     private ResultJson resultJson = null;
 
@@ -41,9 +45,20 @@ public class ClassController extends BaseController {
 
     //管理员设置教师负责班级
     @RequestMapping("/chooses")
-    public void chooses(HttpServletResponse response)throws Exception{
+    public void chooses(HttpServletResponse response){
         init(response);
         PageData pd = this.getPageData();
         classService.chooseClass(pd);
+    }
+
+    //查询该老师负责的班级
+    @ResponseBody
+    @RequestMapping("/checkclass")
+    public List<Map> checkclass(HttpServletResponse response)throws Exception{
+        init(response);
+        PageData pd = this.getPageData();
+        List<PageData> list = teacherService.select(pd);
+        pd = list.get(0);
+        return classService.selectByTeacher(pd.getString("teacher_class"));
     }
 }

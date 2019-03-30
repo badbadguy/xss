@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.HomeworkMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        homework
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        homework_id,
+        class_id,
+        subject_id,
+        teacher_id,
+        question_id,
+        num,
+        creattime,
+        updatetime,
+        finishtime
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{homework_id},
+        #{class_id},
+        #{subject_id},
+        #{teacher_id},
+        #{question_id},
+        #{num},
+        #{creattime},
+        #{updatetime},
+        #{finishtime}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="PageData">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        homework_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="PageData">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="class_id != null and class_id != ''">
+            class_id = #{class_id},
+        </if>
+        <if test="subject_id != null and subject_id != ''">
+            subject_id = #{subject_id},
+        </if>
+        <if test="teacher_id != null and teacher_id != ''">
+            teacher_id = #{teacher_id},
+        </if>
+        <if test="question_id != null and question_id != ''">
+            question_id = #{question_id},
+        </if>
+        <if test="num != null and num != ''">
+            num = #{num},
+        </if>
+        <if test="creattime != null">
+            creattime = #{creattime},
+        </if>
+        <if test="updatetime != null">
+            updatetime = #{updatetime},
+        </if>
+        homework_id = homework_id
+        WHERE
+        homework_id = #{homework_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="homework_id != null and homework_id != ''">
+            AND homework_id = #{homework_id}
+        </if>
+        <if test="class_id != null and class_id != ''">
+            AND class_id = #{class_id}
+        </if>
+        <if test="subject_id != null and subject_id != ''">
+            AND subject_id = #{subject_id}
+        </if>
+        <if test="teacher_id != null and teacher_id != ''">
+            AND teacher_id = #{teacher_id}
+        </if>
+        <if test="question0_id != null and question0_id != ''">
+            AND question0_id = #{question0_id}
+        </if>
+        <if test="question1_id != null and question1_id != ''">
+            AND question1_id = #{question1_id}
+        </if>
+        <if test="question2_id != null and question2_id != ''">
+            AND question2_id = #{question2_id}
+        </if>
+        <if test="question3_id != null and question3_id != ''">
+            AND question3_id = #{question3_id}
+        </if>
+    </select>
+</mapper>

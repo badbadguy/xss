@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/question")
@@ -171,7 +172,39 @@ public class QuestionController extends BaseController {
         PageData pd = this.getPageData();
         try {
             List<PageData> list = questionService.select1(pd);
+            if(pd.getString("question_type").equals("3")){
+                for(PageData temppd : list){
+                    PageData temptemp = new PageData();
+                    temptemp.put("question_link",temppd.getString("question_id"));
+                    List<PageData> tempList = questionService.select(temptemp);
+                    temppd.put("children",tempList); 
+                }
+            }
             resultJson = new ResultJson(Boolean.TRUE, "查询成功", list);
+        } catch (Exception e) {
+            System.out.println(e);
+            resultJson = new ResultJson(Boolean.FALSE, "查询出错", e);
+        }
+        MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
+        return mjv;
+    }
+
+    //查询题目信息（指定类型返回-用于布置作业）
+    @ResponseBody
+    @RequestMapping("select2")
+    public MappingJacksonValue select2(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        try {
+            List<PageData> list = questionService.select1(pd);
+            List<PageData> tempList = new ArrayList<PageData>();
+            for(PageData tempPd : list){
+                PageData temp = new PageData();
+                temp.put("key",tempPd.getString("question_id"));
+                temp.put("value",tempPd.getString("question_title"));
+                tempList.add(temp);
+            }
+            resultJson = new ResultJson(Boolean.TRUE, "查询成功", tempList);
         } catch (Exception e) {
             System.out.println(e);
             resultJson = new ResultJson(Boolean.FALSE, "查询出错", e);
