@@ -61,4 +61,13 @@ public class ClassController extends BaseController {
         pd = list.get(0);
         return classService.selectByTeacher(pd.getString("teacher_class"));
     }
+
+    //查询班主任负责班级的学生申请
+    @ResponseBody
+    @RequestMapping("/checkstudent")
+    public List<Map> checkstudent(HttpServletResponse response)throws Exception{
+        init(response);
+        PageData pd = this.getPageData();
+        return classService.checkstudent(pd);
+    }
 }

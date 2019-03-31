@@ -4,10 +4,9 @@ import com.lry.xxs.service.HomeworkService;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletResponse;
@@ -42,7 +41,17 @@ public class HomeworkController extends BaseController {
         pd.put("question1_id",pd.getString("question1_id").replace("[","").replace("]","").replace("\"",""));
         pd.put("question2_id",pd.getString("question2_id").replace("[","").replace("]","").replace("\"",""));
         pd.put("question3_id",pd.getString("question3_id").replace("[","").replace("]","").replace("\"",""));
+        pd.put("class_id",pd.getString("class_id").replace("[","").replace("]","").replace("\"",""));
         pd.put("creattime",new Date());
         homeworkService.add(pd);
+    }
+
+    //学生查询当天作业量
+    @ResponseBody
+    @RequestMapping("selectNum")
+    public PageData selectNum(HttpServletResponse response){
+        init(response);
+        PageData pd = this.getPageData();
+        return homeworkService.selectNum(pd);
     }
 }

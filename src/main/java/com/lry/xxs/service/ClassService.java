@@ -1,11 +1,12 @@
 package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.ClassMapper;
+import com.lry.xxs.mapper.StudentMapper;
 import com.lry.xxs.mapper.TeacherMapper;
 import com.lry.xxs.model.ClassReult;
-import com.lry.xxs.model.Teacher;
 import com.lry.xxs.utils.PageData;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,11 @@ import java.util.Map;
 public class ClassService {
 
     @Autowired
-    ClassMapper classMapper;
-
+    private ClassMapper classMapper;
     @Autowired
-    TeacherMapper teacherMapper;
+    private TeacherMapper teacherMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
     //查询数据库中的班级
     public List<ClassReult> selectByGrade() throws Exception {
@@ -81,5 +83,29 @@ public class ClassService {
             }
         }
         return templist;
+    }
+
+    //查询班主任负责班级的申请
+    public List<Map> checkstudent(PageData pd)throws Exception{
+        List<Map> tempList = new ArrayList<>();
+        List<PageData> list = teacherMapper.select(pd);
+        pd = list.get(0);
+        if(pd.get("teacher_ishead")==null || (Integer)pd.get("teacher_ishead") == 1){
+            return new ArrayList<>();
+        }else{
+            list = studentMapper.select1(pd.getString("teacher_headClass"));
+            for(PageData PD : list){
+                Map tempMap = new HashMap();
+                String user_name = new String(Base64.decodeBase64(PD.getString("user_name")), "UTF-8");
+                tempMap.put("user_name",user_name);
+                tempMap.put("user_id",PD.getString("user_id"));
+                tempMap.put("height",80);
+                tempMap.put("color","#39CCC5");
+                tempMap.put("text",PD.getString("student_address"));
+                tempMap.put("switcher","#off");
+                tempList.add(tempMap);
+            }
+            return tempList;
+        }
     }
 }

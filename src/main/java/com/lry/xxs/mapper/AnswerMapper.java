@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface HomeworkMapper {
+public interface AnswerMapper {
 
     void add(PageData pd);
 
@@ -15,6 +15,4 @@ public interface HomeworkMapper {
     void updateById(PageData pd);
 
     List<PageData> select(PageData pd);
-
-    PageData selectNum(PageData pd);
 }

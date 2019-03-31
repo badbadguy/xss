@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lry.xxs.mapper.AnswerMapper">
+
+    <!--表名 -->
+    <sql id="tableName">
+        answer
+    </sql>
+
+    <!-- 字段 -->
+    <sql id="Field">
+        answer_id,
+        homework_id,
+        question_id,
+        answer_image,
+        answer_message,
+        student_id,
+        creattime
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{answer_id},
+        #{homework_id},
+        #{question_id},
+        #{answer_image},
+        #{answer_message},
+        #{student_id},
+        #{creattime}
+    </sql>
+
+    <!-- 新增 -->
+    <insert id="add" parameterType="PageData">
+        INSERT INTO
+        <include refid="tableName"></include>
+        (
+        <include refid="Field"></include>
+        ) VALUES (
+        <include refid="FieldValue"></include>
+        )
+    </insert>
+
+    <!-- 根据id删除 -->
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM
+        <include refid="tableName"></include>
+        WHERE
+        answer_id = #{1}
+    </delete>
+
+    <!-- 根据id更新 -->
+    <update id="updateById" parameterType="PageData">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+        <if test="homework_id != null and homework_id != ''">
+            homework_id = #{homework_id},
+        </if>
+        <if test="question_id != null and question_id != ''">
+            question_id = #{question_id},
+        </if>
+        <if test="answer_image != null and answer_image != ''">
+            answer_image = #{answer_image},
+        </if>
+        <if test="answer_message != null and answer_message != ''">
+            answer_message = #{answer_message},
+        </if>
+        <if test="student_id != null and student_id != ''">
+            student_id = #{student_id},
+        </if>
+        <if test="creattime != null">
+            creattime = #{creattime},
+        </if>
+        answer_id = answer_id
+        WHERE
+        answer_id = #{answer_id}
+    </update>
+
+    <!-- 查询 -->
+    <select id="select" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        1 = 1
+        <if test="answer_id != null and answer_id != ''">
+            AND answer_id = #{answer_id}
+        </if>
+        <if test="homework_id != null and homework_id != ''">
+            AND homework_id = #{homework_id}
+        </if>
+        <if test="question_id != null and question_id != ''">
+            AND question_id = #{question_id}
+        </if>
+    </select>
+
+</mapper>

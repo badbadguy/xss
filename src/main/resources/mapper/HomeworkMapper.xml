@@ -13,7 +13,10 @@
         class_id,
         subject_id,
         teacher_id,
-        question_id,
+        question0_id,
+        question1_id,
+        question2_id,
+        question3_id,
         num,
         creattime,
         updatetime,
@@ -26,7 +29,10 @@
         #{class_id},
         #{subject_id},
         #{teacher_id},
-        #{question_id},
+        #{question0_id},
+        #{question1_id},
+        #{question2_id},
+        #{question3_id},
         #{num},
         #{creattime},
         #{updatetime},
@@ -115,5 +121,19 @@
         <if test="question3_id != null and question3_id != ''">
             AND question3_id = #{question3_id}
         </if>
+    </select>
+
+    <select id="selectNum" parameterType="PageData" resultType="PageData">
+        SELECT
+        <include refid="Field"></include>
+        FROM
+        <include refid="tableName"></include>
+        WHERE
+        class_id = #{class_id}
+        AND
+        subject_id = #{subject_id}
+        AND
+        (creattime BETWEEN #{startTime} AND #{endTime})
+        LIMIT 1
     </select>
 </mapper>

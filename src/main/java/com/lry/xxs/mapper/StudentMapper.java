@@ -16,4 +16,7 @@ public interface StudentMapper {
     void updateById(PageData pd);
 
     List<PageData> select(PageData pd);
+
+    //返回学生信息（用于教师通过班级绑定申请）
+    List<PageData> select1(String student_class);
 }

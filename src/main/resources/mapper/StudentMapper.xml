@@ -56,6 +56,9 @@
         <if test="student_remark != null and student_remark != ''">
             student_remark = #{student_remark},
         </if>
+        <if test="student_status != null and student_status != ''">
+            student_status = #{student_status},
+        </if>
         user_id = user_id
         WHERE
         user_id = #{user_id}
@@ -81,6 +84,18 @@
         <if test="student_remark != null and student_remark != ''">
             AND student_remark = #{student_remark}
         </if>
+    </select>
+
+    <!-- 返回学生信息（用于教师通过班级绑定申请） -->
+    <select id="select1" parameterType="String" resultType="PageData">
+        SELECT
+        a.user_id,a.student_address,b.user_name
+        FROM
+        user b LEFT JOIN user_student a ON a.user_id = b.user_id
+        WHERE
+        a.student_class = #{1}
+        and
+        a.student_status = 1
     </select>
 
 </mapper>
