@@ -213,5 +213,13 @@ public class QuestionController extends BaseController {
         return mjv;
     }
 
-    //
+    //答题
+    @ResponseBody
+    @RequestMapping("/answer")
+    public PageData answer(HttpServletResponse response){
+        init(response);
+        PageData pd = this.getPageData();
+        questionService.answer(pd);
+        return pd;
+    }
 }

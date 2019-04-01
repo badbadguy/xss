@@ -33,25 +33,34 @@ public class HomeworkController extends BaseController {
 
     //布置作业
     @RequestMapping("/add")
-    public void add(HttpServletResponse response){
+    public void add(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         //处理数据
-        pd.put("question0_id",pd.getString("question0_id").replace("[","").replace("]","").replace("\"",""));
-        pd.put("question1_id",pd.getString("question1_id").replace("[","").replace("]","").replace("\"",""));
-        pd.put("question2_id",pd.getString("question2_id").replace("[","").replace("]","").replace("\"",""));
-        pd.put("question3_id",pd.getString("question3_id").replace("[","").replace("]","").replace("\"",""));
-        pd.put("class_id",pd.getString("class_id").replace("[","").replace("]","").replace("\"",""));
-        pd.put("creattime",new Date());
+        pd.put("question0_id", pd.getString("question0_id").replace("[", "").replace("]", "").replace("\"", ""));
+        pd.put("question1_id", pd.getString("question1_id").replace("[", "").replace("]", "").replace("\"", ""));
+        pd.put("question2_id", pd.getString("question2_id").replace("[", "").replace("]", "").replace("\"", ""));
+        pd.put("question3_id", pd.getString("question3_id").replace("[", "").replace("]", "").replace("\"", ""));
+        pd.put("class_id", pd.getString("class_id").replace("[", "").replace("]", "").replace("\"", ""));
+        pd.put("creattime", new Date());
         homeworkService.add(pd);
     }
 
     //学生查询当天作业量
     @ResponseBody
-    @RequestMapping("selectNum")
-    public PageData selectNum(HttpServletResponse response){
+    @RequestMapping("/selectNum")
+    public PageData selectNum(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         return homeworkService.selectNum(pd);
+    }
+
+    //依次获取作业
+    @ResponseBody
+    @RequestMapping("/selectOne")
+    public PageData selectOne(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        return homeworkService.selectOne(pd);
     }
 }
