@@ -219,7 +219,6 @@ public class QuestionController extends BaseController {
     public PageData answer(HttpServletResponse response){
         init(response);
         PageData pd = this.getPageData();
-        questionService.answer(pd);
-        return pd;
+        return questionService.answer(pd);
     }
 }

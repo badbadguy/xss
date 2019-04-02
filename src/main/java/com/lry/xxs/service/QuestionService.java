@@ -75,6 +75,9 @@ public class QuestionService {
             returnPD.put("question_remark",tempPD.getString("question_remark"));
         }
         redisService.removeList(pd.getString("user_id") + tempdate + pd.getString("q"),1,QID);
+        if(!redisService.checkKey(pd.getString("user_id") + tempdate + pd.getString("q"))){
+            redisService.addList(pd.getString("user_id") + tempdate + pd.getString("q"),"finish");
+        }
         return returnPD;
     }
 }
