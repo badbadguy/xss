@@ -19,6 +19,8 @@ public class HomeworkService {
     private RedisService redisService;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionService questionService;
 
     public void add(PageData pd) {
         homeworkMapper.add(pd);
@@ -53,6 +55,7 @@ public class HomeworkService {
             returnPD.put("num", 0);
             return returnPD;
         }
+        returnPD.put("homework_id",temppd.getString("homework_id"));
         String[] q0 = null;
         //将作业存入redis中
         if(temppd.getString("question0_id") != null){
@@ -173,6 +176,7 @@ public class HomeworkService {
         //应用题
         else if((Integer)pd.get("question_type") == 3){
             returnPD.put("QType",3);
+            returnPD.put("Qlist",questionService.select(pd));
         }
         return returnPD;
     }
