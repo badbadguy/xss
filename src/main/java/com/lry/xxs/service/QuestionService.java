@@ -68,7 +68,6 @@ public class QuestionService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tempdate = sdf.format(date);
-        Boolean t = redisService.checkKey(pd.getString("user_id") + tempdate + pd.getString("q"));
         String QID = redisService.getListOne(pd.getString("user_id") + tempdate + pd.getString("q"), 0);
         PageData tempPD = new PageData();
         tempPD.put("question_id", QID);
@@ -84,7 +83,7 @@ public class QuestionService {
             }
         } else if (QType.equals("1")) {            //语音题
             //调用百度语义识别API
-            Double tempScore = (Double) baiduApi.getScore(tempPD.getString("question_answers"), pd.getString("answer"));
+            Double tempScore = Double.parseDouble(baiduApi.getScore(tempPD.getString("question_answers"), pd.getString("answer")).toString());
             if (tempScore > 0.8) {
                 returnPD.put("RorW", 1);
             } else {

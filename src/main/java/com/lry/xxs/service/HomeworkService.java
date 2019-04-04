@@ -53,12 +53,13 @@ public class HomeworkService {
             returnPD.put("q2_num", 0);
             returnPD.put("q3_num", 0);
             returnPD.put("num", 0);
+            returnPD.put("homework_id", "");
             return returnPD;
         }
-        returnPD.put("homework_id",temppd.getString("homework_id"));
+        returnPD.put("homework_id", temppd.getString("homework_id"));
         String[] q0 = null;
         //将作业存入redis中
-        if(temppd.getString("question0_id") != null){
+        if (temppd.getString("question0_id") != null) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q0")) {
                 q0 = temppd.getString("question0_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q0", q0);
@@ -70,11 +71,11 @@ public class HomeworkService {
                     returnPD.put("q0_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q0"));
                 }
             }
-        }else {
+        } else {
             returnPD.put("q0_num", 0);
         }
         String[] q1 = null;
-        if(temppd.getString("question1_id") != null) {
+        if (temppd.getString("question1_id") != null) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q1")) {
                 q1 = temppd.getString("question1_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q1", q1);
@@ -86,11 +87,11 @@ public class HomeworkService {
                     returnPD.put("q1_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q1"));
                 }
             }
-        }else {
+        } else {
             returnPD.put("q1_num", 0);
         }
         String[] q2 = null;
-        if(temppd.getString("question2_id") != null) {
+        if (temppd.getString("question2_id") != null) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q2")) {
                 q2 = temppd.getString("question2_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q2", q2);
@@ -102,11 +103,11 @@ public class HomeworkService {
                     returnPD.put("q2_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q2"));
                 }
             }
-        }else {
+        } else {
             returnPD.put("q2_num", 0);
         }
         String[] q3 = null;
-        if(temppd.getString("question3_id") != null) {
+        if (temppd.getString("question3_id") != null) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q3")) {
                 q3 = temppd.getString("question3_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q3", q3);
@@ -118,7 +119,7 @@ public class HomeworkService {
                     returnPD.put("q3_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q3"));
                 }
             }
-        }else {
+        } else {
             returnPD.put("q3_num", 0);
         }
         returnPD.put("num", temppd.get("num"));
@@ -138,13 +139,13 @@ public class HomeworkService {
             returnPD.put("question_title", "已完成");
             return returnPD;
         }
-        pd.put("question_id",tempQid);
+        pd.put("question_id", tempQid);
         pd = questionMapper.select(pd).get(0);
         returnPD.put("question_title", pd.getString("question_title"));
         returnPD.put("question_image", pd.getString("question_image"));
         //单选题
-        if((Integer)pd.get("question_type") == 0) {
-            returnPD.put("QType",0);
+        if ((Integer) pd.get("question_type") == 0) {
+            returnPD.put("QType", 0);
             //将选项随机排序
             String[] tempReturn = {pd.getString("question_answer1") + "1", pd.getString("question_answer2") + "2", pd.getString("question_answer3") + "3", pd.getString("question_answer4") + "4"};
             Random random = new Random();
@@ -166,17 +167,39 @@ public class HomeworkService {
             returnPD.put("select", returnListMap);
         }
         //语音题
-        else if((Integer)pd.get("question_type") == 1){
-            returnPD.put("QType",1);
+        else if ((Integer) pd.get("question_type") == 1) {
+            returnPD.put("QType", 1);
         }
         //填空题
-        else if((Integer)pd.get("question_type") == 2){
-            returnPD.put("QType",2);
+        else if ((Integer) pd.get("question_type") == 2) {
+            returnPD.put("QType", 2);
         }
         //应用题
-        else if((Integer)pd.get("question_type") == 3){
-            returnPD.put("QType",3);
-            returnPD.put("Qlist",questionService.select(pd));
+        else if ((Integer) pd.get("question_type") == 3) {
+            returnPD.put("QType", 3);
+            List<PageData> tempList = questionService.select(pd);
+            for (PageData niubi : tempList) {
+                //将选项随机排序
+                String[] tempReturn = {niubi.getString("question_answer1") + "1", niubi.getString("question_answer2") + "2", niubi.getString("question_answer3") + "3", niubi.getString("question_answer4") + "4"};
+                Random random = new Random();
+                for (int i = 0; i < tempReturn.length; i++) {
+                    int p = random.nextInt(i + 1);
+                    String tmp = tempReturn[i];
+                    tempReturn[i] = tempReturn[p];
+                    tempReturn[p] = tmp;
+                }
+                List<Map> returnListMap = new ArrayList<>();
+                for (int i = 0; i < tempReturn.length; i++) {
+                    String key = tempReturn[i].substring(tempReturn[i].length() - 1);
+                    String value = tempReturn[i].substring(0, tempReturn[i].length() - 1);
+                    Map returnMap = new HashMap();
+                    returnMap.put("key", key);
+                    returnMap.put("value", value);
+                    returnListMap.add(returnMap);
+                }
+                returnPD.put("select3", returnListMap);
+            }
+            returnPD.put("Qlist", questionService.select(pd));
         }
         return returnPD;
     }
