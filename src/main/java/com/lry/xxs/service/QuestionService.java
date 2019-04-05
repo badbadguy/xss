@@ -118,4 +118,25 @@ public class QuestionService {
         }
         return returnPD;
     }
+
+    //应用题提交完成状态以及错题录入
+    public void update3(PageData pd){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tempdate = sdf.format(date);
+        //错题
+        if(pd.getString("RorW") == "1"){
+            PageData errorPD = new PageData();
+            errorPD.put("answer_id", UuidUtil.get32UUID());
+            errorPD.put("homework_id", pd.getString("homework_id"));
+            errorPD.put("question_id", pd.getString("question_id"));
+            errorPD.put("student_id", pd.getString("user_id"));
+            errorPD.put("creattime", new Date());
+            answerService.add(errorPD);
+        }
+        redisService.removeList(pd.getString("user_id") + tempdate + pd.getString("q"), 1, pd.getString("question_id"));
+        if (!redisService.checkKey(pd.getString("user_id") + tempdate + pd.getString("q"))) {
+            redisService.addList(pd.getString("user_id") + tempdate + pd.getString("q"), "finish");
+        }
+    }
 }

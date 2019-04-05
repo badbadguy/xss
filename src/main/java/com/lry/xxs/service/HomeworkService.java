@@ -178,6 +178,7 @@ public class HomeworkService {
         else if ((Integer) pd.get("question_type") == 3) {
             returnPD.put("QType", 3);
             List<PageData> tempList = questionService.select(pd);
+            List returnListMap = new ArrayList<>();
             for (PageData niubi : tempList) {
                 //将选项随机排序
                 String[] tempReturn = {niubi.getString("question_answer1") + "1", niubi.getString("question_answer2") + "2", niubi.getString("question_answer3") + "3", niubi.getString("question_answer4") + "4"};
@@ -188,17 +189,26 @@ public class HomeworkService {
                     tempReturn[i] = tempReturn[p];
                     tempReturn[p] = tmp;
                 }
-                List<Map> returnListMap = new ArrayList<>();
+                List<PageData> fengleba = new ArrayList<>();
                 for (int i = 0; i < tempReturn.length; i++) {
+                    PageData select3Pd = new PageData();
                     String key = tempReturn[i].substring(tempReturn[i].length() - 1);
                     String value = tempReturn[i].substring(0, tempReturn[i].length() - 1);
                     Map returnMap = new HashMap();
                     returnMap.put("key", key);
                     returnMap.put("value", value);
-                    returnListMap.add(returnMap);
+                    returnMap.put("RorF",niubi.get("question_answerr").toString().equals(returnMap.get("key")));
+                    /*if(niubi.get("question_answerr").toString().equals(returnMap.get("key"))){
+                        returnMap.put("RorF","1");
+                    }else {
+                        returnMap.put("RotF","0");
+                    }*/
+                    select3Pd.putAll(returnMap);
+                    fengleba.add(select3Pd);
                 }
-                returnPD.put("select3", returnListMap);
+                returnListMap.add(fengleba);
             }
+            returnPD.put("select3", returnListMap);
             returnPD.put("Qlist", questionService.select(pd));
         }
         return returnPD;

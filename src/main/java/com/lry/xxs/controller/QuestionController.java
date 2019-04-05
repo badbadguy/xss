@@ -221,4 +221,13 @@ public class QuestionController extends BaseController {
         PageData pd = this.getPageData();
         return questionService.answer(pd);
     }
+
+    //应用题提交完成状态以及错题录入
+    @ResponseBody
+    @RequestMapping("/xigua")
+    public void update3(HttpServletResponse response){
+        init(response);
+        PageData pd = this.getPageData();
+        questionService.update3(pd);
+    }
 }
