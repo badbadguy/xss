@@ -35,20 +35,20 @@ public class UserService {
 
     public void add(PageData pd) throws Exception {
         //获取注册用户的头像昵称
-        if(StringUtils.isNotBlank(pd.getString("user_image"))){
+        if (StringUtils.isNotBlank(pd.getString("user_image"))) {
             //微信头像图片获取
-            URL tempurl = new URL(pd.getString("user_image").substring(0,pd.getString("user_image").length()-3) + "0");
+            URL tempurl = new URL(pd.getString("user_image").substring(0, pd.getString("user_image").length() - 3) + "0");
             InputStream is = tempurl.openStream();
             MultipartFile multipartFile = new MockMultipartFile("temp.jpg", "temp.jpg", "", is);
-            pd.put("user_image",new FastDFS().saveFile(multipartFile));
+            pd.put("user_image", new FastDFS().saveFile(multipartFile));
             if (StringUtils.isNotBlank(pd.getString("user_nickname")))
                 //将微信名进行编码转换  防止用户账号中昵称特殊符号的报错
                 pd.put("user_nickname", Base64.encodeBase64String(pd.getString("user_nickname").getBytes("UTF-8")));
-                //取出方法
-                //new String(Base64.decodeBase64(user_nickname), "UTF-8");
+            //取出方法
+            //new String(Base64.decodeBase64(user_nickname), "UTF-8");
         }
         pd.put("user_name", Base64.encodeBase64String(pd.getString("user_name").getBytes("UTF-8")));
-        if(StringUtils.isBlank(pd.getString("user_id")))
+        if (StringUtils.isBlank(pd.getString("user_id")))
             pd.put("user_id", UuidUtil.get32UUID());
         pd.put("creattime", new Date());
         pd.put("updatetime", new Date());
@@ -117,11 +117,11 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
-    public List<PageData> select(PageData pd)throws Exception {
+    public List<PageData> select(PageData pd) throws Exception {
         List<PageData> tempList = userMapper.select(pd);
-        for(PageData temppd : tempList){
-            temppd.put("user_name",new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
-            temppd.put("user_nickname",new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
+        for (PageData temppd : tempList) {
+            temppd.put("user_name", new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
+            temppd.put("user_nickname", new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
         }
         return tempList;
     }
@@ -159,5 +159,9 @@ public class UserService {
 
     public void updateLastLoginTime(User user) {
         userMapper.updateById(user);
+    }
+
+    public List<PageData> bindStudent(PageData pd) {
+        return userMapper.bindStudent(pd);
     }
 }

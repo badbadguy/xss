@@ -148,4 +148,15 @@
         </if>
     </select>
 
+    <select id="bindStudent" parameterType="PageData" resultType="PageData">
+        SELECT
+        u.user_id, u.user_name, c.class_grade, c.class_class
+        FROM
+        `user` u
+        LEFT JOIN user_student us ON u.user_id = us.user_id
+        LEFT JOIN class c ON us.student_class = c.class_id
+        <if test="user_name != null and user_name != ''">
+            WHERE u.user_name LIKE CONCAT('%',#{user_name},'%')
+        </if>
+    </select>
 </mapper>

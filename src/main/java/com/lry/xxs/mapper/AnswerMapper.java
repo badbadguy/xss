@@ -15,4 +15,6 @@ public interface AnswerMapper {
     void updateById(PageData pd);
 
     List<PageData> select(PageData pd);
+
+    List<PageData> selectRanking();
 }

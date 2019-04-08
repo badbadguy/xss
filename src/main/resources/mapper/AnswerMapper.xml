@@ -93,6 +93,12 @@
         <if test="question_id != null and question_id != ''">
             AND question_id = #{question_id}
         </if>
+        <if test="student_id != null and student_id != ''">
+            AND student_id = #{student_id}
+        </if>
     </select>
 
+    <select id="selectRanking" resultType="PageData">
+        SELECT count(1) AS c,u.user_name AS s FROM answer a LEFT JOIN `user` u ON a.student_id = u.user_id GROUP BY student_id ORDER BY c
+    </select>
 </mapper>

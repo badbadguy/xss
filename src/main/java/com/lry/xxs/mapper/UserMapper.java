@@ -24,4 +24,6 @@ public interface UserMapper {
     String selectIdByName(String name);
 
     List<PageData> select(PageData pd);
+
+    List<PageData> bindStudent(PageData pd);
 }

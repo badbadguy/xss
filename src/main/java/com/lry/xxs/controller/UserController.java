@@ -304,4 +304,39 @@ public class UserController extends BaseController {
         }
         return openId;
     }
+
+    //查询学生（用于家长绑定学生）
+    @ResponseBody
+    @RequestMapping("/bindStudent")
+    public List<PageData> bindStudent(HttpServletResponse response)throws Exception{
+        init(response);
+        PageData pd = this.getPageData();
+        String tempName = pd.getString("user_name");
+        if(StringUtils.isNotBlank(tempName)){
+            tempName = Base64.encodeBase64String(tempName.getBytes("UTF-8"));
+            pd.put("user_name",tempName);
+        }
+        List<PageData> returnList = userService.bindStudent(pd);
+        String[] c = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+        for(PageData tempPD : returnList){
+            tempName = tempPD.getString("user_name");
+            tempName = new String(Base64.decodeBase64(tempName), "UTF-8");
+            tempPD.put("user_name",tempName);
+            String nj = "";
+            for(int i=1;i<=c.length;i++){
+                if((Integer)tempPD.get("class_grade")==i){
+                    nj = c[i]+"年级";
+                    break;
+                }
+            }
+            for(int i=1;i<=c.length;i++){
+                if((Integer)tempPD.get("class_class")==i){
+                    nj = nj +c[i]+"班";
+                    break;
+                }
+            }
+            tempPD.put("nj",nj);
+        }
+        return returnList;
+    }
 }
