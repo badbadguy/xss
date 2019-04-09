@@ -56,8 +56,10 @@ public class AnswerController extends BaseController {
             PageData xixixi = new PageData();
             xixixi.put("question_id", temppd.getString("question_id"));
             PageData tempxixixi = questionService.select(xixixi).get(0);
+            if(!tempxixixi.containsKey("question_image"))
+                tempxixixi.put("question_image","");
             if (tempxixixi.get("question_type").toString().equals(pd.getString("question_type")))
-                returnList.add(questionService.select(xixixi).get(0));
+                returnList.add(tempxixixi);
         }
         return returnList;
     }

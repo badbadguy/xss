@@ -136,4 +136,8 @@
         (creattime BETWEEN #{startTime} AND #{endTime})
         LIMIT 1
     </select>
+    
+    <select id="bulin" parameterType="PageData" resultType="PageData">
+        select * from homework WHERE teacher_id = #{teacher_id} AND class_id = #{class_id} AND (creattime BETWEEN #{startTime} AND #{endTime})
+    </select>
 </mapper>

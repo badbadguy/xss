@@ -12,7 +12,8 @@
         user_id,
         student_address,
         student_class,
-        student_remark
+        student_remark,
+        student_status
     </sql>
 
     <!-- 字段值 -->
@@ -20,7 +21,8 @@
         #{user_id},
         #{student_address},
         #{student_class},
-        #{student_remark}
+        #{student_remark},
+        #{student_status}
     </sql>
 
     <!-- 新增 -->

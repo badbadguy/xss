@@ -30,6 +30,8 @@ public class UserService {
     private TeacherService teacherService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private ClassService classService;
 
     MD5 md5 = new MD5();
 
@@ -66,6 +68,11 @@ public class UserService {
                 teacherService.add(pd);
                 break;
             case 3:
+                PageData temppd = new PageData();
+                temppd.put("class_grade",pd.getString("choose_grade"));
+                temppd.put("class_class",pd.getString("choose_class"));
+                temppd.put("student_status",pd.getString("1"));
+                pd.put("student_class",classService.selectClassID(temppd));
                 studentService.add(pd);
                 break;
             case 4:

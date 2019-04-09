@@ -121,7 +121,7 @@ public class QuestionController extends BaseController {
                 temppd.put("question_answerr", pd.getString("question_answerr" + i));
             if (StringUtils.isNotBlank(pd.getString("question_remark" + i)))
                 temppd.put("question_remark", pd.getString("question_remark" + i));
-            if (StringUtils.isNotBlank(imagesurl[i]))
+            if (imagesurl.length>i && StringUtils.isNotBlank(imagesurl[i]))
                 temppd.put("question_image", imagesurl[i]);
             if (i > 0)
                 temppd.put("question_link", tempLink);

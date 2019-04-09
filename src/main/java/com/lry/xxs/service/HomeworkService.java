@@ -59,7 +59,7 @@ public class HomeworkService {
         returnPD.put("homework_id", temppd.getString("homework_id"));
         String[] q0 = null;
         //将作业存入redis中
-        if (temppd.getString("question0_id") != null) {
+        if (StringUtils.isNotBlank(temppd.getString("question0_id"))) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q0")) {
                 q0 = temppd.getString("question0_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q0", q0);
@@ -75,7 +75,7 @@ public class HomeworkService {
             returnPD.put("q0_num", 0);
         }
         String[] q1 = null;
-        if (temppd.getString("question1_id") != null) {
+        if (StringUtils.isNotBlank(temppd.getString("question1_id"))) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q1")) {
                 q1 = temppd.getString("question1_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q1", q1);
@@ -91,7 +91,7 @@ public class HomeworkService {
             returnPD.put("q1_num", 0);
         }
         String[] q2 = null;
-        if (temppd.getString("question2_id") != null) {
+        if (StringUtils.isNotBlank(temppd.getString("question2_id"))) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q2")) {
                 q2 = temppd.getString("question2_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q2", q2);
@@ -107,7 +107,7 @@ public class HomeworkService {
             returnPD.put("q2_num", 0);
         }
         String[] q3 = null;
-        if (temppd.getString("question3_id") != null) {
+        if (StringUtils.isNotBlank(temppd.getString("question3_id"))) {
             if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q3")) {
                 q3 = temppd.getString("question3_id").split(",");
                 redisService.addListAll(pd.getString("user_id") + tempdate + "q3", q3);
@@ -212,5 +212,18 @@ public class HomeworkService {
             returnPD.put("Qlist", questionService.select(pd));
         }
         return returnPD;
+    }
+
+    //检查该班级是否已布置作业
+    public Boolean bulin(PageData pd){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tempdate = sdf.format(date);
+        pd.put("startTime", tempdate + " 00:00:00");
+        pd.put("endTime", tempdate + " 23:59:59");
+        String tempClass = pd.getString("class_id").replace("[","").replace("]","").replace("\"","");
+        pd.put("class_id",tempClass);
+        List<PageData> list = homeworkMapper.bulin(pd);
+        return list.size()>0;
     }
 }

@@ -308,35 +308,70 @@ public class UserController extends BaseController {
     //查询学生（用于家长绑定学生）
     @ResponseBody
     @RequestMapping("/bindStudent")
-    public List<PageData> bindStudent(HttpServletResponse response)throws Exception{
+    public List<PageData> bindStudent(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
         String tempName = pd.getString("user_name");
-        if(StringUtils.isNotBlank(tempName)){
+        if (StringUtils.isNotBlank(tempName)) {
             tempName = Base64.encodeBase64String(tempName.getBytes("UTF-8"));
-            pd.put("user_name",tempName);
+            pd.put("user_name", tempName);
         }
         List<PageData> returnList = userService.bindStudent(pd);
         String[] c = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
-        for(PageData tempPD : returnList){
+        for (PageData tempPD : returnList) {
             tempName = tempPD.getString("user_name");
             tempName = new String(Base64.decodeBase64(tempName), "UTF-8");
-            tempPD.put("user_name",tempName);
+            tempPD.put("user_name", tempName);
             String nj = "";
-            for(int i=1;i<=c.length;i++){
-                if((Integer)tempPD.get("class_grade")==i){
-                    nj = c[i]+"年级";
+            for (int i = 1; i <= c.length; i++) {
+                if ((Integer) tempPD.get("class_grade") == i) {
+                    nj = c[i-1] + "年级";
                     break;
                 }
             }
-            for(int i=1;i<=c.length;i++){
-                if((Integer)tempPD.get("class_class")==i){
-                    nj = nj +c[i]+"班";
+            for (int i = 1; i <= c.length; i++) {
+                if ((Integer) tempPD.get("class_class") == i) {
+                    nj = nj + c[i-1] + "班";
                     break;
                 }
             }
-            tempPD.put("nj",nj);
+            tempPD.put("nj", nj);
+            tempPD.put("switcher", "#off");
+            tempPD.put("height", 80);
         }
         return returnList;
+    }
+
+    //返回对应信息（用于校验功能是否显示）
+    @ResponseBody
+    @RequestMapping("/sf")
+    public PageData sf(HttpServletResponse response) throws Exception {
+        init(response);
+        PageData returnPD = new PageData();
+        PageData pd = this.getPageData();
+        PageData temppd = userService.select(pd).get(0);
+        Integer type = (Integer) temppd.get("user_type");
+        returnPD.put("user_type", type);
+        switch (type) {
+            case 2: //教师
+                temppd = teacherService.select(pd).get(0);
+                returnPD.put("teacher_class", StringUtils.isNotBlank(temppd.getString("teacher_class")));
+                returnPD.put("teacher_subject", StringUtils.isNotBlank(temppd.getString("teacher_subject")));
+                returnPD.put("teacher_ishead", (Integer)temppd.get("teacher_ishead")==0);
+                returnPD.put("teacher_subject", temppd.getString("teacher_subject"));
+                break;
+            case 3: //学生
+                temppd = studentService.select(pd).get(0);
+                returnPD.put("student_class", StringUtils.isNotBlank(temppd.getString("student_class")));
+                returnPD.put("student_status", (Integer)temppd.get("student_status")==2);
+                break;
+            case 4: //家长
+                temppd = parentService.select(pd).get(0);
+                returnPD.put("children_id", StringUtils.isNotBlank(temppd.getString("children_id")));
+                break;
+            default:
+                break;
+        }
+        return returnPD;
     }
 }

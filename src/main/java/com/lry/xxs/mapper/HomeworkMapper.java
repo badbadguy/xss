@@ -17,4 +17,6 @@ public interface HomeworkMapper {
     List<PageData> select(PageData pd);
 
     PageData selectNum(PageData pd);
+
+    List<PageData> bulin(PageData pd);
 }
