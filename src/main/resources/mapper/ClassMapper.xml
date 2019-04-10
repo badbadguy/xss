@@ -99,4 +99,8 @@
         LIMIT 1
     </select>
 
+    <!--班级管理返回信息-->
+    <select id="classManager" resultType="PageData">
+        SELECT c.class_id,c.class_grade,c.class_class,u.user_name,COUNT(us.user_id) wk FROM class c LEFT JOIN user_teacher ut ON c.class_id = ut.teacher_headClass LEFT JOIN `user` u ON ut.user_id = u.user_id LEFT JOIN user_student us ON us.student_class = c.class_id GROUP BY c.class_id ORDER BY c.class_grade ,c.class_class
+    </select>
 </mapper>

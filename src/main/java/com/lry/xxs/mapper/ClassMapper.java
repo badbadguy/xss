@@ -19,4 +19,6 @@ public interface ClassMapper {
     String[] selectByGrade(Integer grade);
 
     String selectClassID(PageData pd);
+
+    List<PageData> classManager();
 }

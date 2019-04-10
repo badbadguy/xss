@@ -18,9 +18,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/user")
 @RestController
@@ -46,6 +44,14 @@ public class UserController extends BaseController {
         res.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
         res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+    }
+
+    //检查用户名重复情况
+    @RequestMapping("/checkUserName")
+    public Boolean checkUserName(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        return userService.checkUserName(pd);
     }
 
     //新增
@@ -100,14 +106,13 @@ public class UserController extends BaseController {
 
     //小程序内修改密码
     @RequestMapping("changePws")
-    public MappingJacksonValue changePws(HttpServletResponse response) {
+    public void changePws(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
         User user = new User();
         user.setUser_id(pd.getString("user_id"));
-        user.setUser_password(pd.getString(""));
-        MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
-        return mjv;
+        user.setUser_password(pd.getString("user_password"));
+        userService.changePws(user);
     }
 
     //查询所有用户基本信息
@@ -146,13 +151,32 @@ public class UserController extends BaseController {
                     resultJson = new ResultJson(Boolean.FALSE, pd.getString("error"));
                     break;
                 } else {
-                    redisService.addMap(session.getId(), pd);
+                    Map tempMap = new HashMap();
+                    tempMap.put("user_nickname", pd.getString("user_nickname"));
+                    tempMap.put("user_id", pd.getString("user_id"));
+                    redisService.addMap(session.getId(), tempMap);
                     resultJson = new ResultJson(Boolean.TRUE, "登录成功", session.getId());
                 }
             }
         }
         MappingJacksonValue mjv = new MappingJacksonValue(resultJson);
         return mjv;
+    }
+
+    //获取登录信息
+    @RequestMapping("/getLogin")
+    public PageData getLogin(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        Map returnMap = redisService.getMap(pd.getString("key"));
+        if (returnMap.isEmpty()) {
+            pd.put("success", false);
+        } else {
+            pd.put("success", true);
+        }
+        pd.putAll(returnMap);
+        pd.remove("key");
+        return pd;
     }
 
     //修改父母用户信息
@@ -325,13 +349,13 @@ public class UserController extends BaseController {
             String nj = "";
             for (int i = 1; i <= c.length; i++) {
                 if ((Integer) tempPD.get("class_grade") == i) {
-                    nj = c[i-1] + "年级";
+                    nj = c[i - 1] + "年级";
                     break;
                 }
             }
             for (int i = 1; i <= c.length; i++) {
                 if ((Integer) tempPD.get("class_class") == i) {
-                    nj = nj + c[i-1] + "班";
+                    nj = nj + c[i - 1] + "班";
                     break;
                 }
             }
@@ -357,13 +381,13 @@ public class UserController extends BaseController {
                 temppd = teacherService.select(pd).get(0);
                 returnPD.put("teacher_class", StringUtils.isNotBlank(temppd.getString("teacher_class")));
                 returnPD.put("teacher_subject", StringUtils.isNotBlank(temppd.getString("teacher_subject")));
-                returnPD.put("teacher_ishead", (Integer)temppd.get("teacher_ishead")==0);
+                returnPD.put("teacher_ishead", (Integer) temppd.get("teacher_ishead") == 0);
                 returnPD.put("teacher_subject", temppd.getString("teacher_subject"));
                 break;
             case 3: //学生
                 temppd = studentService.select(pd).get(0);
                 returnPD.put("student_class", StringUtils.isNotBlank(temppd.getString("student_class")));
-                returnPD.put("student_status", (Integer)temppd.get("student_status")==2);
+                returnPD.put("student_status", (Integer) temppd.get("student_status") == 2);
                 break;
             case 4: //家长
                 temppd = parentService.select(pd).get(0);
@@ -373,5 +397,12 @@ public class UserController extends BaseController {
                 break;
         }
         return returnPD;
+    }
+
+    //返回所有教师信息（用于管理员管理）
+    @RequestMapping("checkAllT")
+    public List<PageData> checkAllT(HttpServletResponse response) throws Exception {
+        init(response);
+        return teacherService.checkAllT();
     }
 }

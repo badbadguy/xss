@@ -5,16 +5,15 @@ import com.lry.xxs.fastdfs.FastDFSFile;
 import com.lry.xxs.utils.BaiduApi;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,24 +28,29 @@ public class test extends BaseController {
 
     @ResponseBody
     @RequestMapping("/testtest")
-    public String asdasd(){
+    public String asdasd() {
         return "11111111111";
+    }
+
+    @RequestMapping("/wasai")
+    public String wasai(String t) throws Exception {
+        return Base64.encodeBase64String(t.getBytes("UTF-8"));
     }
 
     @ResponseBody
     @RequestMapping("/baidu")
-    public Object baiduTest(HttpServletResponse response)throws Exception{
+    public Object baiduTest(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
-        if((Double)baiduApi.getScore(pd.getString("1"),pd.getString("2"))>0.8){
+        if ((Double) baiduApi.getScore(pd.getString("1"), pd.getString("2")) > 0.8) {
             return "ojbk";
-        }else {
+        } else {
             return "ri";
         }
     }
 
     @RequestMapping("/test")
-    public String test(MultipartFile file,RedirectAttributes redirectAttributes){
+    public String test(MultipartFile file, RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
             return "redirect:uploadStatus";

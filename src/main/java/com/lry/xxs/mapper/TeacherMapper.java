@@ -15,5 +15,11 @@ public interface TeacherMapper {
 
     void updateById(PageData pd);
 
+    void cancleH(String user_id);
+
     List<PageData> select(PageData pd);
+
+    List<PageData> selectCheckT(PageData pd);
+
+    List<PageData> checkAllT();
 }

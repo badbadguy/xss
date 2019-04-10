@@ -97,15 +97,15 @@
         FROM
         <include refid="tableName"></include>
         WHERE
-        user_id = #{1}
+        user_nickname = #{1}
     </select>
 
     <!-- 根据user_id修改密码 -->
-    <update id="changePw">
+    <update id="changePw" parameterType="User">
         UPDATE
         <include refid="tableName"></include>
         SET
-        user_password = #{password}
+        user_password = #{user_password}
         WHERE
         user_id = #{user_id}
     </update>

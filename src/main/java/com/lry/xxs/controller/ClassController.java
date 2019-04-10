@@ -39,13 +39,13 @@ public class ClassController extends BaseController {
     //查询数据库中的班级
     @ResponseBody
     @RequestMapping("/checkclass2")
-    public List<ClassReult> checkclass2()throws Exception{
+    public List<ClassReult> checkclass2() throws Exception {
         return classService.selectByGrade();
     }
 
     //管理员设置教师负责班级
     @RequestMapping("/chooses")
-    public void chooses(HttpServletResponse response){
+    public void chooses(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         classService.chooseClass(pd);
@@ -54,7 +54,7 @@ public class ClassController extends BaseController {
     //查询该老师负责的班级
     @ResponseBody
     @RequestMapping("/checkclass")
-    public List<Map> checkclass(HttpServletResponse response)throws Exception{
+    public List<Map> checkclass(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
         List<PageData> list = teacherService.select(pd);
@@ -65,9 +65,48 @@ public class ClassController extends BaseController {
     //查询班主任负责班级的学生申请
     @ResponseBody
     @RequestMapping("/checkstudent")
-    public List<Map> checkstudent(HttpServletResponse response)throws Exception{
+    public List<Map> checkstudent(HttpServletResponse response) throws Exception {
         init(response);
         PageData pd = this.getPageData();
         return classService.checkstudent(pd);
+    }
+
+    //班级管理返回信息
+    @RequestMapping("/classManager")
+    public List<PageData> classManager(HttpServletResponse response) throws Exception {
+        init(response);
+        return classService.classManager();
+    }
+
+    //管理员设置班主任
+    @RequestMapping("/setHead")
+    public void setHead(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        classService.setHead(pd);
+    }
+
+    //查询负责该班的教师
+    @RequestMapping("/checkT")
+    public List<PageData> checkT(HttpServletResponse response) throws Exception {
+        init(response);
+        PageData pd = this.getPageData();
+        return classService.selectCheckT(pd);
+    }
+
+    //删除班级
+    @RequestMapping("/delect")
+    public void delect(HttpServletResponse response) throws Exception {
+        init(response);
+        PageData pd = this.getPageData();
+        classService.delect(pd);
+    }
+
+    //新增班级
+    @RequestMapping("/add")
+    public void add(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        classService.add(pd);
     }
 }

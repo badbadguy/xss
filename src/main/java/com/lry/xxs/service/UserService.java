@@ -35,6 +35,15 @@ public class UserService {
 
     MD5 md5 = new MD5();
 
+    public Boolean checkUserName(PageData pd) {
+        List<PageData> list = userMapper.select(pd);
+        if (list != null && list.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void add(PageData pd) throws Exception {
         //获取注册用户的头像昵称
         if (StringUtils.isNotBlank(pd.getString("user_image"))) {
@@ -43,18 +52,20 @@ public class UserService {
             InputStream is = tempurl.openStream();
             MultipartFile multipartFile = new MockMultipartFile("temp.jpg", "temp.jpg", "", is);
             pd.put("user_image", new FastDFS().saveFile(multipartFile));
-            if (StringUtils.isNotBlank(pd.getString("user_nickname")))
-                //将微信名进行编码转换  防止用户账号中昵称特殊符号的报错
+            if (StringUtils.isNotBlank(pd.getString("user_nickname")))//将微信名进行编码转换  防止用户账号中昵称特殊符号的报错
                 pd.put("user_nickname", Base64.encodeBase64String(pd.getString("user_nickname").getBytes("UTF-8")));
             //取出方法
             //new String(Base64.decodeBase64(user_nickname), "UTF-8");
         }
+        if (pd.getString("user_type").equals("2"))
+            pd.put("user_nickname", pd.getString("tusername"));
         pd.put("user_name", Base64.encodeBase64String(pd.getString("user_name").getBytes("UTF-8")));
         if (StringUtils.isBlank(pd.getString("user_id")))
             pd.put("user_id", UuidUtil.get32UUID());
         pd.put("creattime", new Date());
         pd.put("updatetime", new Date());
         pd.put("lastLogintime", new Date());
+        pd.put("user_password","4QrcOUm6Wau+VuBX8g+IPg==");
         if (StringUtils.isNotBlank(pd.getString("user_password")))
             pd.put("user_password", md5.EncoderByMd5(pd.getString("user_password").toString().trim()));
         switch (Integer.valueOf(pd.getString("user_type"))) {
@@ -69,10 +80,10 @@ public class UserService {
                 break;
             case 3:
                 PageData temppd = new PageData();
-                temppd.put("class_grade",pd.getString("choose_grade"));
-                temppd.put("class_class",pd.getString("choose_class"));
-                temppd.put("student_status",pd.getString("1"));
-                pd.put("student_class",classService.selectClassID(temppd));
+                temppd.put("class_grade", pd.getString("choose_grade"));
+                temppd.put("class_class", pd.getString("choose_class"));
+                temppd.put("student_status", pd.getString("1"));
+                pd.put("student_class", classService.selectClassID(temppd));
                 studentService.add(pd);
                 break;
             case 4:
@@ -124,6 +135,14 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
+    public void changePws(User user) throws Exception {
+        //密码加密
+        String tempPWD = user.getUser_password();
+        tempPWD = md5.EncoderByMd5(tempPWD);
+        user.setUser_password(tempPWD);
+        userMapper.changePw(user);
+    }
+
     public List<PageData> select(PageData pd) throws Exception {
         List<PageData> tempList = userMapper.select(pd);
         for (PageData temppd : tempList) {
@@ -146,12 +165,15 @@ public class UserService {
     }
 
     public void changePw(String user_id, String password) throws Exception {
-        userMapper.changePw(user_id, md5.EncoderByMd5(password));
+        User user = new User();
+        user.setUser_id(user_id);
+        user.setUser_password(md5.EncoderByMd5(password));
+        userMapper.changePw(user);
     }
 
     public PageData login(String name, Integer type) {
         PageData pd = new PageData();
-        pd.put("user_name", name);
+        pd.put("user_nickname", name);
         List<PageData> templist = userMapper.select(pd);
         if (!templist.isEmpty() && templist.size() >= 1)
             pd.putAll(templist.get(0));

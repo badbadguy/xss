@@ -90,23 +90,43 @@
         WHERE
         1 = 1
         <if test="teacher_phone != null and teacher_phone != ''">
-            teacher_phone = #{teacher_phone},
+            and teacher_phone = #{teacher_phone}
         </if>
         <if test="teacher_address != null and teacher_address != ''">
-            teacher_address = #{teacher_address},
+            and teacher_address = #{teacher_address}
         </if>
         <if test="teacher_class != null and teacher_class != ''">
-            teacher_class = #{teacher_class},
+            and teacher_class = #{teacher_class}
         </if>
         <if test="teacher_subject != null and teacher_subject != ''">
-            teacher_subject = #{teacher_subject},
+            and teacher_subject = #{teacher_subject}
         </if>
         <if test="teacher_remark != null and teacher_remark != ''">
-            teacher_remark = #{teacher_remark},
+            and teacher_remark = #{teacher_remark}
         </if>
         <if test="teacher_ishead != null and teacher_ishead != ''">
-            teacher_ishead = #{teacher_ishead},
+            and teacher_ishead = #{teacher_ishead}
+        </if>
+        <if test="teacher_headClass != null and teacher_headClass != ''">
+            and teacher_headClass = #{teacher_headClass}
         </if>
     </select>
 
+    <select id="selectCheckT" parameterType="PageData" resultType="PageData">
+        SELECT u.user_name,u.user_id FROM user_teacher ut LEFT JOIN `user` u ON ut.user_id = u.user_id WHERE ut.teacher_class LIKE CONCAT("%",#{class_id},"%")
+    </select>
+
+    <update id="cancleH" parameterType="String">
+        UPDATE
+        <include refid="tableName"></include>
+        SET
+            teacher_ishead = '1',
+            teacher_headClass = null
+        WHERE
+        user_id = #{1}
+    </update>
+
+    <select id="checkAllT" resultType="PageData">
+        SELECT u.user_id,u.user_name,ut.teacher_class,ut.teacher_ishead,teacher_headClass FROM user_teacher ut LEFT JOIN `user` u ON u.user_id = ut.user_id
+    </select>
 </mapper>
