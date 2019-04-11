@@ -172,4 +172,30 @@ public class ClassService {
         pd.put("class_id", UuidUtil.get32UUID());
         classMapper.add(pd);
     }
+
+    //查询已有班级信息（用于管理员绑定教师班级）
+    public List<PageData> haodeba() {
+        String[] c = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+        PageData pd = new PageData();
+        List<PageData> returnList = classMapper.select(pd);
+        for(PageData tempPD : returnList){
+            String tempClass = "";
+            for(int i =0;i<c.length;i++){
+                if((Integer)tempPD.get("class_grade") == i){
+                    tempClass = c[i-1] + "年";
+                }
+            }
+            for(int i =0;i<c.length;i++){
+                if((Integer)tempPD.get("class_class") == i){
+                    tempClass += c[i-1] + "班";
+                }
+            }
+            tempPD.put("value",tempClass);
+            tempPD.put("key",tempPD.getString("class_id"));
+            tempPD.remove("class_grade");
+            tempPD.remove("class_class");
+            tempPD.remove("class_id");
+        }
+        return returnList;
+    }
 }

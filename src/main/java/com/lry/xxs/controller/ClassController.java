@@ -109,4 +109,11 @@ public class ClassController extends BaseController {
         PageData pd = this.getPageData();
         classService.add(pd);
     }
+
+    //查询已有班级信息（用于管理员绑定教师班级）
+    @RequestMapping("/haodeba")
+    public List<PageData> haodeba(HttpServletResponse response) {
+        init(response);
+        return classService.haodeba();
+    }
 }

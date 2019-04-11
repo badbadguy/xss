@@ -73,6 +73,7 @@
         <if test="class_class != null and class_class != ''">
             AND class_class = #{class_class}
         </if>
+        ORDER BY class_grade,class_class
     </select>
 
     <!--根据年级查询  班级排序-->
