@@ -155,6 +155,22 @@ public class QuestionController extends BaseController {
         PageData pd = this.getPageData();
         try {
             List<PageData> list = questionService.select(pd);
+            for(PageData tempPD : list){
+                switch ((Integer) tempPD.get("question_type")){
+                    case 0:
+                        tempPD.put("type","单选题");
+                        break;
+                    case 1:
+                        tempPD.put("type","语音题");
+                        break;
+                    case 2:
+                        tempPD.put("type","填空题");
+                        break;
+                    case 3:
+                        tempPD.put("type","应用题");
+                        break;
+                }
+            }
             resultJson = new ResultJson(Boolean.TRUE, "查询成功", list);
         } catch (Exception e) {
             System.out.println(e);

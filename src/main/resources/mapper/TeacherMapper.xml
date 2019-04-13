@@ -89,6 +89,9 @@
         <include refid="tableName"></include>
         WHERE
         1 = 1
+        <if test="user_id != null and user_id != ''">
+            and user_id = #{user_id}
+        </if>
         <if test="teacher_phone != null and teacher_phone != ''">
             and teacher_phone = #{teacher_phone}
         </if>
@@ -127,6 +130,6 @@
     </update>
 
     <select id="checkAllT" resultType="PageData">
-        SELECT u.user_id,u.user_name,ut.teacher_class,ut.teacher_ishead,teacher_headClass FROM user_teacher ut LEFT JOIN `user` u ON u.user_id = ut.user_id
+        SELECT u.user_id,u.user_name,ut.teacher_class,ut.teacher_subject,ut.teacher_ishead,teacher_headClass FROM user_teacher ut LEFT JOIN `user` u ON u.user_id = ut.user_id
     </select>
 </mapper>
