@@ -32,6 +32,11 @@ public class QuestionService {
         return pd.getString("question_id");
     }
 
+    //新增题目
+    public void add1(PageData pd) {
+        questionMapper.add(pd);
+    }
+
     //根据id删除题目
     public void delete(String id) {
         questionMapper.deleteById(id);

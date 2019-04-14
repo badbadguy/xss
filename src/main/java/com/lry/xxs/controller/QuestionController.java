@@ -1,10 +1,7 @@
 package com.lry.xxs.controller;
 
 import com.lry.xxs.service.QuestionService;
-import com.lry.xxs.utils.BaseController;
-import com.lry.xxs.utils.FastDFS;
-import com.lry.xxs.utils.PageData;
-import com.lry.xxs.utils.ResultJson;
+import com.lry.xxs.utils.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +34,47 @@ public class QuestionController extends BaseController {
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with");
     }
 
-    @RequestMapping("/")
-    public void s(HttpServletResponse response){
+    @RequestMapping("wori")
+    public void s(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
-        pd.containsKey("ojbk");
+        String json = pd.getString("hengji").replace("[","'").replace("]","").replace("'","");
+        String img = pd.getString("img").replace("[","'").replace("]","").replace("\"","").replace("'","");
+        String[] tempJson = json.split("},");
+        String[] imgJson = img.split(",");
+        List<PageData> wasai = new ArrayList<>();
+        for(int i=0;i<tempJson.length;i++){
+            PageData tempPD = new PageData();
+            if(i!=tempJson.length-1){
+                tempJson[i] = tempJson[i] +"}";
+            }
+            JSONObject jsonObject = JSONObject.fromObject(tempJson[i]);
+            tempPD = (PageData) JSONObject.toBean(jsonObject, PageData.class);
+            wasai.add(tempPD);
+        }
+        String question_link = UuidUtil.get32UUID();
+        int tempI = 0;
+        for(PageData wangleta : wasai){
+            PageData zyzz = new PageData();
+            if(tempI == 0){
+                zyzz.put("question_id",question_link);
+            }else {
+                zyzz.put("question_id",UuidUtil.get32UUID());
+                zyzz.put("question_link",question_link);
+            }
+            zyzz.put("question_title",wangleta.getString("eques"));
+            zyzz.put("question_answer1",wangleta.getString("eans1"));
+            zyzz.put("question_answer2",wangleta.getString("eans2"));
+            zyzz.put("question_answer3",wangleta.getString("eans3"));
+            zyzz.put("question_answer4",wangleta.getString("eans4"));
+            zyzz.put("question_type",3);
+            zyzz.put("question_answerr",wangleta.getString("estate"));
+            zyzz.put("question_remark",wangleta.getString("eexp"));
+            zyzz.put("question_image",imgJson[tempI]);
+            zyzz.put("subject_id",pd.getString("subject_id"));
+            questionService.add1(zyzz);
+            tempI++;
+        }
     }
 
     //题目图片上传
@@ -50,6 +83,14 @@ public class QuestionController extends BaseController {
         init(response);
         FastDFS fastDFS = new FastDFS();
         return fastDFS.saveFile(file);
+    }
+
+    //新增题目
+    @RequestMapping("/add")
+    public void add(HttpServletResponse response) {
+        init(response);
+        PageData pd = this.getPageData();
+        questionService.add(pd);
     }
 
     //新增语文英语题目
@@ -121,7 +162,7 @@ public class QuestionController extends BaseController {
                 temppd.put("question_answerr", pd.getString("question_answerr" + i));
             if (StringUtils.isNotBlank(pd.getString("question_remark" + i)))
                 temppd.put("question_remark", pd.getString("question_remark" + i));
-            if (imagesurl.length>i && StringUtils.isNotBlank(imagesurl[i]))
+            if (imagesurl.length > i && StringUtils.isNotBlank(imagesurl[i]))
                 temppd.put("question_image", imagesurl[i]);
             if (i > 0)
                 temppd.put("question_link", tempLink);
@@ -155,19 +196,19 @@ public class QuestionController extends BaseController {
         PageData pd = this.getPageData();
         try {
             List<PageData> list = questionService.select(pd);
-            for(PageData tempPD : list){
-                switch ((Integer) tempPD.get("question_type")){
+            for (PageData tempPD : list) {
+                switch ((Integer) tempPD.get("question_type")) {
                     case 0:
-                        tempPD.put("type","单选题");
+                        tempPD.put("type", "单选题");
                         break;
                     case 1:
-                        tempPD.put("type","语音题");
+                        tempPD.put("type", "语音题");
                         break;
                     case 2:
-                        tempPD.put("type","填空题");
+                        tempPD.put("type", "填空题");
                         break;
                     case 3:
-                        tempPD.put("type","应用题");
+                        tempPD.put("type", "应用题");
                         break;
                 }
             }
@@ -188,12 +229,12 @@ public class QuestionController extends BaseController {
         PageData pd = this.getPageData();
         try {
             List<PageData> list = questionService.select1(pd);
-            if(pd.getString("question_type").equals("3")){
-                for(PageData temppd : list){
+            if (pd.getString("question_type").equals("3")) {
+                for (PageData temppd : list) {
                     PageData temptemp = new PageData();
-                    temptemp.put("question_link",temppd.getString("question_id"));
+                    temptemp.put("question_link", temppd.getString("question_id"));
                     List<PageData> tempList = questionService.select(temptemp);
-                    temppd.put("children",tempList); 
+                    temppd.put("children", tempList);
                 }
             }
             resultJson = new ResultJson(Boolean.TRUE, "查询成功", list);
@@ -214,10 +255,10 @@ public class QuestionController extends BaseController {
         try {
             List<PageData> list = questionService.select1(pd);
             List<PageData> tempList = new ArrayList<PageData>();
-            for(PageData tempPd : list){
+            for (PageData tempPd : list) {
                 PageData temp = new PageData();
-                temp.put("key",tempPd.getString("question_id"));
-                temp.put("value",tempPd.getString("question_title"));
+                temp.put("key", tempPd.getString("question_id"));
+                temp.put("value", tempPd.getString("question_title"));
                 tempList.add(temp);
             }
             resultJson = new ResultJson(Boolean.TRUE, "查询成功", tempList);
@@ -232,7 +273,7 @@ public class QuestionController extends BaseController {
     //答题
     @ResponseBody
     @RequestMapping("/answer")
-    public PageData answer(HttpServletResponse response){
+    public PageData answer(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         return questionService.answer(pd);
@@ -241,7 +282,7 @@ public class QuestionController extends BaseController {
     //应用题提交完成状态以及错题录入
     @ResponseBody
     @RequestMapping("/xigua")
-    public void update3(HttpServletResponse response){
+    public void update3(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         questionService.update3(pd);
