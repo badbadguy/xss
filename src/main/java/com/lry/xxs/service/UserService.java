@@ -65,7 +65,7 @@ public class UserService {
         pd.put("creattime", new Date());
         pd.put("updatetime", new Date());
         pd.put("lastLogintime", new Date());
-        pd.put("user_password","4QrcOUm6Wau+VuBX8g+IPg==");
+        pd.put("user_password", "4QrcOUm6Wau+VuBX8g+IPg==");
         if (StringUtils.isNotBlank(pd.getString("user_password")))
             pd.put("user_password", md5.EncoderByMd5(pd.getString("user_password").toString().trim()));
         switch (Integer.valueOf(pd.getString("user_type"))) {
@@ -146,8 +146,10 @@ public class UserService {
     public List<PageData> select(PageData pd) throws Exception {
         List<PageData> tempList = userMapper.select(pd);
         for (PageData temppd : tempList) {
-            temppd.put("user_name", new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
-            temppd.put("user_nickname", new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
+            if (temppd.containsKey("user_name") && StringUtils.isNotBlank(temppd.getString("user_name")))
+                temppd.put("user_name", new String(Base64.decodeBase64(temppd.getString("user_name")), "UTF-8"));
+            if (temppd.containsKey("user_nickname") && StringUtils.isNotBlank(temppd.getString("user_nickname")))
+                temppd.put("user_nickname", new String(Base64.decodeBase64(temppd.getString("user_nickname")), "UTF-8"));
         }
         return tempList;
     }

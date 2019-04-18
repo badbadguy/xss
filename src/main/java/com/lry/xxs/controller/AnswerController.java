@@ -69,6 +69,7 @@ public class AnswerController extends BaseController {
     @RequestMapping("/ranking")
     public List<PageData> ranking(HttpServletResponse response) throws Exception {
         init(response);
-        return answerService.selectRanking();
+        PageData pd = this.getPageData();
+        return answerService.selectRanking(pd);
     }
 }

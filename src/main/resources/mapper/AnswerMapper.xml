@@ -99,6 +99,21 @@
     </select>
 
     <select id="selectRanking" resultType="PageData">
-        SELECT count(1) AS c,u.user_name AS s FROM answer a LEFT JOIN `user` u ON a.student_id = u.user_id GROUP BY student_id ORDER BY c
+        SELECT
+            count(a.student_id) AS c,
+            u.user_name AS s,
+            q.subject_id,
+            u.user_id
+        FROM
+            `user` u
+        LEFT JOIN answer a ON a.student_id = u.user_id
+        LEFT JOIN question q ON a.question_id = q.question_id
+        WHERE
+            u.user_type = '3'
+        GROUP BY
+            user_id,
+            q.subject_id
+        ORDER BY
+            c;
     </select>
 </mapper>
