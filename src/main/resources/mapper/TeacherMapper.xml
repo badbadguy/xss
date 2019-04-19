@@ -132,4 +132,18 @@
     <select id="checkAllT" resultType="PageData">
         SELECT u.user_id,u.user_name,ut.teacher_class,ut.teacher_subject,ut.teacher_ishead,teacher_headClass FROM user_teacher ut LEFT JOIN `user` u ON u.user_id = ut.user_id
     </select>
+
+    <select id="classTeacher" resultType="PageData" parameterType="String">
+        SELECT
+            ut.teacher_subject,
+            ut.user_id tid,
+            u.user_name
+        FROM
+            user_student us
+        LEFT JOIN class c ON us.student_class = c.class_id
+        LEFT JOIN user_teacher ut ON ut.teacher_class LIKE CONCAT('%', c.class_id, '%')
+        LEFT JOIN `user` u ON ut.user_id = u.user_id
+        WHERE
+            us.user_id = #{1}
+    </select>
 </mapper>

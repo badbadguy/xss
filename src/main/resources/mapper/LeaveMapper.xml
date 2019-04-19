@@ -45,9 +45,6 @@
         UPDATE
         <include refid="tableName"></include>
         SET
-        <if test="leave_id != null and leave_id != ''">
-            leave_id = #{leave_id},
-        </if>
         <if test="user_id != null and user_id != ''">
             user_id = #{user_id},
         </if>
@@ -106,9 +103,6 @@
         <if test="link_leave_id != null and link_leave_id != ''">
             AND link_leave_id = #{link_leave_id}
         </if>
-        <if test="delect_is != null and delect_is != ''">
-            AND delect_is = #{delect_is}
-        </if>
     </select>
 
     <!-- 查询 -->
@@ -135,7 +129,7 @@
             AND leave_id = #{leave_id}
         </if>
         <if test="user_id != null and user_id != ''">
-            AND l.user_id = #{user_id}
+            AND (l.user_id = #{user_id} or to_user_id = #{user_id})
         </if>
         <if test="message != null and message != ''">
             AND message = #{message}
@@ -143,12 +137,7 @@
         <if test="to_user_id != null and to_user_id != ''">
             AND to_user_id = #{to_user_id}
         </if>
-        <if test="link_leave_id != null and link_leave_id != ''">
-            AND link_leave_id = #{link_leave_id}
-        </if>
-        <if test="delect_is != null and delect_is != ''">
-            AND delect_is = #{delect_is}
-        </if>
+        AND delect_is = '0'
         AND
         link_leave_id IS NULL
     </select>

@@ -2,6 +2,7 @@ package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.LeaveMapper;
 import com.lry.xxs.utils.PageData;
+import com.lry.xxs.utils.UuidUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class LeaveService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         pd.put("updata_time", sdf.format(date));
+        pd.put("leave_id", UuidUtil.get32UUID());
+        pd.put("delect_is", 0);
         leaveMapper.add(pd);
     }
 

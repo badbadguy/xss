@@ -41,18 +41,18 @@ public class TeacherService {
         List<PageData> returnList = teacherMapper.checkAllT();
         String[] c = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
         for (PageData pd : returnList) {
-            switch (pd.getString("teacher_subject")){
+            switch (pd.getString("teacher_subject")) {
                 case "33018ef1b3b74a18b6d9f94bff995d79":
-                    pd.put("teacher_subject","语文");
+                    pd.put("teacher_subject", "语文");
                     break;
                 case "79bed2b0e57c4f7f8e71b9817f03e3b9":
-                    pd.put("teacher_subject","英语");
+                    pd.put("teacher_subject", "英语");
                     break;
                 case "cd84a79d6ee04e4d9630731b25b589d0":
-                    pd.put("teacher_subject","数学");
+                    pd.put("teacher_subject", "数学");
                     break;
                 default:
-                    pd.put("teacher_subject","未设置学科");
+                    pd.put("teacher_subject", "未设置学科");
                     break;
             }
             if ((Integer) pd.get("teacher_ishead") == 0) {
@@ -73,7 +73,7 @@ public class TeacherService {
                     }
                 }
                 pd.put("teacher_headClass", ai);
-            }else {
+            } else {
                 pd.put("teacher_headClass", "暂无负责班主任班级");
             }
 
@@ -99,10 +99,36 @@ public class TeacherService {
                         }
                     }
                 }
-            }else {
+            } else {
                 returnClass = "暂无负责班级";
             }
             pd.put("class", returnClass);
+        }
+        return returnList;
+    }
+
+    //返回班级负责老师
+    public List<PageData> classTeacher(PageData pd) throws Exception{
+        List<PageData> list = teacherMapper.classTeacher(pd.getString("user_id"));
+        List<PageData> returnList = new ArrayList<>();
+        Integer i = 0;
+        for(PageData tempPD : list){
+            PageData returnPD = new PageData();
+            tempPD.put("user_name",new String(Base64.decodeBase64(tempPD.getString("user_name")), "UTF-8"));
+            switch (tempPD.getString("teacher_subject")){
+                case "33018ef1b3b74a18b6d9f94bff995d79":
+                    tempPD.put("subTitle","语文");
+                case "cd84a79d6ee04e4d9630731b25b589d0":
+                    tempPD.put("subTitle","数学");
+                case "79bed2b0e57c4f7f8e71b9817f03e3b9":
+                    tempPD.put("subTitle","英语");
+            }
+            returnPD.put("key",i);
+            returnPD.put("tid",tempPD.getString("tid"));
+            returnPD.put("value",tempPD.getString("user_name"));
+            returnPD.put("subTitle",tempPD.getString("subTitle"));
+            returnList.add(returnPD);
+            i++;
         }
         return returnList;
     }

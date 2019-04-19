@@ -241,7 +241,7 @@ public class UserController extends BaseController {
     //查询教师用户信息
     @ResponseBody
     @RequestMapping("/selectt")
-    public MappingJacksonValue selectt(HttpServletResponse response){
+    public MappingJacksonValue selectt(HttpServletResponse response) {
         init(response);
         PageData pd = this.getPageData();
         if (StringUtils.isBlank(pd.getString("pageNum")))
@@ -404,5 +404,13 @@ public class UserController extends BaseController {
     public List<PageData> checkAllT(HttpServletResponse response) throws Exception {
         init(response);
         return teacherService.checkAllT();
+    }
+
+    //返回班级负责老师
+    @RequestMapping("classTeacher")
+    public List<PageData> classTeacher(HttpServletResponse response) throws Exception {
+        init(response);
+        PageData pd = this.getPageData();
+        return teacherService.classTeacher(pd);
     }
 }
