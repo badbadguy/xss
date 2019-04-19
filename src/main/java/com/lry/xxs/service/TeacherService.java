@@ -2,6 +2,7 @@ package com.lry.xxs.service;
 
 import com.lry.xxs.mapper.ClassMapper;
 import com.lry.xxs.mapper.TeacherMapper;
+import com.lry.xxs.mapper.UserMapper;
 import com.lry.xxs.utils.PageData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -18,6 +19,8 @@ public class TeacherService {
     private TeacherMapper teacherMapper;
     @Autowired
     private ClassMapper classMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     public void add(PageData pd) {
         if (StringUtils.isNotBlank(pd.getString("address")))
@@ -109,7 +112,13 @@ public class TeacherService {
 
     //返回班级负责老师
     public List<PageData> classTeacher(PageData pd) throws Exception{
-        List<PageData> list = teacherMapper.classTeacher(pd.getString("user_id"));
+        List<PageData> tempList = userMapper.select(pd);
+        List<PageData> list = new ArrayList<>();
+        if((Integer) tempList.get(0).get("user_type")==3) {
+            list = teacherMapper.classTeacher(pd.getString("user_id"));
+        }else {
+            list = teacherMapper.classTeacher1(pd.getString("user_id"));
+        }
         List<PageData> returnList = new ArrayList<>();
         Integer i = 0;
         for(PageData tempPD : list){

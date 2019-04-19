@@ -24,4 +24,6 @@ public interface TeacherMapper {
     List<PageData> checkAllT();
 
     List<PageData> classTeacher(String user_id);
+
+    List<PageData> classTeacher1(String user_id);
 }
