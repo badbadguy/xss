@@ -60,15 +60,15 @@ public class HomeworkService {
         String[] q0 = null;
         //将作业存入redis中
         if (StringUtils.isNotBlank(temppd.getString("question0_id"))) {
-            if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q0")) {
+            if (!redisService.checkKey(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q0")) {
                 q0 = temppd.getString("question0_id").split(",");
-                redisService.addListAll(pd.getString("user_id") + tempdate + "q0", q0);
+                redisService.addListAll(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q0", q0);
                 returnPD.put("q0_num", q0.length);
             } else {
-                if (redisService.getListOne(pd.getString("user_id") + tempdate + "q0", 0).equals("finish")) {
+                if (redisService.getListOne(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q0", 0).equals("finish")) {
                     returnPD.put("q0_num", 0);
                 } else {
-                    returnPD.put("q0_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q0"));
+                    returnPD.put("q0_num", redisService.sizeList(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q0"));
                 }
             }
         } else {
@@ -76,15 +76,15 @@ public class HomeworkService {
         }
         String[] q1 = null;
         if (StringUtils.isNotBlank(temppd.getString("question1_id"))) {
-            if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q1")) {
+            if (!redisService.checkKey(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q1")) {
                 q1 = temppd.getString("question1_id").split(",");
-                redisService.addListAll(pd.getString("user_id") + tempdate + "q1", q1);
+                redisService.addListAll(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q1", q1);
                 returnPD.put("q1_num", q1.length);
             } else {
-                if (redisService.getListOne(pd.getString("user_id") + tempdate + "q1", 0).equals("finish")) {
+                if (redisService.getListOne(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q1", 0).equals("finish")) {
                     returnPD.put("q1_num", 0);
                 } else {
-                    returnPD.put("q1_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q1"));
+                    returnPD.put("q1_num", redisService.sizeList(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q1"));
                 }
             }
         } else {
@@ -92,15 +92,15 @@ public class HomeworkService {
         }
         String[] q2 = null;
         if (StringUtils.isNotBlank(temppd.getString("question2_id"))) {
-            if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q2")) {
+            if (!redisService.checkKey(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q2")) {
                 q2 = temppd.getString("question2_id").split(",");
-                redisService.addListAll(pd.getString("user_id") + tempdate + "q2", q2);
+                redisService.addListAll(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q2", q2);
                 returnPD.put("q2_num", q2.length);
             } else {
-                if (redisService.getListOne(pd.getString("user_id") + tempdate + "q2", 0).equals("finish")) {
+                if (redisService.getListOne(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q2", 0).equals("finish")) {
                     returnPD.put("q2_num", 0);
                 } else {
-                    returnPD.put("q2_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q2"));
+                    returnPD.put("q2_num", redisService.sizeList(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q2"));
                 }
             }
         } else {
@@ -108,15 +108,15 @@ public class HomeworkService {
         }
         String[] q3 = null;
         if (StringUtils.isNotBlank(temppd.getString("question3_id"))) {
-            if (!redisService.checkKey(pd.getString("user_id") + tempdate + "q3")) {
+            if (!redisService.checkKey(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q3")) {
                 q3 = temppd.getString("question3_id").split(",");
-                redisService.addListAll(pd.getString("user_id") + tempdate + "q3", q3);
+                redisService.addListAll(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q3", q3);
                 returnPD.put("q3_num", q3.length);
             } else {
-                if (redisService.getListOne(pd.getString("user_id") + tempdate + "q3", 0).equals("finish")) {
+                if (redisService.getListOne(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q3", 0).equals("finish")) {
                     returnPD.put("q3_num", 0);
                 } else {
-                    returnPD.put("q3_num", redisService.sizeList(pd.getString("user_id") + tempdate + "q3"));
+                    returnPD.put("q3_num", redisService.sizeList(pd.getString("user_id") + tempdate + temppd.getString("subject_id") + "q3"));
                 }
             }
         } else {
@@ -133,7 +133,7 @@ public class HomeworkService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tempdate = sdf.format(date);
-        String tempQid = redisService.getListOne(pd.getString("user_id") + tempdate + pd.getString("q"), 0);
+        String tempQid = redisService.getListOne(pd.getString("user_id") + tempdate + pd.getString("subject_id") + pd.getString("q"), 0);
         //防止重复查询
         if (StringUtils.isNotBlank(tempQid) && tempQid.equals("finish")) {
             returnPD.put("question_title", "已完成");

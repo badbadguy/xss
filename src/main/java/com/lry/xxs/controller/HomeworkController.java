@@ -1,7 +1,8 @@
 package com.lry.xxs.controller;
 
 import com.lry.xxs.service.HomeworkService;
-import com.lry.xxs.service.TeacherService;
+import com.lry.xxs.service.ParentService;
+import com.lry.xxs.service.StudentService;
 import com.lry.xxs.utils.BaseController;
 import com.lry.xxs.utils.PageData;
 import com.lry.xxs.utils.ResultJson;
@@ -22,7 +23,9 @@ public class HomeworkController extends BaseController {
     @Autowired
     private HomeworkService homeworkService;
     @Autowired
-    private TeacherService teacherService;
+    private ParentService parentService;
+    @Autowired
+    private StudentService studentService;
 
     private ResultJson resultJson = null;
 
@@ -84,9 +87,12 @@ public class HomeworkController extends BaseController {
         init(response);
         PageData pd = this.getPageData();
         PageData returnPD = new PageData();
-        pd = teacherService.select(pd).get(0);
+        pd = parentService.select(pd).get(0);
         PageData temppd = new PageData();
-        temppd.put("user_id", pd.getString("children_id"));
+        PageData aaaa = new PageData();
+        aaaa.put("user_id",pd.getString("children_id"));
+        aaaa = studentService.select(aaaa).get(0);
+        temppd.put("class_id", aaaa.getString("student_class"));
         temppd.put("subject_id", "33018ef1b3b74a18b6d9f94bff995d79");
         returnPD.put("chinese", homeworkService.selectNum(temppd));
         temppd.put("subject_id", "79bed2b0e57c4f7f8e71b9817f03e3b9");
